@@ -1,0 +1,24 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://games/coup/resources/coupcard.gd" type="Script" id=1]
+[ext_resource path="res://games/coup/resources/coupaction.gd" type="Script" id=2]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 2 )
+name = ""
+desc = ""
+used_on_player = false
+can_be_challenged = false
+coin_cost = 0
+free_coins = 0
+steal_coins = 0
+reveal_card = false
+blocked_by = PoolStringArray(  )
+
+[resource]
+resource_name = "CoupCard"
+script = ExtResource( 1 )
+name = ""
+color = Color( 0, 0, 0, 1 )
+desc = ""
+actions = [ SubResource( 1 ) ]
