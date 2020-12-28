@@ -3,7 +3,7 @@ extends Control
 onready var timer = $Timer
 
 # time in seconds between game setup and game start
-var starting_time: int = 5
+var starting_time: int = 3
 var current_time: int = starting_time
 
 # Called when the node enters the scene tree for the first time.
@@ -34,7 +34,7 @@ func on_timer_timeout():
 	$Label.text = str(current_time)
 
 func reset_timer():
-	$Label.text = "5"
+	$Label.text = str(starting_time)
 	stop_timer()
 	start_timer()
 

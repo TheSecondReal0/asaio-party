@@ -137,7 +137,7 @@ func change_direction(new_direction: int):
 func create_trail(trail_coord: Vector2, color: Color):
 	var new_trail = trail_scene.instance()
 	trail_coord = Vector2(stepify(trail_coord.x, 10), stepify(trail_coord.y, 10))
-	new_trail.get_node("Polygon2D").color = color
+	new_trail.get_node("Sprite").modulate = color
 	new_trail.player_owner = self
 	new_trail.global_position = trail_coord
 	get_parent().get_parent().add_child(new_trail)
