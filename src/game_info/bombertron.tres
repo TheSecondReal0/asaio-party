@@ -6,6 +6,7 @@
 script = ExtResource( 1 )
 game_name = "BomberTron"
 game_description = "Tron + Bomberman"
+rounds = 1
 main_scene_path = "res://games/bombertron/assets/main/main.tscn"
 unique_server_main = true
 server_main_scene_path = "res://games/bombertron/assets/main/serverMain.tscn"

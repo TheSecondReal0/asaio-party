@@ -5,6 +5,7 @@ extends Resource
 
 export var game_name: String
 export(String, MULTILINE) var game_description
+export(int, 1, 10) var rounds = 1
 export(String, FILE, "*.tscn") var main_scene_path
 export var unique_server_main: bool = false
 export(String, FILE, "*.tscn") var server_main_scene_path

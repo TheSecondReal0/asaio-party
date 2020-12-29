@@ -36,6 +36,7 @@ Network="*res://autoload/network.gd"
 Ticker="*res://autoload/ticker.gd"
 UIManager="*res://autoload/uimanager.gd"
 GameManager="*res://autoload/gamemanager.gd"
+ScoreManager="*res://autoload/scoremanager.gd"
 
 [display]
 
