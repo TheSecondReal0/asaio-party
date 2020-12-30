@@ -122,6 +122,7 @@ func get_peers():
 	return clients
 
 func _ready():
+	randomize()
 	# make it so when the game is paused, this script still runs
 	pause_mode = PAUSE_MODE_PROCESS
 # warning-ignore:return_value_discarded

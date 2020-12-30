@@ -10,12 +10,14 @@ var current_game: Node
 func _ready():
 	# make it so when the game is paused, this script still runs
 	pause_mode = PAUSE_MODE_PROCESS
+# warning-ignore:return_value_discarded
 	GameManager.connect("switch_game", self, "switch_game")
+# warning-ignore:return_value_discarded
 	GameManager.connect("start_game", self, "start_game")
 	#print(get_tree().is_network_server())
 	if get_tree().is_network_server():
 		host_ui_res.interact()
-	print("asaio party main loaded")
+#	print("asaio party main loaded")
 
 func switch_game(game_res):
 	unload_game()
@@ -24,7 +26,7 @@ func switch_game(game_res):
 		return
 	if current_game.has_method("setup"):
 		current_game.setup()
-	print("current game at switch: ", current_game)
+#	print("current game at switch: ", current_game)
 	get_tree().paused = true
 	# open timer ui
 	open_timer_res.interact()
@@ -33,7 +35,7 @@ func start_game():
 	get_tree().paused = false
 #	if current_game == null:
 #		return
-	print("current game at start: ", current_game)
+#	print("current game at start: ", current_game)
 	if current_game.has_method("start"):
 		current_game.start()
 
@@ -47,7 +49,7 @@ func load_game(game_res) -> bool:
 		game_scene = game_res.get_main_scene()
 	# if game scene doesn't exist return
 	# prevents crash
-	print(game_scene.resource_path)
+#	print(game_scene.resource_path)
 	if game_scene == null:
 		return false
 	# create game node and add it to tree

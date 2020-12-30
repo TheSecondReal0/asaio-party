@@ -5,6 +5,7 @@ onready var game_drop: OptionButton = $OptionButton
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+# warning-ignore:return_value_discarded
 	switch_button.connect("pressed", self, "switch_game")
 	gen_game_buttons()
 

@@ -1,0 +1,328 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://games/coup/ui/common/panels/outline.tres" type="StyleBox" id=1]
+[ext_resource path="res://games/coup/ui/action_buttons/better_grid_container.gd" type="Script" id=2]
+
+[node name="actions" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 0.2
+margin_left = 5.0
+margin_bottom = -5.0
+custom_styles/panel = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1014.0
+margin_bottom = 110.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="Container" parent="ScrollContainer"]
+margin_right = 1009.0
+mouse_filter = 2
+size_flags_horizontal = 3
+script = ExtResource( 2 )
+
+[node name="Button" type="Button" parent="ScrollContainer/GridContainer"]
+margin_right = 98.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button2" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 102.0
+margin_right = 200.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button3" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button4" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button5" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button6" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button7" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button8" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button9" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button10" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button11" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button12" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button13" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button14" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button15" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button16" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button17" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button18" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button19" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button20" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button21" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button22" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button23" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button24" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button25" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button26" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button27" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button28" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button29" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button30" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button31" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button32" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button33" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button34" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button35" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button36" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button37" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button38" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button39" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button40" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button41" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button42" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button43" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button44" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button45" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button46" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button47" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="Button48" type="Button" parent="ScrollContainer/GridContainer"]
+margin_left = 204.0
+margin_right = 302.0
+margin_bottom = 20.0
+text = "asdf asdf asdf"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1014.0
+margin_bottom = 110.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

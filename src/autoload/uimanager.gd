@@ -42,7 +42,7 @@ func close_ui(ui_path: String, free: bool = false):
 	emit_signal("close_ui", ui_path, free)
 
 func instance_ui(ui_path: String, ui_data: Dictionary = {}):
-	print("instance ui ", ui_path)
+#	print("instance ui ", ui_path)
 #	if not ui_list.keys().has(ui_name):
 #		push_error("instance_ui() called with invalid ui name " + ui_name)
 	emit_signal("instance_ui", ui_path, ui_data)

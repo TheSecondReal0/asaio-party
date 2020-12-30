@@ -19,4 +19,5 @@ script = ExtResource( 2 )
 host_ui_res = SubResource( 1 )
 
 [node name="ui_controller" type="CanvasLayer" parent="."]
+layer = 5
 script = ExtResource( 1 )

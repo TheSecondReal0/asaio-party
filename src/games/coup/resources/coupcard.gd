@@ -34,9 +34,14 @@ func gen_desc() -> String:
 	return new_desc
 
 func get_names_as_string(names: Array):
-	var string: String = str(names)
+	var string: String = ""
+# warning-ignore:shadowed_variable
+	for name in names:
+		if string != "":
+			string = string + ", "
+		string = string + name
 # warning-ignore:return_value_discarded
-	string.replace("[", "").replace("]", "")
+	#string.replace("[", "").replace("]", "")
 	return string
 
 func get_action_names() -> Array:

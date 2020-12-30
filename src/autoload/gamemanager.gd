@@ -10,7 +10,7 @@ func _ready():
 	set_network_master(1)
 	# make it so when the game is paused, this script still runs
 	pause_mode = PAUSE_MODE_PROCESS
-	print(get_game_resource_paths())
+#	print(get_game_resource_paths())
 	print(get_game_resources())
 	pass # Replace with function body.
 
@@ -20,12 +20,12 @@ puppet func switch_game(game_name: String):
 		return
 	if get_tree().is_network_server():
 		rpc("switch_game", game_name)
-	print("GameManager switching game to ", game_name)
+#	print("GameManager switching game to ", game_name)
 	emit_signal("switch_game", game_res)
 
 puppet func start_game():
 	emit_signal("start_game")
-	print("starting game")
+#	print("starting game")
 	if get_tree().is_network_server():
 		rpc("start_game")
 
