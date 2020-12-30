@@ -19,9 +19,10 @@ func sort():
 		var c_rect: Rect2 = Rect2(Vector2(), child.rect_size)
 		current_vec = get_new_vec(c_rect)
 		var new_rect = get_new_rect(c_rect)
-		print(new_rect)
+#		print(new_rect)
 		fit_child_in_rect(child, new_rect)
 		current_vec += Vector2(new_rect.size.x + h_separation, 0)
+		rect_size.y = child.rect_position.y + child.rect_size.y
 
 func get_new_rect(rect: Rect2) -> Rect2:
 	if rect.size.y > col_height:
