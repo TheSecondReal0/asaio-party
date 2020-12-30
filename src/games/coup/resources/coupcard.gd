@@ -8,6 +8,15 @@ export(String, MULTILINE) var desc
 export(Array, Resource) var actions
 export(Array, Resource) var blocks
 
+func get_card_data() -> Dictionary:
+	var data: Dictionary = {}
+	for property in ["name", "color"]:
+		data[property] = get(property)
+	data["desc"] = gen_desc()
+	data["actions"] = get_action_names()
+	data["blocks"] = get_block_names()
+	return data
+
 func get_name() -> String:
 	return name
 
@@ -18,15 +27,15 @@ func get_desc() -> String:
 	return gen_desc()
 
 func gen_desc() -> String:
-	return ""
 	var new_desc: String = desc
 	new_desc = new_desc + "/n"
 	new_desc = new_desc + "/nActions: " + get_names_as_string(get_action_names())
 	new_desc = new_desc + "/nBlocks: " + get_names_as_string(get_block_names())
-	
+	return new_desc
 
 func get_names_as_string(names: Array):
 	var string: String = str(names)
+# warning-ignore:return_value_discarded
 	string.replace("[", "").replace("]", "")
 	return string
 
