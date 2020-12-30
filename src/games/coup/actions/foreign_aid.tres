@@ -6,6 +6,7 @@
 resource_name = "Foreign Aid"
 script = ExtResource( 1 )
 name = "Foreign Aid"
+color = Color( 1, 1, 1, 1 )
 action_text = "%u got foreign aid"
 desc = "Get 2 coins from the bank."
 used_on_player = false

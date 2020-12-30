@@ -6,6 +6,7 @@
 resource_name = "Exchange"
 script = ExtResource( 1 )
 name = "Exchange"
+color = Color( 0.247059, 0.74902, 0.247059, 1 )
 action_text = "%u exchanged cards with the deck"
 desc = "Exchange cards with the deck."
 used_on_player = false

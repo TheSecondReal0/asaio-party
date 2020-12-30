@@ -8,7 +8,7 @@
 resource_name = "Duke"
 script = ExtResource( 1 )
 name = "Duke"
-color = Color( 0.623529, 0, 0.623529, 1 )
+color = Color( 0.498039, 0, 0.498039, 1 )
 desc = "Literally part of the 1%. Even wears purple, probably just because purple dye was expensive 500 years ago."
 actions = [ ExtResource( 3 ) ]
 blocks = [ ExtResource( 2 ) ]

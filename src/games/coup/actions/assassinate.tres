@@ -6,6 +6,7 @@
 resource_name = "Assassinate"
 script = ExtResource( 1 )
 name = "Assassinate"
+color = Color( 0.74902, 0.74902, 0.74902, 1 )
 action_text = "%u assassinated %p"
 desc = "Reveal an opponent's card."
 used_on_player = true

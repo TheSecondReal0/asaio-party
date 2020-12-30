@@ -6,6 +6,7 @@
 resource_name = "Steal"
 script = ExtResource( 1 )
 name = "Steal"
+color = Color( 0.247059, 0.74902, 1, 1 )
 action_text = "%u stole from %p"
 desc = "Steal 2 coins from a player of your choice."
 used_on_player = true

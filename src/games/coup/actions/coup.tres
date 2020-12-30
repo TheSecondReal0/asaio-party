@@ -6,6 +6,7 @@
 resource_name = "Coup"
 script = ExtResource( 1 )
 name = "Coup"
+color = Color( 0.74902, 0.74902, 0.74902, 1 )
 action_text = "%u couped %p"
 desc = "Reveal an opponent's card."
 used_on_player = true

@@ -118,6 +118,9 @@ func _server_disconnected():
 # warning-ignore:return_value_discarded
 	get_tree().change_scene_to(load("res://assets/UI/mainMenu/mainMenu.tscn"))
 
+func get_peers():
+	return clients
+
 func _ready():
 	# make it so when the game is paused, this script still runs
 	pause_mode = PAUSE_MODE_PROCESS

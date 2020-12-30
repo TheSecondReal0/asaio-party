@@ -1,0 +1,36 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://games/coup/main/coup_main.gd" type="Script" id=1]
+[ext_resource path="res://games/coup/actions/foreign_aid.tres" type="Resource" id=2]
+[ext_resource path="res://games/coup/actions/coup.tres" type="Resource" id=3]
+[ext_resource path="res://games/coup/actions/exchange.tres" type="Resource" id=4]
+[ext_resource path="res://games/coup/actions/assassinate.tres" type="Resource" id=5]
+[ext_resource path="res://games/coup/actions/steal.tres" type="Resource" id=6]
+[ext_resource path="res://games/coup/actions/tax.tres" type="Resource" id=7]
+[ext_resource path="res://games/coup/actions/income.tres" type="Resource" id=8]
+
+[node name="coup_main" type="CanvasLayer"]
+script = ExtResource( 1 )
+cards_dir = "res://games/coup/cards"
+implied_card = "res://games/coup/cards/default.tres"
+actions_dir = "res://games/coup/actions"
+action_order = [ ExtResource( 7 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 2 ), ExtResource( 3 ) ]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+color = Color( 0.498039, 0.498039, 0.498039, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 285.904
+margin_top = 169.02
+margin_right = 325.904
+margin_bottom = 183.02
+custom_colors/font_color = Color( 0.74902, 0.74902, 0.74902, 1 )
+text = "Assassinate"
+__meta__ = {
+"_edit_use_anchors_": false
+}

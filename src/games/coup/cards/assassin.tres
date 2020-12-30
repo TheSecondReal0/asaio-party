@@ -7,7 +7,7 @@
 resource_name = "Assassin"
 script = ExtResource( 1 )
 name = "Assassin"
-color = Color( 0, 0, 0, 1 )
+color = Color( 0.74902, 0.74902, 0.74902, 1 )
 desc = "Emo chick"
 actions = [ ExtResource( 2 ) ]
 blocks = [  ]

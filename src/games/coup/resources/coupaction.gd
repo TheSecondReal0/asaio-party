@@ -3,6 +3,7 @@ extends Resource
 class_name CoupAction
 
 export(String) var name
+export(Color) var color = Color(1, 1, 1)
 export(String) var action_text
 export(String, MULTILINE) var desc
 
@@ -13,9 +14,6 @@ export(int) var free_coins = 0
 export(int) var steal_coins = 0
 export(int, 0, 5) var exchange_cards_picked
 export(bool) var reveal_card = false
-#export(PoolStringArray) var blocked_by
 
-#func is_blocked_by(card) -> bool:
-#	if blocked_by.has(card):
-#		return true
-#	return false
+func get_name() -> String:
+	return name
