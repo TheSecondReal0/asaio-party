@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://games/coup/main/coup_main.gd" type="Script" id=1]
 [ext_resource path="res://games/coup/actions/foreign_aid.tres" type="Resource" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://games/coup/main/coup_ui.gd" type="Script" id=10]
 [ext_resource path="res://games/coup/ui/common/panels/outline.tres" type="StyleBox" id=11]
 [ext_resource path="res://games/coup/ui/action_buttons/action_buttons.tscn" type="PackedScene" id=12]
+[ext_resource path="res://games/coup/ui/action_buttons/action_buttons.gd" type="Script" id=13]
 
 [node name="coup_main" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -74,6 +75,7 @@ size_flags_vertical = 3
 
 [node name="action_buttons" parent="coup_ui" instance=ExtResource( 12 )]
 anchor_left = 0.3
+script = ExtResource( 13 )
 
 [node name="history" type="PanelContainer" parent="coup_ui"]
 anchor_left = 0.3
