@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://games/coup/ui/common/panels/outline.tres" type="StyleBox" id=1]
 [ext_resource path="res://games/coup/ui/action_buttons/better_grid_container.gd" type="Script" id=2]
+[ext_resource path="res://games/coup/ui/action_buttons/action_buttons.gd" type="Script" id=3]
 
 [node name="actions" type="PanelContainer"]
 anchor_right = 1.0
@@ -9,6 +10,7 @@ anchor_bottom = 0.2
 margin_left = 5.0
 margin_bottom = -5.0
 custom_styles/panel = ExtResource( 1 )
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
