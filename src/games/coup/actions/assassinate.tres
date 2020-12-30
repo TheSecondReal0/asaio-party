@@ -3,14 +3,15 @@
 [ext_resource path="res://games/coup/resources/coupaction.gd" type="Script" id=1]
 
 [resource]
+resource_name = "Assassinate"
 script = ExtResource( 1 )
-name = ""
-action_text = ""
-desc = ""
-used_on_player = false
+name = "Assassinate"
+action_text = "%u assassinated %p"
+desc = "Reveal an opponent's card."
+used_on_player = true
 shuffle_after = false
-coin_cost = 0
+coin_cost = 3
 free_coins = 0
 steal_coins = 0
 exchange_cards_picked = 0
-reveal_card = false
+reveal_card = true
