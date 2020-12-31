@@ -6,7 +6,7 @@
 resource_name = "Income"
 script = ExtResource( 1 )
 name = "Income"
-color = Color( 1, 1, 1, 1 )
+color = Color( 0.298039, 0.298039, 0.298039, 1 )
 action_text = "%u took income"
 desc = "Get 1 coin from the bank."
 used_on_player = false

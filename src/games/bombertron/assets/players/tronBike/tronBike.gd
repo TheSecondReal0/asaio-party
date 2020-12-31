@@ -33,6 +33,7 @@ var destroyer_ammo: int = 10
 onready var tronManager: Node = get_parent().get_parent()
 
 func _ready():
+# warning-ignore:return_value_discarded
 	Ticker.connect("tick", self, "_on_tronManager_move")
 
 func _process(_delta):

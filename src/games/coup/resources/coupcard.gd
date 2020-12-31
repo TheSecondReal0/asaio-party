@@ -28,9 +28,9 @@ func get_desc() -> String:
 
 func gen_desc() -> String:
 	var new_desc: String = desc
-	new_desc = new_desc + "/n"
-	new_desc = new_desc + "/nActions: " + get_names_as_string(get_action_names())
-	new_desc = new_desc + "/nBlocks: " + get_names_as_string(get_block_names())
+	new_desc = new_desc + "\n"
+	new_desc = new_desc + "\nActions: " + get_names_as_string(get_action_names())
+	new_desc = new_desc + "\nBlocks: " + get_names_as_string(get_block_names())
 	return new_desc
 
 func get_names_as_string(names: Array):

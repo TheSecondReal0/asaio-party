@@ -49,6 +49,7 @@ func clear_trail():
 	for i in get_tree().get_nodes_in_group("trail"):
 		i.queue_free()
 
+# warning-ignore:unused_argument
 func _process(delta):
 	if Input.is_action_just_pressed("restart"):
 		resetGame()

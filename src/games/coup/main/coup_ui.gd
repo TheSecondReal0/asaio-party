@@ -1,16 +1,23 @@
 extends Control
 
+onready var player_cards_node: Node = $player_cards
+onready var actions_node: Node = $action_buttons
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var cards_data: Dictionary
+var actions_data: Dictionary
+var hands: Dictionary
+var coins: Dictionary
 
+func init_ui(new_cards_data: Dictionary, new_actions_data: Dictionary, new_hands: Dictionary, new_coins: Dictionary):
+	cards_data = new_cards_data
+	actions_data = new_actions_data
+	hands = new_hands
+	coins = new_coins
+	update_player_cards()
+	update_actions()
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+func update_player_cards():
+	player_cards_node.update_player_cards(cards_data, hands, coins)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func update_actions():
+	actions_node.update_actions(actions_data)

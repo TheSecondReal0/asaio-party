@@ -6,16 +6,21 @@ export(bool) var shuffle_after_challenge_reveal = false
 export(Array) var action_order
 
 onready var data_node = $coup_data
+onready var ui_node = $coup_ui
 
 var implied_card_res
 
 var players: Array = Network.get_peers()
+var alive_players: Array = []
+
 var cards: Dictionary = {}
 var cards_data: Dictionary = {}
 var actions: Dictionary = {}
 var actions_data: Dictionary = {}
+
 var deck: Array = []
 var hands: Dictionary = {}
+var coins: Dictionary = {}
 
 func setup():
 	update_cards_actions_data()
@@ -28,9 +33,11 @@ func setup():
 	print("Steal blocked by ", blocked_by("Steal"))
 	print("can Income be challenged? ", can_be_challenged("Income"))
 	print("can Steal be challenged? ", can_be_challenged("Steal"))
+	init_ui()
 
 func deal_cards():
 	players = [1,2,3,4,5,6]
+	alive_players = players
 	hands = {}
 	for _i in hand_size:
 		for p in players:
@@ -55,6 +62,9 @@ func init_deck():
 
 func shuffle_deck():
 	deck.shuffle()
+
+func init_ui():
+	ui_node.init_ui(cards_data, actions_data, hands, coins)
 
 func update_cards_actions_data() -> void:
 	var data: Dictionary = data_node.get_cards_actions_data()

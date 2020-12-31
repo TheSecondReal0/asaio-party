@@ -26,6 +26,7 @@ func sort():
 
 func get_new_rect(rect: Rect2) -> Rect2:
 	if rect.size.y > col_height:
+# warning-ignore:narrowing_conversion
 		col_height = rect.size.y
 	var new_rect: Rect2 = Rect2()
 	var new_vec = current_vec

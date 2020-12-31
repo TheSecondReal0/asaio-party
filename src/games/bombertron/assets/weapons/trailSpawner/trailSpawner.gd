@@ -17,6 +17,7 @@ var trails_placed: int = 0
 var color: Color = Color(1.0, 0.0, 0.0)
 
 func _ready():
+# warning-ignore:return_value_discarded
 	Ticker.connect("tick", self, "_on_tronManager_move")
 
 func move():
@@ -25,10 +26,10 @@ func move():
 	position = roundPos()
 	position += dir_vec * cell_size
 
-func create_trail(trail_coord: Vector2, color: Color):
+func create_trail(trail_coord: Vector2, trail_color: Color):
 	var new_trail = trail_scene.instance()
 	trail_coord = Vector2(stepify(trail_coord.x, 10), stepify(trail_coord.y, 10))
-	new_trail.get_node("Sprite").modulate = color
+	new_trail.get_node("Sprite").modulate = trail_color
 	new_trail.player_owner = self
 	new_trail.global_position = trail_coord
 	get_parent().get_parent().add_child(new_trail)
