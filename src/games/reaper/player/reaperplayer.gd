@@ -23,21 +23,31 @@ func _ready():
 	particles.color = color
 
 func _physics_process(_delta):
-	if not is_network_master():
-		return
-	input()
-	if state == states.moving:
-		move_to(moving_to, _delta)
+	if is_network_master():
+		input()
+		if state == states.moving:
+			move_to(moving_to, _delta)
+	else:
+		global_position = slave_pos
+		global_rotation = slave_rot
+
+func _process(_delta):
+	if is_network_master():
+		rset("slave_pos", global_position)
+		rset("slave_rot", global_rotation)
 
 func input() -> void:
-	if not is_network_master():
-		return
 	var mouse_pos: Vector2 = get_global_mouse_position()
 	if Input.is_action_just_pressed("left_click"):
-		dash_to(mouse_pos)
+		rpc("receive_pos", global_position)
+		rpc("dash_to", mouse_pos)
+#		dash_to(mouse_pos)
 		handle_new_movement(mouse_pos)
 	if Input.is_action_just_pressed("right_click"):
 		handle_new_movement(mouse_pos)
+
+puppet func receive_pos(pos: Vector2):
+	global_position = pos
 
 func move_to(pos: Vector2, delta: float) -> void:
 	var distance_to: float = global_position.distance_to(pos)
@@ -50,7 +60,7 @@ func move_to(pos: Vector2, delta: float) -> void:
 # warning-ignore:return_value_discarded
 	move_and_slide(dir * used_speed)
 
-func dash_to(pos: Vector2) -> void:
+puppetsync func dash_to(pos: Vector2) -> void:
 	var dir: Vector2 = pos_to_dir(pos)
 	look_at(pos)
 	particles.restart()
