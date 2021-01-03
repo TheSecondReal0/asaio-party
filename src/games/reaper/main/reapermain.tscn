@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://games/reaper/main/reapermain.gd" type="Script" id=1]
-[ext_resource path="res://games/reaper/souls/person/person.tscn" type="PackedScene" id=2]
 
 [node name="reapermain" type="Node2D"]
 script = ExtResource( 1 )
@@ -15,5 +14,5 @@ scale = Vector2( 0.5, 0.5 )
 z_index = -1
 polygon = PoolVector2Array( -20, 5, -5, 5, -5, 20, 5, 20, 5, 5, 20, 5, 20, -5, 5, -5, 5, -20, -5, -20, -5, -5, -20, -5 )
 
-[node name="person" parent="." instance=ExtResource( 2 )]
-position = Vector2( 317.719, 284.298 )
+[node name="soul_spawn_timer" type="Timer" parent="."]
+[connection signal="timeout" from="soul_spawn_timer" to="." method="_on_soul_spawn_timer_timeout"]

@@ -1,6 +1,17 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://games/reaper/player/reaperplayer.gd" type="Script" id=1]
+[ext_resource path="res://addons/opensusinteraction/resources/interactui/interactui.gd" type="Script" id=2]
+
+[sub_resource type="Resource" id=2]
+resource_local_to_scene = true
+script = ExtResource( 2 )
+ui_path = "res://games/reaper/ui/dash_ui/dash_ui.tscn"
+ui_data = {
+
+}
+advanced/reinstance = false
+advanced/only_instance = false
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( -10, -10, -10, 10, 10, 0 )
@@ -10,6 +21,7 @@ points = PoolVector2Array( -10, -10, -10, 10, 10, 0 )
 ]]
 collision_mask = 0
 script = ExtResource( 1 )
+dash_ui = SubResource( 2 )
 
 [node name="Area2D" type="Area2D" parent="."]
 
@@ -35,4 +47,8 @@ gravity = Vector2( 0, 0 )
 initial_velocity = 200.0
 scale_amount = 5.0
 scale_amount_random = 1.0
+
+[node name="dash_cooldown" type="Timer" parent="."]
+one_shot = true
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="timeout" from="dash_cooldown" to="." method="_on_dash_cooldown_timeout"]

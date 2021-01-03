@@ -1,23 +1,21 @@
 extends KinematicBody2D
 
 onready var collision_shape = $CollisionShape2D
+onready var polygon = $Polygon2D
 onready var poof_timer = $poof_timer
 
 var dir: Vector2 = Vector2()
 
-var speed = 20
+var speed = 40
 
 var harvestable: bool = false
 var harvested: bool = false
 
-var time_safe: float = 1
-var time_harvestable: float = 1
+var time_safe: float = 5
+var time_harvestable: float = 2.5
 
 var time_until_harvestable: float = time_safe
 var time_until_poof: float = time_harvestable
-
-func _ready():
-	dir = get_new_dir()
 
 func _process(delta):
 	if harvested:
@@ -30,16 +28,31 @@ func _process(delta):
 		time_until_harvestable -= delta
 		if time_until_harvestable <= 0:
 			become_harvestable()
+	update_color()
 	
 # warning-ignore:return_value_discarded
 	move_and_collide(dir * speed * delta)
 
-func harvest() -> float:
-	print("harvested")
-	poof()
+func update_color() -> void:
+	var progress: float
+	var new_color: Color
 	if harvestable:
-		return 1.0
-	return 0.0
+		progress = time_until_poof / time_harvestable
+		new_color = Color(1, progress, progress, 1)
+	else:
+		progress = time_until_harvestable / (time_safe)# * 2)
+#		if progress > 0.8:
+#			progress = 0.8
+		new_color = Color(1, 1, 1, 1 - progress)
+	polygon.color = new_color
+
+func harvest() -> int:
+#	print("harvested")
+	poof()
+	print(time_until_harvestable / time_safe)
+	if harvestable or time_until_harvestable / time_safe < .1:
+		return 1
+	return 0
 
 func become_harvestable():
 	harvestable = true

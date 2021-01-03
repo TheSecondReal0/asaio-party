@@ -1,22 +1,28 @@
 extends KinematicBody2D
 
-enum states {standing, moving, dashing}
+export(Resource) var dash_ui
 
 onready var polygon: Polygon2D = $Polygon2D
 onready var particles: CPUParticles2D = $CPUParticles2D
 onready var main: Node2D = get_parent().get_parent()
 
+enum states {standing, moving, dashing}
+
 var state: int = states.standing
 
 var color: Color
 
-var speed: float = 50
+var speed: int = 75
 var dash_distance: int = 50
 
 var moving_to: Vector2 = Vector2(600, 300)
 
 var dashing_to: Vector2 = Vector2()
+var dash_split_amount: int = 10
 var dash_progress: int = 0
+
+var max_dashes: int = 3
+var dashes: int = max_dashes
 
 puppet var slave_pos: Vector2 = Vector2()
 puppet var slave_rot: float = 0.0
@@ -24,6 +30,7 @@ puppet var slave_rot: float = 0.0
 func _ready():
 	polygon.color = color
 	particles.color = color
+	update_ui()
 
 func _physics_process(_delta):
 	if state == states.dashing:
@@ -68,12 +75,18 @@ func move_to(pos: Vector2, delta: float) -> void:
 	move_and_slide(dir * used_speed)
 
 puppetsync func start_dash(pos: Vector2) -> void:
+	if dashes <= 0:
+		return
+	dashes -= 1
 	handle_new_movement(pos)
 	dashing_to = pos
-	dash_progress = 4
+	dash_progress = dash_split_amount - 1
 	state = states.dashing
 	particles.restart()
 	dash_to(pos)
+	update_ui()
+	if is_network_master():
+		$dash_cooldown.start()
 
 func dash_to(pos: Vector2) -> void:
 	var dir: Vector2 = pos_to_dir(pos)
@@ -97,6 +110,10 @@ func stop_movement() -> void:
 	state = states.standing
 	main.stop_movement()
 
+func update_ui():
+	if is_network_master():
+		dash_ui.interact(self, {"dashes_left": dashes})
+
 func pos_to_rot(pos: Vector2) -> float:
 	return pos_to_dir(pos).angle()
 
@@ -107,4 +124,13 @@ func _on_Area2D_body_entered(body):
 	if not body.is_in_group("souls"):
 		return
 	print("harvested soul, points: ", body.harvest())
-	print("body entered player ", body)
+#	print("body entered player ", body)
+
+func _on_dash_cooldown_timeout():
+	if dashes < max_dashes:
+		dashes += 1
+	if dashes > max_dashes:
+		dashes = 0
+	if dashes < max_dashes:
+		$dash_cooldown.start()
+	update_ui()
