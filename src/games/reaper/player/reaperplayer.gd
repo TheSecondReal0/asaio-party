@@ -104,4 +104,7 @@ func pos_to_dir(pos: Vector2) -> Vector2:
 	return global_position.direction_to(pos)
 
 func _on_Area2D_body_entered(body):
+	if not body.is_in_group("souls"):
+		return
+	print("harvested soul, points: ", body.harvest())
 	print("body entered player ", body)
