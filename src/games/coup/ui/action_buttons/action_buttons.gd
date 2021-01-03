@@ -22,8 +22,11 @@ func create_button(action_data: Dictionary):
 	grid.add_child(new_button)
 	new_button.init_button(action_data)
 
+# warning-ignore:unused_argument
 func action_used(action: String):
 	pass
 
+# warning-ignore:unused_argument
+# warning-ignore:unused_argument
 func action_used_on_player(action: String, id: int):
 	pass
