@@ -32,6 +32,7 @@ func host():
 	get_tree().network_peer = peer
 # warning-ignore:return_value_discarded
 	get_tree().change_scene_to(load("res://assets/main/main.tscn"))
+	myID = 1
 	clients.append(1)
 	names[1] = myName
 	colors[1] = myColor
@@ -120,6 +121,12 @@ func _server_disconnected():
 
 func get_peers():
 	return clients
+
+func get_color(id: int) -> Color:
+	return colors[id]
+
+func get_my_color() -> Color:
+	return colors[myID]
 
 func _ready():
 	randomize()

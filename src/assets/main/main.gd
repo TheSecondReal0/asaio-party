@@ -27,9 +27,12 @@ func switch_game(game_res):
 	if current_game.has_method("setup"):
 		current_game.setup()
 #	print("current game at switch: ", current_game)
-	get_tree().paused = true
-	# open timer ui
-	open_timer_res.interact()
+	if game_res.timer:
+		get_tree().paused = true
+		# open timer ui
+		open_timer_res.interact()
+	else:
+		start_game()
 
 func start_game():
 	get_tree().paused = false
