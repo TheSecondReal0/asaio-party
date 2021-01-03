@@ -8,7 +8,8 @@ var player_scene: PackedScene = load("res://games/reaper/player/reaperplayer.tsc
 
 func setup():
 	movement_target.color = Network.get_my_color()
-	create_players()
+	if get_tree().is_network_server():
+		create_players()
 
 func start():
 	pass
@@ -25,9 +26,16 @@ func create_player(id: int):
 	new_player.set_network_master(id)
 	$players.add_child(new_player)
 	new_player.position = spawnpoint
+	rpc("create_player_client", id, spawnpoint)
 
 puppet func create_player_client(id: int, pos: Vector2):
-	pass
+	var new_player: Node = player_scene.instance()
+	var spawnpoint: Vector2 = pos
+	new_player.name = str(id)
+	new_player.color = Network.get_color(id)
+	new_player.set_network_master(id)
+	$players.add_child(new_player)
+	new_player.position = spawnpoint
 
 func handle_new_movement(pos: Vector2):
 	movement_target.global_position = pos
