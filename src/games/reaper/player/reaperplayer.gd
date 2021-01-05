@@ -4,6 +4,8 @@ export(Resource) var dash_ui
 
 onready var polygon: Polygon2D = $Polygon2D
 onready var particles: CPUParticles2D = $CPUParticles2D
+onready var name_pos_node: Position2D = $Position2D
+onready var name_label: Label = $Position2D/name_label
 onready var main: Node2D = get_parent().get_parent()
 
 enum states {standing, moving, dashing}
@@ -30,6 +32,7 @@ puppet var slave_rot: float = 0.0
 func _ready():
 	polygon.color = color
 	particles.color = color
+	name_label.text = Network.names[int(name)]
 	update_ui()
 
 func _physics_process(_delta):
@@ -46,6 +49,7 @@ func _physics_process(_delta):
 		global_rotation = slave_rot
 
 func _process(_delta):
+	name_pos_node.global_rotation = 0
 	if is_network_master():
 		rset_unreliable("slave_pos", global_position)
 		rset_unreliable("slave_rot", global_rotation)
