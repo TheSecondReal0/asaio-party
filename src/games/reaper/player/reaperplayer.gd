@@ -47,8 +47,8 @@ func _physics_process(_delta):
 
 func _process(_delta):
 	if is_network_master():
-		rset("slave_pos", global_position)
-		rset("slave_rot", global_rotation)
+		rset_unreliable("slave_pos", global_position)
+		rset_unreliable("slave_rot", global_rotation)
 
 func input() -> void:
 	var mouse_pos: Vector2 = get_global_mouse_position()

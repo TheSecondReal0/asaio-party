@@ -40,17 +40,20 @@ func update_color() -> void:
 		progress = time_until_poof / time_harvestable
 		new_color = Color(1, progress, progress, 1)
 	else:
-		progress = time_until_harvestable / (time_safe)# * 2)
+		progress = (time_until_harvestable / time_safe) / 2
+		progress += .5
 #		if progress > 0.8:
 #			progress = 0.8
 		new_color = Color(1, 1, 1, 1 - progress)
+#	print(progress)
+#	print(new_color)
 	polygon.color = new_color
 
 func harvest() -> int:
 #	print("harvested")
 	poof()
-	print(time_until_harvestable / time_safe)
-	if harvestable or time_until_harvestable / time_safe < .1:
+#	print(time_until_harvestable / time_safe)
+	if harvestable:# or time_until_harvestable / time_safe < .1:
 		return 1
 	return 0
 
