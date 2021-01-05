@@ -1,10 +1,24 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://games/reaper/main/reapermain.gd" type="Script" id=1]
+[ext_resource path="res://addons/opensusinteraction/resources/interactui/interactui.gd" type="Script" id=2]
+
+[sub_resource type="Resource" id=1]
+resource_local_to_scene = true
+script = ExtResource( 2 )
+ui_path = "res://games/reaper/ui/dash_ui/dash_ui.tscn"
+ui_data = {
+
+}
+action = 2
+free_on_close = true
+advanced/reinstance = false
+advanced/only_instance = false
 
 [node name="reapermain" type="Node2D"]
 script = ExtResource( 1 )
 player_scene_path = "res://games/reaper/player/reaperplayer.tscn"
+close_dash_ui = SubResource( 1 )
 
 [node name="players" type="Node2D" parent="."]
 

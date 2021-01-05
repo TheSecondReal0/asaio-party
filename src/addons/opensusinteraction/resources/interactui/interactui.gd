@@ -8,6 +8,11 @@ export(String, FILE, "*.tscn") var ui_path
 #data to pass to the UI node
 export(Dictionary) var ui_data
 
+enum actions {OPEN, UPDATE, CLOSE}
+export(actions) var action = actions.OPEN
+
+export(bool) var free_on_close = false
+
 #changed in the editor via overriding get(), set(), and get_property_list()
 #whether or not to delete and recreate the UI node before opening
 var reinstance: bool = false
@@ -20,8 +25,12 @@ var interact_data: Dictionary = {}
 func interact(_from: Node = null, _interact_data: Dictionary = {}):
 	if only_instance:
 		UIManager.instance_ui(ui_path, get_interact_data(_from, _interact_data))
-	else:
-		UIManager.open_ui(ui_path, get_interact_data(_from, _interact_data), reinstance)
+		return
+	match action:
+		actions.OPEN:
+			UIManager.open_ui(ui_path, get_interact_data(_from, _interact_data), reinstance)
+		actions.CLOSE:
+			UIManager.close_ui(ui_path, free_on_close)
 
 func init_resource(_from: Node = null):
 	pass

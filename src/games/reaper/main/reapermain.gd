@@ -1,6 +1,7 @@
 extends Node2D
 
 export(String, FILE, "*.tscn") var player_scene_path
+export(Resource) var close_dash_ui
 
 onready var movement_target: Node = $movement_target
 onready var soul_spawn_timer: Timer = $soul_spawn_timer
@@ -18,6 +19,9 @@ func setup():
 func start():
 	if get_tree().is_network_server():
 		soul_spawn_timer.start()
+
+func cleanup():
+	close_dash_ui.interact()
 
 func create_players():
 	for peer in Network.get_peers():

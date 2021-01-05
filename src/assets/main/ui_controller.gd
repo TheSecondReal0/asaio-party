@@ -64,7 +64,7 @@ func close_ui(ui_path: String, free: bool = false):
 	if current_ui.has_method("close"):
 		current_ui.close()
 	if free:
-		current_ui.free_ui(ui_path)
+		free_ui(ui_path)
 
 func instance_ui(ui_path: String, ui_data: Dictionary = {}):
 	update_instanced_uis()

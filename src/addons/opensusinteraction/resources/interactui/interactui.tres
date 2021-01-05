@@ -6,9 +6,11 @@
 resource_local_to_scene = true
 resource_name = "InteractUI"
 script = ExtResource( 1 )
-ui_name = ""
+ui_path = ""
 ui_data = {
 
 }
+action = 0
+free_on_close = false
 advanced/reinstance = false
 advanced/only_instance = false

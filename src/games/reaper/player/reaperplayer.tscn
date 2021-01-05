@@ -3,17 +3,19 @@
 [ext_resource path="res://games/reaper/player/reaperplayer.gd" type="Script" id=1]
 [ext_resource path="res://addons/opensusinteraction/resources/interactui/interactui.gd" type="Script" id=2]
 
-[sub_resource type="Resource" id=2]
+[sub_resource type="Resource" id=1]
 resource_local_to_scene = true
 script = ExtResource( 2 )
 ui_path = "res://games/reaper/ui/dash_ui/dash_ui.tscn"
 ui_data = {
 
 }
+action = 0
+free_on_close = false
 advanced/reinstance = false
 advanced/only_instance = false
 
-[sub_resource type="ConvexPolygonShape2D" id=1]
+[sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( -10, -10, -10, 10, 10, 0 )
 
 [node name="reaperplayer" type="KinematicBody2D" groups=[
@@ -21,12 +23,12 @@ points = PoolVector2Array( -10, -10, -10, 10, 10, 0 )
 ]]
 collision_mask = 0
 script = ExtResource( 1 )
-dash_ui = SubResource( 2 )
+dash_ui = SubResource( 1 )
 
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 rotation = 1.5708

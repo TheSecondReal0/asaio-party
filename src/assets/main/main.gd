@@ -64,6 +64,9 @@ func load_game(game_res) -> bool:
 	return true
 
 func unload_game():
+	if current_game != null:
+		if current_game.has_method("cleanup"):
+			current_game.cleanup()
 	for node in get_children():
 		if not non_game_children.has(node):
 			# renaming it before deleting prevents networking from shitting itself
