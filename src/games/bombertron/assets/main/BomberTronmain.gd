@@ -8,9 +8,10 @@ var death_coords: Array = []
 var trail_nodes: Array = []
 
 func _init():
+	Ticker.update_tick_rate(0.07)
 	set_network_master(1)
 
-slave func createPlayer(id, pos):
+puppet func createPlayer(id, pos):
 	var newPlayer = player.instance()
 	newPlayer.set_network_master(id)
 	newPlayer.name = str(id)
@@ -20,7 +21,7 @@ slave func createPlayer(id, pos):
 	newPlayer.global_position = pos
 	playerNodes.append(newPlayer)
 
-slave func deletePlayers():
+puppet func deletePlayers():
 	death_coords = []
 	trail_nodes = []
 	for i in $players.get_children():
