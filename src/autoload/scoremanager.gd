@@ -1,6 +1,6 @@
 extends Node
 
-var scores: Dictionary = {}
+puppet var scores: Dictionary = {}
 
 signal score_changed(scores)
 
@@ -23,6 +23,11 @@ func reset_scores():
 	for peer in Network.get_peers():
 		scores[peer] = 0
 	score_changed()
+
+func sync_scores():
+	if not get_tree().is_network_server():
+		return
+	rset("scores", scores)
 
 func update_score(player_id: int, diff: int):
 	if not scores.has(player_id):

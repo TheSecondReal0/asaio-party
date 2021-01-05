@@ -127,7 +127,9 @@ func pos_to_dir(pos: Vector2) -> Vector2:
 func _on_Area2D_body_entered(body):
 	if not body.is_in_group("souls"):
 		return
-	print("harvested soul, points: ", body.harvest())
+	var harvest_score: int = body.harvest()
+	ScoreManager.update_score(int(name), harvest_score)
+	print("harvested soul, points: ", harvest_score)
 #	print("body entered player ", body)
 
 func _on_dash_cooldown_timeout():
