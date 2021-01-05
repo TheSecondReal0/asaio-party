@@ -1,6 +1,7 @@
 extends Node2D
 
 export(Resource) var host_ui_res
+export(Resource) var score_ui_res
 
 onready var non_game_children: Array = [$ui_controller]
 
@@ -17,6 +18,8 @@ func _ready():
 	#print(get_tree().is_network_server())
 	if get_tree().is_network_server():
 		host_ui_res.interact()
+	score_ui_res.interact()
+	ScoreManager.reset_scores()
 #	print("asaio party main loaded")
 
 func switch_game(game_res):
@@ -24,6 +27,7 @@ func switch_game(game_res):
 	if not load_game(game_res):
 		print("failed to load game")
 		return
+	ScoreManager.reset_scores()
 	if current_game.has_method("setup"):
 		current_game.setup()
 #	print("current game at switch: ", current_game)

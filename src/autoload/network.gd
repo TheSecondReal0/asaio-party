@@ -122,11 +122,21 @@ func _server_disconnected():
 func get_peers():
 	return clients
 
+func get_player_name(id: int) -> String:
+	if not names.has(id):
+		return "null"
+	return names[id]
+
+func get_my_name() -> String:
+	return get_player_name(myID)
+
 func get_color(id: int) -> Color:
+	if not colors.has(id):
+		return Color(1, 1, 1)
 	return colors[id]
 
 func get_my_color() -> Color:
-	return colors[myID]
+	return get_color(myID)
 
 func _ready():
 	randomize()
