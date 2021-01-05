@@ -61,7 +61,7 @@ func input() -> void:
 		rpc("start_dash", mouse_pos)
 #		dash_to(mouse_pos)
 		handle_new_movement(mouse_pos)
-	if Input.is_action_just_pressed("right_click"):
+	if Input.is_action_pressed("right_click"):
 		handle_new_movement(mouse_pos)
 
 puppet func receive_pos(pos: Vector2):

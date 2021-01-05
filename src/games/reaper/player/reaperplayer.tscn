@@ -63,6 +63,7 @@ __meta__ = {
 }
 
 [node name="dash_cooldown" type="Timer" parent="."]
+wait_time = 3.0
 one_shot = true
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="timeout" from="dash_cooldown" to="." method="_on_dash_cooldown_timeout"]
