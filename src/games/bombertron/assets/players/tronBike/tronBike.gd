@@ -37,7 +37,7 @@ func _ready():
 	Ticker.connect("tick", self, "_on_tronManager_move")
 
 func _process(_delta):
-	if global_position.x < 0 or global_position.x > 1024 or global_position.y < 0 or global_position.y > 600:
+	if global_position.x < 1 or global_position.x > 1019 or global_position.y < 1 or global_position.y > 599:
 		queue_free()
 	
 	if is_network_master():
