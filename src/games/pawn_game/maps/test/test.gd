@@ -57,7 +57,7 @@ func random_path() -> PoolVector2Array:
 
 func path(start_coord: Vector2 = start, end_coord: Vector2 = end)-> PoolVector2Array:
 	#random()
-	return nav.get_simple_path(start_coord, end_coord)
+	return nav.get_simple_path(start_coord, end_coord, true)
 	#print(path)
 	#line.points = path
 

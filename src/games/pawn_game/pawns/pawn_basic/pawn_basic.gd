@@ -5,8 +5,12 @@ export var inaccuracy_denom: int = 15
 
 var path: PoolVector2Array
 
+var pos_dif_history: PoolIntArray
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if name == "pawn_basic":
+		$Polygon2D.color = Color(0, 1, 0)
 	pass # Replace with function body.
 
 func _physics_process(delta):
@@ -31,4 +35,20 @@ func _physics_process(delta):
 	# clamped to avoid pawn from constantly missing target
 	var travel_vec: Vector2 = (dir_to * speed).clamped(distance_to / delta)
 	# move in dir, collide and slide against anything in the way
-	move_and_slide(travel_vec)
+	var pos_dif = move_and_slide(travel_vec)
+	if pos_dif_history.size() > 4:
+		pos_dif_history.remove(0)
+	pos_dif_history.append(pos_dif.length())
+	var avg: int = avg_array(pos_dif_history)
+	var is_moving: bool = avg > 5
+	if not is_moving and path.size() == 1:
+		path = []
+	if name == "pawn_basic":
+		#print(pos_dif_history)
+		print(avg)
+
+func avg_array(array) -> int:
+	var sum: int = 0
+	for i in array:
+		sum += i
+	return sum / array.size()
