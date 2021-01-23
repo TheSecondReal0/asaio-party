@@ -18,10 +18,16 @@ _global_script_classes=[ {
 "class": "CoupCard",
 "language": "GDScript",
 "path": "res://games/coup/resources/coupcard.gd"
+}, {
+"base": "Resource",
+"class": "InteractUI",
+"language": "GDScript",
+"path": "res://addons/opensusinteraction/resources/interactui/interactui.gd"
 } ]
 _global_script_class_icons={
 "CoupAction": "",
-"CoupCard": ""
+"CoupCard": "",
+"InteractUI": ""
 }
 
 [application]
