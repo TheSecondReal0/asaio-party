@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 export var speed: int = 50
+export var inaccuracy_denom: int = 15
 
 var path: PoolVector2Array
 
@@ -16,7 +17,7 @@ func _physics_process(delta):
 	# first coord in path is current target
 	var target: Vector2 = path[0]
 	# if you're already where the current target would take you
-	if (target / 10).round() == (global_position / 10).round():
+	if (target / inaccuracy_denom).round() == (global_position / inaccuracy_denom).round():
 		# if this is the last target
 		if path.size() < 2:
 			return
