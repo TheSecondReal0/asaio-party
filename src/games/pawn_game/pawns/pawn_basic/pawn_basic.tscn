@@ -8,6 +8,7 @@
 "pawns",
 ]]
 script = ExtResource( 1 )
+inaccuracy_denom = 30
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
