@@ -1,0 +1,41 @@
+[gd_scene format=2]
+
+[node name="walls" type="Node2D"]
+
+[node name="top" type="ColorRect" parent="."]
+margin_left = -10.0
+margin_top = -10.0
+margin_right = 1034.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="bottom" type="ColorRect" parent="."]
+margin_left = -10.0
+margin_top = 600.0
+margin_right = 1034.0
+margin_bottom = 610.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="left" type="ColorRect" parent="."]
+margin_left = -10.0
+margin_top = -10.0
+margin_bottom = 610.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="right" type="ColorRect" parent="."]
+margin_left = 1024.0
+margin_top = -10.0
+margin_right = 1034.0
+margin_bottom = 610.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
