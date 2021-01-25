@@ -23,11 +23,17 @@ _global_script_classes=[ {
 "class": "InteractUI",
 "language": "GDScript",
 "path": "res://addons/opensusinteraction/resources/interactui/interactui.gd"
+}, {
+"base": "Resource",
+"class": "TileType",
+"language": "GDScript",
+"path": "res://games/pawn_game/resources/tiletype/tiletype.gd"
 } ]
 _global_script_class_icons={
 "CoupAction": "",
 "CoupCard": "",
-"InteractUI": ""
+"InteractUI": "",
+"TileType": ""
 }
 
 [application]
