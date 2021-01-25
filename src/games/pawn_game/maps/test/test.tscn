@@ -37,6 +37,7 @@ autostart = true
 
 [node name="pawn_basic" parent="pawns" instance=ExtResource( 2 )]
 position = Vector2( 453.361, 322.077 )
+debug_pawn = true
 
 [node name="pawn_basic2" parent="pawns" instance=ExtResource( 2 )]
 position = Vector2( 453.361, 322.077 )
