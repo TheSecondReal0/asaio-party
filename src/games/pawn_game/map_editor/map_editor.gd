@@ -27,13 +27,20 @@ func _process(_delta):
 		preview_tile.global_position = tile_pos
 	#print(tile_pos)
 
+func _gui_input(event):
+	if event is InputEventMouseMotion:
+		return
+	print(event.position)
+
 func type_selected(type: String):
 	selected = type
 	preview_tile = gen_preview_tile(type)
+	grab_focus()
 
 func type_deselected(type: String):
 	selected = ""
 	preview_tile.queue_free()
+	grab_focus()
 
 func gen_preview_tile(type: String) -> Node:
 	var tile: Node = tile_resources[type].gen_tile()
