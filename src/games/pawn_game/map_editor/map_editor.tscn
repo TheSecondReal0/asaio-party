@@ -1,11 +1,16 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://games/pawn_game/map_editor/map_editor.gd" type="Script" id=1]
+[ext_resource path="res://games/pawn_game/map_editor/tile_buttons/tile_buttons.tscn" type="PackedScene" id=2]
 
 [node name="map_editor" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+tile_resource_dir = "res://games/pawn_game/map_components/tiles/tile_resources"
+
+[node name="tile_buttons" parent="." instance=ExtResource( 2 )]
