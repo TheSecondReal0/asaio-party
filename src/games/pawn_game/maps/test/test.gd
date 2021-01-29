@@ -26,9 +26,9 @@ func input() -> void:
 	if Input.is_action_just_pressed("right_click"):
 		print("right click, mouse pos: ", mouse_pos)
 		direct_pawns_to(mouse_pos)#, true)
-	if Input.is_action_just_pressed("left_click"):
-		print("left click, mouse pos: ", mouse_pos)
-		direct_pawns_to(mouse_pos, true)#, true)
+	#if Input.is_action_just_pressed("left_click"):
+	#	print("left click, mouse pos: ", mouse_pos)
+	#	direct_pawns_to(mouse_pos, true)#, true)
 		#handle_new_movement(mouse_pos)
 
 func direct_pawns_to(pos: Vector2, rand_start: bool = false):
@@ -36,9 +36,10 @@ func direct_pawns_to(pos: Vector2, rand_start: bool = false):
 	if rand_start:
 		rand_pawn_pos()
 	for pawn in pawns.get_children():
-		var pawn_pos: Vector2 = pawn.global_position
-		var path: PoolVector2Array = path(pawn_pos, pos)
-		pawn.path = path
+		if pawn.selected:
+			var pawn_pos: Vector2 = pawn.global_position
+			var path: PoolVector2Array = path(pawn_pos, pos)
+			pawn.path = path
 
 func rand_pawn_pos():
 	print("randomizing pawn locations")

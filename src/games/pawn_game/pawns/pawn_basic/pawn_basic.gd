@@ -6,8 +6,10 @@ export var debug_pawn: bool = false
 
 onready var mover: Node = $mover
 
-var old_state: int
-var state: int
+var selected = false
+var old_state
+var mousePos:Vector2
+var state
 enum states {IDLE, MOVING, COMBAT, WORKING, HAULING}
 
 var path: PoolVector2Array setget set_path
@@ -24,7 +26,16 @@ func _ready():
 
 func _physics_process(delta):
 	mover.move(delta)
+	if Input.is_action_just_pressed("left_click"):
+		selected = false
+		mousePos = get_global_mouse_position()
+	
 
+func _input(event):
+	if event is InputEventMouseButton and event.pressed == false:
+		if sign(get_position().x-mousePos.x) == sign(get_global_mouse_position().x - mousePos.x) and sign(get_global_mouse_position().x-mousePos.x) == sign(get_global_mouse_position().x - get_position().x):
+			if sign(get_position().y-mousePos.y) == sign(get_global_mouse_position().y - mousePos.y) and sign(get_global_mouse_position().y-mousePos.y) == sign(get_global_mouse_position().y - get_position().y):
+				selected = true
 # only emitting signal allows greatest flexibility/least spaghetti code
 # if we end up making more types of pawns that inherit from this script it's easier
 func transition(new_state: int):
