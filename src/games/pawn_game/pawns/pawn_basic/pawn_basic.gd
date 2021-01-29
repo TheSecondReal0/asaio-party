@@ -6,8 +6,8 @@ export var debug_pawn: bool = false
 
 onready var mover: Node = $mover
 
-var old_state
-var state
+var old_state: int
+var state: int
 enum states {IDLE, MOVING, COMBAT, WORKING, HAULING}
 
 var path: PoolVector2Array setget set_path

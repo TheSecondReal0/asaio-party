@@ -8,6 +8,9 @@ onready var tile_buttons: Node = $tile_buttons
 var selected: String = ""
 var preview_tile: Node
 
+var is_mouse_pressed: bool = false
+var mouse_down_pos: Vector2 = Vector2(0, 0)
+
 signal place_tile(type, pos)
 
 # Called when the node enters the scene tree for the first time.
@@ -28,9 +31,10 @@ func _process(_delta):
 	#print(tile_pos)
 
 func _gui_input(event):
-	if event is InputEventMouseMotion:
+	if not event is InputEventMouseButton:
 		return
 	print(event.position)
+	print(event.pressed)
 
 func type_selected(type: String):
 	selected = type

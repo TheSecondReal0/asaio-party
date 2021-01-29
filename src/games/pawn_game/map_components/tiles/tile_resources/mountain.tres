@@ -8,5 +8,5 @@ script = ExtResource( 1 )
 name = "Mountain"
 walkable = false
 texture = ExtResource( 2 )
-modulate = Color( 1, 1, 1, 1 )
+modulate = Color( 0.313726, 0.207843, 0.054902, 1 )
 texture_scale = Vector2( 4, 4 )

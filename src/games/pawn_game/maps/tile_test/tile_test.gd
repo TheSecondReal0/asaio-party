@@ -1,5 +1,7 @@
 extends Node2D
 
+export var walkable_tile_res: Resource
+
 onready var nav: Navigation2D = $Navigation2D
 onready var line: Line2D = $Line2D
 onready var pawns = $pawns
@@ -7,7 +9,10 @@ onready var pawns = $pawns
 var start: Vector2 = Vector2(200, 50)
 var end: Vector2 = Vector2(974, 550)
 
+var walkable_tile
+
 func _ready():
+	walkable_tile = walkable_tile_res.gen_tile()
 	create_walkable_area()
 	direct_pawns_to(Vector2(rand_range(50, 974), rand_range(50, 550)), true)
 #	end = Vector2(rand_range(50, 974), rand_range(50, 550))
