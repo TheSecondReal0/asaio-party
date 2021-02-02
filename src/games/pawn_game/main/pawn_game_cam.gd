@@ -1,0 +1,68 @@
+extends Camera2D
+
+var top_left_bound: Vector2 = Vector2(0, 0)
+var bottom_right_bound: Vector2 = Vector2(1024, 600)
+
+# storage of cam velocity, for inertial cam moving
+var velocity: Vector2 = Vector2(0, 0)
+
+var drag_pressed: bool = false
+
+var input_rel_cache: Array = []
+var input_rel_avg: Vector2 = Vector2(0, 0)
+
+func _process(delta):
+	if drag_pressed:
+		return
+	position += velocity * delta * zoom
+	velocity -= velocity * 1 * delta
+	clamp_pos()
+
+func _input(input):
+	if not input is InputEventMouse:
+		return
+	if input is InputEventMouseButton and input.button_index:
+		match input.button_index:
+			BUTTON_MIDDLE:
+				drag_pressed = input.pressed
+				if drag_pressed:
+					velocity = Vector2()
+				else:
+					pass
+					if input_rel_avg.length() < 5:
+						velocity = Vector2(0, 0)
+						return
+			BUTTON_WHEEL_UP:
+				zoom_view(-.1)
+			BUTTON_WHEEL_DOWN:
+				zoom_view(.1)
+
+	if not input is InputEventMouseMotion:
+		return
+	if not drag_pressed:
+		return
+	
+	if input_rel_cache.size() > 5:
+		input_rel_cache.remove(0)
+	input_rel_cache.append(input.relative)
+	input_rel_avg = avg_array(input_rel_cache)
+	
+	velocity = -input.speed
+	position -= input.relative * zoom
+	clamp_pos()
+
+func zoom_view(amount: float):
+	zoom += Vector2(1, 1) * amount
+
+func clamp_pos():
+	return
+	global_position = clamp_to_bounds(global_position)
+
+func clamp_to_bounds(vec: Vector2):
+	return Vector2(clamp(vec.x, top_left_bound.x, bottom_right_bound.x), clamp(vec.y, top_left_bound.y, bottom_right_bound.y))
+
+func avg_array(array) -> Vector2:
+	var sum: Vector2 = Vector2(0, 0)
+	for i in array:
+		sum += i
+	return sum / array.size()

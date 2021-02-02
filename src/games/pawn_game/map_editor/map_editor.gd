@@ -3,7 +3,7 @@ extends Control
 export (String, DIR) var tile_resource_dir
 
 onready var tile_resources: Dictionary = get_tile_resources()
-onready var tile_buttons: Node = $tile_buttons
+onready var tile_buttons: Node = $CanvasLayer/tile_buttons
 onready var map: Node = $map
 onready var preview_tiles_node: Node = $preview_tiles
 
@@ -49,18 +49,20 @@ func _process(_delta):
 	#print(get_tile_positions(mouse_down_pos, mouse_pos))
 	#preview_tile.global_position = preview_tile_pos
 
-func _gui_input(event):
+func _input(event):
 	if not event is InputEventMouseButton:
 		return
+	var mouse_pos: Vector2 = get_global_mouse_position()
 	match event.button_index:
 		BUTTON_LEFT:
 			is_mouse_down = event.pressed
 			if is_mouse_down:
-				mouse_down_pos = event.global_position
+				#mouse_down_pos = event.global_position
+				mouse_down_pos = mouse_pos
 				return
 			if not cursor_preview == null:
 				cursor_preview.queue_free()
-			var tile_coords: Array = get_tile_positions(mouse_down_pos, event.global_position)
+			var tile_coords: Array = get_tile_positions(mouse_down_pos, mouse_pos)
 			clear_preview_tiles()
 			for coord in tile_coords:
 				emit_signal("tile_placed", coord, selected)
