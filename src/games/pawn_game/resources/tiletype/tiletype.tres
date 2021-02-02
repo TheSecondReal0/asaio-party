@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://games/pawn_game/resources/tiletype/tiletype.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+name = ""
+walkable = false
+modulate = Color( 1, 1, 1, 1 )
+texture_scale = Vector2( 1, 1 )

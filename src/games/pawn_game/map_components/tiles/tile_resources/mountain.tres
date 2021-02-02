@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://games/pawn_game/resources/tiletype/tiletype.gd" type="Script" id=1]
+[ext_resource path="res://games/pawn_game/map_components/tiles/common/textures/square.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Mountain"
+walkable = false
+texture = ExtResource( 2 )
+modulate = Color( 0.219608, 0.141176, 0.027451, 1 )
+texture_scale = Vector2( 4, 4 )

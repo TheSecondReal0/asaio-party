@@ -42,7 +42,7 @@ anchor_right = 0.6
 anchor_bottom = 0.525
 margin_top = 0.500671
 margin_bottom = 0.500671
-text = "26.115.105.205"
+text = "26.31.90.96"
 __meta__ = {
 "_edit_lock_": true
 }
@@ -70,12 +70,14 @@ __meta__ = {
 }
 
 [node name="ColorPicker" type="ColorPicker" parent="."]
-anchor_left = 0.65
+anchor_left = 0.675
 anchor_top = 0.1
-anchor_right = 1.0
+anchor_right = 0.95
 anchor_bottom = 0.9
-margin_left = 25.0
-margin_right = -25.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 20.0
+margin_bottom = 20.0
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false

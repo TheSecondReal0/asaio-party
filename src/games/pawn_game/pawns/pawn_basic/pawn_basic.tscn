@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://games/pawn_game/pawns/pawn_basic/pawn_basic.gd" type="Script" id=1]
+[ext_resource path="res://games/pawn_game/pawns/pawn_basic/mover.gd" type="Script" id=2]
+
+[sub_resource type="CircleShape2D" id=1]
+
+[node name="pawn_basic" type="KinematicBody2D" groups=[
+"pawns",
+]]
+script = ExtResource( 1 )
+inaccuracy_denom = 30
+
+[node name="mover" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color( 1, 0, 0, 1 )
+polygon = PoolVector2Array( -10, 10, 10, 0, -10, -10 )
