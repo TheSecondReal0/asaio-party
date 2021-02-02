@@ -53,13 +53,14 @@ func _input(input):
 
 func zoom_view(amount: float):
 	zoom += Vector2(1, 1) * amount
+	zoom = clamp_to_bounds(zoom, Vector2(.3, .3), Vector2(5, 5))
 
 func clamp_pos():
 	return
 	global_position = clamp_to_bounds(global_position)
 
-func clamp_to_bounds(vec: Vector2):
-	return Vector2(clamp(vec.x, top_left_bound.x, bottom_right_bound.x), clamp(vec.y, top_left_bound.y, bottom_right_bound.y))
+func clamp_to_bounds(vec: Vector2, min_bound: Vector2 = top_left_bound, max_bound: Vector2 = bottom_right_bound):
+	return Vector2(clamp(vec.x, min_bound.x, max_bound.x), clamp(vec.y, min_bound.y, max_bound.y))
 
 func avg_array(array) -> Vector2:
 	var sum: Vector2 = Vector2(0, 0)
