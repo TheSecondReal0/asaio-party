@@ -13,7 +13,9 @@ __meta__ = {
 }
 tile_resource_dir = "res://games/pawn_game/map_components/tiles/tile_resources"
 
-[node name="tile_buttons" parent="." instance=ExtResource( 2 )]
-
 [node name="map" type="Node2D" parent="."]
 script = ExtResource( 3 )
+
+[node name="preview_tiles" type="Node2D" parent="."]
+
+[node name="tile_buttons" parent="." instance=ExtResource( 2 )]
