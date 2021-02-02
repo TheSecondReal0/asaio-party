@@ -130,3 +130,30 @@ func get_tile_positions(start_pos: Vector2, end_pos: Vector2, step: int = 20):
 
 func round_pos(pos: Vector2, step: int = 20) -> Vector2:
 	return Vector2(stepify(pos.x, step), stepify(pos.y, step))
+
+func get_map_json() -> String:
+	return map.tiles_to_json()
+	#return ""
+
+# when path selected to save map json to
+func _on_FileDialog_file_selected(path):
+	print("saving to ", path)
+	var map_json = get_map_json()
+	var file = File.new()
+	file.open(path, File.WRITE)
+	file.store_string(map_json)
+	file.close()
+
+func _on_save_button_pressed():
+	$CanvasLayer/save_file_dia.popup()
+
+func _on_load_button_pressed():
+	$CanvasLayer/load_file_dia.popup()
+
+func _on_load_file_dia_file_selected(path):
+	var file = File.new()
+	file.open(path, File.READ)
+	var content = file.get_as_text()
+	file.close()
+	map.load_from_json(content)
+	#return content

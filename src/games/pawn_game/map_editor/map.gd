@@ -42,7 +42,12 @@ func create_tile(pos: Vector2, type: String) -> Node:
 	new_tile.global_position = pos
 	return new_tile
 
-func tiles_to_json(tiles: Dictionary) -> String:
+func load_from_json(json):
+	var tile_dict = json_to_tiles(json)
+	for key in tile_dict:
+		place_tile(key, tile_dict[key])
+
+func tiles_to_json(tiles: Dictionary = map_tiles) -> String:
 	var json_tiles: Dictionary = {}
 	for coord in map_tiles.keys():
 		json_tiles[coord_to_str(coord)] = map_tiles[coord]
