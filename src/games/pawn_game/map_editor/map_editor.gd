@@ -1,7 +1,8 @@
 extends Control
 
-export (String, DIR) var tile_resource_dir
+export var main_path: NodePath
 
+onready var main: Node2D = get_node(main_path)
 onready var tile_resources: Dictionary = get_tile_resources()
 onready var tile_buttons: Node = $CanvasLayer/tile_buttons
 onready var map: Node = $map
@@ -18,11 +19,12 @@ var preview_tiles: Dictionary = {}
 var preview_tile_coords: Array = []
 
 signal tile_placed(pos, type)
+signal preview_tiles(tile_coords, type)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print(tile_resources)
-	map.tile_resources = tile_resources
+	#map.tile_resources = tile_resources
 	#print(tile_resources["Grass"].gen_tile())
 # warning-ignore:return_value_discarded
 	tile_buttons.connect("type_selected", self, "type_selected")
@@ -33,26 +35,30 @@ func _ready():
 func _process(_delta):
 	if selected == "":
 		return
-	var mouse_pos: Vector2 = get_global_mouse_position()
-	if cursor_preview == null:
-		cursor_preview = gen_preview_tile(selected)
-		preview_tiles_node.add_child(cursor_preview)
-	cursor_preview.global_position = round_pos(mouse_pos)
+	var mouse_pos: Vector2 = main.get_global_mouse_position()
+#	if cursor_preview == null:
+#		cursor_preview = gen_preview_tile(selected)
+#		preview_tiles_node.add_child(cursor_preview)
+#	cursor_preview.global_position = round_pos(mouse_pos)
+	var preview_coords: Array = []
 	if not is_mouse_down:
-		return
-	var preview_coords = get_tile_positions(mouse_down_pos, mouse_pos)
+		preview_coords.append(round_pos(mouse_pos))
+	else:
+		preview_coords = get_tile_positions(mouse_down_pos, mouse_pos)
 	if preview_coords != preview_tile_coords:
-		clear_preview_tiles()
-		preview_tile_coords = preview_coords
+		emit_signal("preview_tiles", preview_coords, selected)
+#		clear_preview_tiles()
+#		preview_tile_coords = preview_coords
 		#preview_tiles(mouse_down_pos, mouse_pos, selected)
-		preview_tiles_from_array(preview_tile_coords, selected)
+#		preview_tiles_from_array(preview_tile_coords, selected)
 	#print(get_tile_positions(mouse_down_pos, mouse_pos))
 	#preview_tile.global_position = preview_tile_pos
 
-func _input(event):
+func _gui_input(event):
 	if not event is InputEventMouseButton:
 		return
-	var mouse_pos: Vector2 = get_global_mouse_position()
+	var mouse_pos: Vector2 = main.get_global_mouse_position()
+	print(mouse_pos)
 	match event.button_index:
 		BUTTON_LEFT:
 			is_mouse_down = event.pressed
@@ -109,11 +115,12 @@ func gen_preview_tile(type: String) -> Node:
 	return tile
 
 func get_tile_resources():
-	var resources: Array = Helpers.load_files_in_dir_with_exts(tile_resource_dir, [".tres"])
-	var res_dict: Dictionary = {}
-	for res in resources:
-		res_dict[res.name] = res
-	return res_dict
+	return main.get_tile_resources()
+#	var resources: Array = Helpers.load_files_in_dir_with_exts(tile_resource_dir, [".tres"])
+#	var res_dict: Dictionary = {}
+#	for res in resources:
+#		res_dict[res.name] = res
+#	return res_dict
 
 func get_tile_positions(start_pos: Vector2, end_pos: Vector2, step: int = 20):
 	start_pos = round_pos(start_pos)
@@ -129,7 +136,8 @@ func get_tile_positions(start_pos: Vector2, end_pos: Vector2, step: int = 20):
 	return tile_coords
 
 func round_pos(pos: Vector2, step: int = 20) -> Vector2:
-	return Vector2(stepify(pos.x, step), stepify(pos.y, step))
+	return main.round_pos(pos, step)
+	#return Vector2(stepify(pos.x, step), stepify(pos.y, step))
 
 func get_map_json() -> String:
 	return map.tiles_to_json()
