@@ -27,7 +27,7 @@ func _process(delta):
 
 func place_tile(pos: Vector2, type: String):
 	if not tile_resources.has(type):
-		print("tile type does not exist")
+		#print("tile type does not exist")
 		return
 	pos = round_pos(pos)
 	var old_type
