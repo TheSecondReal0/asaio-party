@@ -20,7 +20,7 @@ func randomizePlayerPos(playerNode):
 
 func deletePlayers():
 	if has_node("players"):
-		var node: Node2D = $players
+		var node: Node = $players
 		node.name = node.name + "deleting"
 		node.queue_free()
 

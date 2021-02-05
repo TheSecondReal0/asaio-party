@@ -103,21 +103,21 @@ puppet func remoteShoot(gunData, pos, rot):
 
 func handleWeaponInput():
 	if get_parent().is_network_master() and get_parent().alive:
-		if Input.is_action_just_pressed("equip_1"):
+		if Input.is_action_just_pressed("1"):
 			switchWeapon("pistol")
-		if Input.is_action_just_pressed("equip_2"):
+		if Input.is_action_just_pressed("2"):
 			switchWeapon("shotgun")
-		if Input.is_action_just_pressed("equip_3"):
+		if Input.is_action_just_pressed("3"):
 			switchWeapon("machineGun")
-		if Input.is_action_just_pressed("equip_4"):
+		if Input.is_action_just_pressed("4"):
 			switchWeapon("sniper")
-		if Input.is_action_just_pressed("reload"):
+		if Input.is_action_just_pressed("r"):
 			reload()
 		if weapons[activeWeapon].firingMode == "semi":
-			if Input.is_action_just_pressed("shoot"):
+			if Input.is_action_just_pressed("left_click"):
 				fire()
 		else:
-			if Input.is_action_pressed("shoot"):
+			if Input.is_action_pressed("left_click"):
 				fire()
 
 func _ready():

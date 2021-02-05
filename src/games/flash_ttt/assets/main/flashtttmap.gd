@@ -7,8 +7,7 @@ func _ready():
 
 func updateMap():
 	changeMap("classicMap")
-	if networkManager.server:
-		rpc("changeMap", "classicMap")
+	rpc("changeMap", "classicMap")
 	#for i in get_children():
 	#	i.queue_free()
 

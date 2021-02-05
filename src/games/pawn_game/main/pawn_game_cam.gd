@@ -15,7 +15,7 @@ func _process(delta):
 	if drag_pressed:
 		return
 	position += velocity * delta * zoom
-	velocity -= velocity * 1 * delta
+	velocity -= velocity * 2 * delta
 	clamp_pos()
 
 func _input(input):

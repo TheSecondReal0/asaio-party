@@ -56,6 +56,7 @@ func _on_DespawnTimer_timeout():
 func _on_SelfCollideTimer_timeout():
 	$CollisionShape2D.disabled = false
 
+# warning-ignore:unused_argument
 func _on_BulletHitReg_body_entered(collider):
 	pass
 	#if collider.has_method("hit"):
