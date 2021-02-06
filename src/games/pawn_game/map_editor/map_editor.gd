@@ -21,8 +21,6 @@ signal preview_tiles(tile_coords, type)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print(tile_resources)
-	#map.tile_resources = tile_resources
-	#print(tile_resources["Grass"].gen_tile())
 # warning-ignore:return_value_discarded
 	tile_buttons.connect("type_selected", self, "type_selected")
 # warning-ignore:return_value_discarded
@@ -65,12 +63,14 @@ func _gui_input(event):
 func type_selected(type: String):
 	selected = type
 	#preview_tile = gen_preview_tile(type)
+	mouse_filter = MOUSE_FILTER_STOP
 	#grab_focus()
 
 # warning-ignore:unused_argument
 func type_deselected(type: String):
 	selected = ""
 	emit_signal("preview_tiles", [], selected)
+	mouse_filter = MOUSE_FILTER_IGNORE
 	#grab_focus()
 
 func get_tile_resources():

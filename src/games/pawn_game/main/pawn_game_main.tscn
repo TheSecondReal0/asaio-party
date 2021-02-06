@@ -28,184 +28,184 @@ main_path = NodePath("../..")
 script = ExtResource( 7 )
 main_path = NodePath("../..")
 
-[node name="pawns" type="Node2D" parent="pawn_game_nav"]
+[node name="pawn_controller" type="Node2D" parent="pawn_game_nav"]
 
-[node name="pawn_basic" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 debug_pawn = true
 
-[node name="pawn_basic2" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic2" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic3" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic3" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic4" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic4" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic5" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic5" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic6" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic6" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic7" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic7" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic8" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic8" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic9" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic9" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic10" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic10" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic11" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic11" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic12" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic12" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic13" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic13" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic14" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic14" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic15" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic15" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic16" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic16" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic17" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic17" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic18" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic18" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic19" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic19" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic20" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic20" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic21" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic21" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic22" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic22" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic23" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic23" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic24" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic24" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic25" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic25" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic26" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic26" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic27" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic27" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic28" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic28" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic29" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic29" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic30" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic30" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic31" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic31" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic32" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic32" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic33" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic33" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic34" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic34" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic35" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic35" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic36" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic36" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic37" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic37" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic38" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic38" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic39" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic39" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic40" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic40" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic41" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic41" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic42" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic42" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic43" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic43" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic44" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic44" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic45" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic45" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic46" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic46" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic47" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic47" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic48" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic48" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic49" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic49" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic50" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic50" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic51" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic51" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic52" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic52" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic53" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic53" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic54" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic54" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic55" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic55" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic56" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic56" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic57" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic57" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic58" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic58" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
-[node name="pawn_basic59" parent="pawn_game_nav/pawns" instance=ExtResource( 1 )]
+[node name="pawn_basic59" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
 [node name="pawn_game_ui" type="CanvasLayer" parent="."]

@@ -2,7 +2,7 @@ extends Navigation2D
 
 onready var map: Node2D = $pawn_game_map
 onready var line: Line2D = $Line2D
-onready var pawns = $pawns
+onready var pawns = $pawn_controller
 
 var start: Vector2 = Vector2(200, 50)
 var end: Vector2 = Vector2(974, 550)
