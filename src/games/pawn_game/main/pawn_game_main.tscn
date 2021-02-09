@@ -208,6 +208,8 @@ position = Vector2( 453.361, 322.077 )
 [node name="pawn_basic59" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )
 
+[node name="world_ui" type="Node2D" parent="."]
+
 [node name="pawn_game_ui" type="CanvasLayer" parent="."]
 
 [node name="map_editor" parent="pawn_game_ui" instance=ExtResource( 2 )]

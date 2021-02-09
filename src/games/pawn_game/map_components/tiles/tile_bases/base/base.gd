@@ -18,10 +18,18 @@ var resource: String
 # list of available interactions
 var interactions: Array = []
 
+signal interacted_with(tile_node)
+
 func _ready():
 	if interact_area:
 		interact_area.connect("clicked", self, "on_clicked")
 
 func on_clicked(input: InputEventMouseButton):
-	print(input)
+	# we want the ui to open on release
+	if input.pressed:
+		return
+	match input.button_index:
+		BUTTON_RIGHT:
+			emit_signal("interacted_with", self)
+			print(input)
 
