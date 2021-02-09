@@ -1,6 +1,8 @@
 extends PopupMenu
 
-signal interaction_selected(interaction)
+signal interaction_selected(interaction, tile)
+
+var current_tile: Node2D
 
 var mouse_inside: bool = false
 var mouse_distance_max: int = 100
@@ -21,11 +23,12 @@ func _process(_delta):
 func interaction_selected(id: int):
 	var interaction: String = get_item_text(id)
 	print("tile interaction selected: ", interaction)
-	emit_signal("interaction_selected", interaction)
+	emit_signal("interaction_selected", interaction, current_tile)
 	close()
 
-func show_interactions(interactions: Array, pos: Vector2):
+func show_interactions(interactions: Array, pos: Vector2, tile: Node2D = null):
 	print("showing interactions: ", interactions)
+	current_tile = tile
 	clear()
 	rect_position = pos
 	gen_buttons(interactions)

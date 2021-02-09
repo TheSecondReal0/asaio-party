@@ -11,7 +11,7 @@ func tile_interacted_with(tile: Node2D):
 	print(tile.interactions)
 	# uncomment for crash, used for testing
 	#print(get_node_or_null("sdgf").x)
-	interact_popup.show_interactions(tile.interactions, get_global_mouse_position())
+	interact_popup.show_interactions(tile.interactions, get_global_mouse_position(), tile)
 
 func tile_created(tile):
 	tile.connect("interacted_with", self, "tile_interacted_with")
