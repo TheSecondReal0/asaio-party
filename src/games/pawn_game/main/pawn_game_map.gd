@@ -47,7 +47,8 @@ func place_tile(pos: Vector2, type: String):
 func create_tile(pos: Vector2, type: String) -> Node:
 	pos = round_pos(pos)
 	var new_tile: Node = tile_resources[type].gen_tile()
-	add_child(new_tile)
+	#add_child(new_tile)
+	call_deferred("add_child", new_tile)
 	new_tile.global_position = pos
 	return new_tile
 

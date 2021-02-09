@@ -51,22 +51,44 @@ var interact_area_scene: PackedScene = load(interact_area_path)
 var navpoly_path: String = "res://games/pawn_game/map_components/tiles/tile_components/navpoly/navpoly.tscn"
 var navpoly_scene: PackedScene = load(navpoly_path)
 
+var tile_node: Node
+var sprite_node: Sprite
+
 func gen_tile():
-	var tile: Node = base_scene.instance()
-	if walkable:
-		tile.add_child(navpoly_scene.instance())
-	if interactable:
-		tile.add_child(interact_area_scene.instance())
-	tile.add_child(gen_sprite(1.0))
-	return tile
+	if tile_node == null:
+		var tile: Node = base_scene.instance()
+		if walkable:
+			tile.add_child(navpoly_scene.instance())
+		if interactable:
+			tile.add_child(interact_area_scene.instance())
+		tile.add_child(gen_sprite(1.0))
+		tile_node = tile
+	return tile_node.duplicate()
+#	var tile: Node = base_scene.instance()
+#	if walkable:
+#		tile.add_child(navpoly_scene.instance())
+#	if interactable:
+#		tile.add_child(interact_area_scene.instance())
+#	tile.add_child(gen_sprite(1.0))
+#	return tile
 
 func gen_sprite(alpha: float = 0.5):
-	var sprite: Sprite = Sprite.new()
-	sprite.texture = texture
-	sprite.modulate = modulate
+	if sprite_node == null:
+		var sprite: Sprite = Sprite.new()
+		sprite.texture = texture
+		sprite.modulate = modulate
+		sprite.modulate.a = alpha
+		sprite.scale = scale
+		sprite_node = sprite
+	var sprite = sprite_node.duplicate()
 	sprite.modulate.a = alpha
-	sprite.scale = scale
 	return sprite
+#	var sprite: Sprite = Sprite.new()
+#	sprite.texture = texture
+#	sprite.modulate = modulate
+#	sprite.modulate.a = alpha
+#	sprite.scale = scale
+#	return sprite
 
 func _set(property, value):
 	if editor_properties.has(property):

@@ -34,9 +34,11 @@ func _process(_delta):
 	var preview_coords: Array = []
 	if not is_mouse_down:
 		preview_coords.append(round_pos(mouse_pos))
+		emit_signal("preview_tiles", preview_coords, selected)
+		return
 	else:
 		preview_coords = get_tile_positions(mouse_down_pos, mouse_pos)
-	if preview_coords != preview_tile_coords:
+	if preview_coords.size() != preview_tile_coords.size():# preview_coords != preview_tile_coords:
 		emit_signal("preview_tiles", preview_coords, selected)
 		preview_tile_coords = preview_coords
 
@@ -52,6 +54,7 @@ func _gui_input(event):
 				#mouse_down_pos = event.global_position
 				mouse_down_pos = mouse_pos
 				return
+			emit_signal("preview_tiles", [], "")
 			var tile_coords: Array = get_tile_positions(mouse_down_pos, mouse_pos)
 			for coord in tile_coords:
 				emit_signal("tile_placed", coord, selected)
