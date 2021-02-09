@@ -5,14 +5,14 @@
 
 [resource]
 script = ExtResource( 1 )
-name = ""
+name = "Wood"
 desc = ""
 walkable = false
 destructible = false
-interactions/interactable = false
-interactions/resource = ""
-interactions/work = false
+interactions/interactable = true
+interactions/resource = "Wood"
+interactions/work = true
 interactions/deconstruct = false
 texture/texture = ExtResource( 2 )
-texture/modulate = Color( 1, 1, 1, 1 )
+texture/modulate = Color( 0.286275, 0.133333, 0, 1 )
 texture/scale = Vector2( 4, 4 )

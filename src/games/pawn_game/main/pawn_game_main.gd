@@ -9,6 +9,9 @@ signal preview_tiles(tile_coords, type)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	var tex = Texture.new()
+	print(tex)
+	#print(tex.get_class())
 # warning-ignore:return_value_discarded
 	editor.connect("tile_placed", self, "tile_placed")
 # warning-ignore:return_value_discarded

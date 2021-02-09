@@ -1,16 +1,11 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://games/pawn_game/map_components/tiles/common/textures/square.png" type="Texture" id=1]
-
-[sub_resource type="NavigationPolygon" id=1]
-vertices = PoolVector2Array( -10, -10, 10, -10, 10, 10, -10, 10 )
-polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
-outlines = [ PoolVector2Array( -10, 10, 10, 10, 10, -10, -10, -10 ) ]
+[ext_resource path="res://games/pawn_game/map_components/tiles/tile_components/navpoly/navpoly.tscn" type="PackedScene" id=2]
 
 [node name="walkable" type="Node2D"]
 
-[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="."]
-navpoly = SubResource( 1 )
+[node name="NavigationPolygonInstance" parent="." instance=ExtResource( 2 )]
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
