@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource( 1 )
-tile_name = "Wood"
+type = "Wood"
 desc = ""
 walkable = false
 destructible = false

@@ -14,7 +14,7 @@ enum states {IDLE, MOVING, COMBAT, WORKING, HAULING}
 
 # command the pawn is following
 # some orders require multiple states (MOVING to get to tile, then WORKING to work it)
-var command: int = -1
+var command: String
 var command_data: Dictionary = {}
 
 var path: PoolVector2Array setget set_path

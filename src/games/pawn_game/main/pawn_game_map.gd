@@ -16,6 +16,8 @@ signal new_nav_poly_instance(instance)
 func _ready():
 # warning-ignore:return_value_discarded
 	main.connect("tile_placed", self, "place_tile")
+# warning-ignore:return_value_discarded
+	main.connect("interaction_selected", self, "interaction_selected")
 
 # warning-ignore:unused_argument
 func _process(delta):
@@ -53,6 +55,52 @@ func create_tile(pos: Vector2, type: String) -> Node:
 	call_deferred("add_child", new_tile)
 	new_tile.global_position = pos
 	return new_tile
+
+func get_tile_type_group(coord: Vector2, type: String, diagonal: bool = true, include_self: bool = true):
+	var tiles: Dictionary = {}
+	var to_check: Array = [coord]
+	while not to_check.empty():
+		for vec in to_check:
+			var adjacent: Dictionary = get_adjacent_tiles_of_type(vec, type, diagonal, include_self)
+			for tile_coord in adjacent:
+				if tile_coord in tiles:
+					continue
+				tiles[tile_coord] = adjacent[tile_coord]
+				to_check.append(tile_coord)
+			to_check.erase(vec)
+	return tiles
+
+func get_adjacent_tiles_of_type(coord: Vector2, type: String, diagonal: bool = true, include_self: bool = false):
+	var tiles: Dictionary = {}
+	var adjacent: Dictionary = get_adjacent_tiles(coord, diagonal, include_self)
+	for coord in adjacent:
+		if adjacent[coord] == type:
+			tiles[coord] = adjacent[coord]
+	return tiles
+
+func get_adjacent_tiles(coord: Vector2, diagonal: bool = true, include_self: bool = false) -> Dictionary:
+	var tiles: Dictionary = {}
+	var factors: Array = [0, 1, -1]
+	for x in factors:
+		for y in factors:
+			if not include_self:
+				if x == 0 and y == 0:
+					continue
+			if not diagonal:
+				if x != 0 and y != 0:
+					continue
+			var current: Vector2 = coord + (Vector2(x, y) * 20)
+			if current in map_tiles:
+				tiles[current] = map_tiles[current]
+	return tiles
+
+func interaction_selected(interaction, tile):
+	var tile_coord: Vector2 = tile.global_position
+	var tile_type: String = map_tiles[tile_coord]
+	print(interaction, " ", tile_coord, " ", tile_coord in map_tiles)
+	print(get_adjacent_tiles(tile_coord))
+	print(get_adjacent_tiles_of_type(tile_coord, tile_type))
+	print(get_tile_type_group(tile_coord, tile_type))
 
 func load_from_json(json):
 	var tile_dict = json_to_tiles(json)

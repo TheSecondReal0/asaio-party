@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://games/pawn_game/pawns/pawn_basic/pawn_basic.tscn" type="PackedScene" id=1]
 [ext_resource path="res://games/pawn_game/map_editor/map_editor.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://games/pawn_game/main/preview_tiles.gd" type="Script" id=7]
 [ext_resource path="res://games/pawn_game/main/world_ui.gd" type="Script" id=8]
 [ext_resource path="res://games/pawn_game/main/interact_popup.gd" type="Script" id=9]
+[ext_resource path="res://games/pawn_game/main/pawn_controller.gd" type="Script" id=10]
 
 [node name="pawn_game_main" type="Node2D"]
 script = ExtResource( 5 )
@@ -27,6 +28,7 @@ script = ExtResource( 4 )
 main_path = NodePath("../..")
 
 [node name="pawn_controller" type="Node2D" parent="pawn_game_nav"]
+script = ExtResource( 10 )
 
 [node name="pawn_basic" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 1 )]
 position = Vector2( 453.361, 322.077 )

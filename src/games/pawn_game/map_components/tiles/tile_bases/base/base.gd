@@ -2,7 +2,7 @@ extends Node2D
 
 onready var interact_area = get_node_or_null("interact_area")
 
-var tile_name: String
+var type: String
 var desc: String
 # whether or not a pawn can walk through this tile
 var walkable: bool
@@ -25,10 +25,11 @@ func _ready():
 		interact_area.connect("clicked", self, "on_clicked")
 
 func init_tile(tile_data: Dictionary):
-	print(tile_data)
-	for property in ["tile_name", "desc", "walkable", "destructible", "health", "interactable", "resource", "interactions"]:
+	#print(tile_data)
+	for property in ["type", "desc", "walkable", "destructible", "health", "interactable", "resource", "interactions"]:
 		set(property, tile_data[property])
-	print(interactions)
+	
+	#print(interactions)
 
 func on_clicked(input: InputEventMouseButton):
 	# we want the ui to open on release

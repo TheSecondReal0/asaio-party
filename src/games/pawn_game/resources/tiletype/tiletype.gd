@@ -4,7 +4,7 @@ extends Resource
 class_name TileType
 
 # editor options using export --------------------------------------------------
-export (String) var tile_name
+export (String) var type
 export (String, MULTILINE) var desc
 # whether or not a pawn can walk through this tile
 export var walkable: bool
@@ -96,8 +96,8 @@ func gen_tile_data() -> Dictionary:
 	for property in ["work", "deconstruct"]:
 		if get(property):
 			interactions.append(property)
-	print(tile_name, " ", interactions)
-	for property in ["tile_name", "desc", "walkable", "destructible", "health", "interactable", "resource", "interactions"]:
+	#print(type, " ", interactions)
+	for property in ["type", "desc", "walkable", "destructible", "health", "interactable", "resource", "interactions"]:
 		tile_data[property] = get(property)
 	return tile_data
 
@@ -113,6 +113,7 @@ func _get_property_list():
 	var property_list: Array = []
 	for property in editor_properties:
 		var entry: Dictionary = {}
+# warning-ignore:shadowed_variable
 		var type: int = typeof(get(editor_properties[property]))
 		if type == TYPE_OBJECT:
 			var property_class: String = get(editor_properties[property]).get_class()
