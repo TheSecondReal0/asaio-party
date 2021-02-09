@@ -42,20 +42,22 @@ var texture: Texture = preload("res://games/pawn_game/map_components/tiles/commo
 var modulate: Color = Color(1, 1, 1, 1)
 var scale: Vector2 = Vector2(4, 4)
 
-var walkable_path: String = "res://games/pawn_game/map_components/tiles/tile_bases/walkable/walkable.tscn"
-var unwalkable_path: String = "res://games/pawn_game/map_components/tiles/tile_bases/unwalkable/unwalkable.tscn"
+var base_path: String = "res://games/pawn_game/map_components/tiles/tile_bases/base/base.tscn"
+var base_scene: PackedScene = load(base_path)
 
-# store loaded scene
-var scene: PackedScene
+var interact_area_path: String = "res://games/pawn_game/map_components/tiles/tile_components/interact_area/interact_area.tscn"
+var interact_area_scene: PackedScene = load(interact_area_path)
+
+var navpoly_path: String = "res://games/pawn_game/map_components/tiles/tile_components/navpoly/navpoly.tscn"
+var navpoly_scene: PackedScene = load(navpoly_path)
 
 func gen_tile():
-	if scene == null:
-		scene = load_scene()
-	var tile: Node = scene.instance()
-	var sprite: Sprite = tile.get_node("Sprite")
-	sprite.texture = texture
-	sprite.modulate = modulate
-	sprite.scale = scale
+	var tile: Node = base_scene.instance()
+	if walkable:
+		tile.add_child(navpoly_scene.instance())
+	if interactable:
+		tile.add_child(interact_area_scene.instance())
+	tile.add_child(gen_sprite(1.0))
 	return tile
 
 func gen_sprite(alpha: float = 0.5):
@@ -65,13 +67,6 @@ func gen_sprite(alpha: float = 0.5):
 	sprite.modulate.a = alpha
 	sprite.scale = scale
 	return sprite
-
-func load_scene():
-	print("loading scene")
-	if walkable:
-		return load(walkable_path)
-	if not walkable:
-		return load(unwalkable_path)
 
 func _set(property, value):
 	if editor_properties.has(property):

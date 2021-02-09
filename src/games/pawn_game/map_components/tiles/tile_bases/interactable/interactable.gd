@@ -2,6 +2,19 @@ extends Node2D
 
 onready var area: Area2D = $Area2D
 
+var tile_name: String
+var desc: String
+# whether or not a pawn can walk through this tile
+var walkable: bool
+# whether or not this tile is destructible
+var destructible: bool
+var health: int
+
+# whether or not you can tell a pawn to interact with this tile
+var interactable: bool
+# what resource working this tile gives, leave blank for none
+var resource: String
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 # warning-ignore:return_value_discarded
