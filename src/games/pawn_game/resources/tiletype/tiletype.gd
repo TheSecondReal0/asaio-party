@@ -4,7 +4,7 @@ extends Resource
 class_name TileType
 
 # editor options using export --------------------------------------------------
-export (String) var name
+export (String) var tile_name
 export (String, MULTILINE) var desc
 # whether or not a pawn can walk through this tile
 export var walkable: bool
@@ -36,6 +36,10 @@ var resource: String
 # available orders for pawns to carry out on this tile
 var work: bool = false
 var deconstruct: bool = false
+
+# stored list of enabled interactions, created at runtime
+var interactions: Array = []
+
 # whether or not you can command this tile to do something
 #var commandable: bool
 var texture: Texture = preload("res://games/pawn_game/map_components/tiles/common/textures/square.png")
@@ -63,14 +67,10 @@ func gen_tile():
 			tile.add_child(interact_area_scene.instance())
 		tile.add_child(gen_sprite(1.0))
 		tile_node = tile
-	return tile_node.duplicate()
-#	var tile: Node = base_scene.instance()
-#	if walkable:
-#		tile.add_child(navpoly_scene.instance())
-#	if interactable:
-#		tile.add_child(interact_area_scene.instance())
-#	tile.add_child(gen_sprite(1.0))
-#	return tile
+		#tile_node.init_tile(gen_tile_data())
+	var tile: Node = tile_node.duplicate()
+	tile.init_tile(gen_tile_data())
+	return tile
 
 func gen_sprite(alpha: float = 0.5):
 	if sprite_node == null:
@@ -89,6 +89,17 @@ func gen_sprite(alpha: float = 0.5):
 #	sprite.modulate.a = alpha
 #	sprite.scale = scale
 #	return sprite
+
+func gen_tile_data() -> Dictionary:
+	var tile_data: Dictionary = {}
+	interactions = []
+	for property in ["work", "deconstruct"]:
+		if get(property):
+			interactions.append(property)
+	print(tile_name, " ", interactions)
+	for property in ["tile_name", "desc", "walkable", "destructible", "health", "interactable", "resource", "interactions"]:
+		tile_data[property] = get(property)
+	return tile_data
 
 func _set(property, value):
 	if editor_properties.has(property):

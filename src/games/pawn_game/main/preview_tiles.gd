@@ -21,8 +21,9 @@ func _ready():
 func _process(_delta):
 	if preview_type == "":
 		return
-	for _i in 5:
-		unused_preview_tile_nodes.append(gen_preview_tile(preview_type))
+	#if unused_preview_tile_nodes
+	#for _i in 5:
+	#	unused_preview_tile_nodes.append(gen_preview_tile(preview_type))
 
 func preview_tiles(tile_coords, type):
 	preview_type = type

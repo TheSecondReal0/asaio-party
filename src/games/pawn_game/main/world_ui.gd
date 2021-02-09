@@ -1,5 +1,17 @@
 extends Node2D
 
-# Called when the node enters the scene tree for the first time.
+onready var interact_popup: Control = $interact_popup
+
 func _ready():
-	pass # Replace with function body.
+# warning-ignore:return_value_discarded
+	get_parent().connect("tile_created", self, "tile_created")
+
+func tile_interacted_with(tile: Node2D):
+	print(tile, " interacted with")
+	print(tile.interactions)
+	# uncomment for crash, used for testing
+	#print(get_node_or_null("sdgf").x)
+	interact_popup.show_interactions(tile.interactions, get_global_mouse_position())
+
+func tile_created(tile):
+	tile.connect("interacted_with", self, "tile_interacted_with")

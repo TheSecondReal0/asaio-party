@@ -5,8 +5,14 @@
 
 [resource]
 script = ExtResource( 1 )
-name = "Grass"
+tile_name = "Grass"
+desc = ""
 walkable = true
-texture = ExtResource( 2 )
-modulate = Color( 0.360784, 0.568627, 0.34902, 1 )
-texture_scale = Vector2( 4, 4 )
+destructible = false
+interactions/interactable = false
+interactions/resource = ""
+interactions/work = false
+interactions/deconstruct = false
+texture/texture = ExtResource( 2 )
+texture/modulate = Color( 0.36, 0.57, 0.35, 1 )
+texture/scale = Vector2( 4, 4 )

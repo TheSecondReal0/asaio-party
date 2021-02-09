@@ -24,6 +24,12 @@ func _ready():
 	if interact_area:
 		interact_area.connect("clicked", self, "on_clicked")
 
+func init_tile(tile_data: Dictionary):
+	print(tile_data)
+	for property in ["tile_name", "desc", "walkable", "destructible", "health", "interactable", "resource", "interactions"]:
+		set(property, tile_data[property])
+	print(interactions)
+
 func on_clicked(input: InputEventMouseButton):
 	# we want the ui to open on release
 	if input.pressed:

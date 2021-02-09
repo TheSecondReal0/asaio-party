@@ -5,7 +5,7 @@ export var main_path: NodePath
 onready var main: Node2D = get_node(main_path)
 onready var tile_resources: Dictionary = get_tile_resources()
 onready var tile_buttons: Node = $CanvasLayer/tile_buttons
-onready var map: Node = $map
+onready var map: Node = get_parent().get_parent().get_node("pawn_game_nav").get_node("pawn_game_map")
 onready var preview_tiles_node: Node = $preview_tiles
 
 var selected: String = ""

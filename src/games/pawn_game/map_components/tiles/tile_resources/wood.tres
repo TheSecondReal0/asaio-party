@@ -5,14 +5,14 @@
 
 [resource]
 script = ExtResource( 1 )
-name = "Wood"
+tile_name = "Wood"
 desc = ""
 walkable = false
 destructible = false
 interactions/interactable = true
 interactions/resource = "Wood"
 interactions/work = false
-interactions/deconstruct = false
+interactions/deconstruct = true
 texture/texture = ExtResource( 2 )
 texture/modulate = Color( 0.6, 0.933333, 0, 1 )
 texture/scale = Vector2( 4, 4 )

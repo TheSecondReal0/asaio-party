@@ -5,8 +5,14 @@
 
 [resource]
 script = ExtResource( 1 )
-name = "Mountain"
+tile_name = "Mountain"
+desc = ""
 walkable = false
-texture = ExtResource( 2 )
-modulate = Color( 0.219608, 0.141176, 0.027451, 1 )
-texture_scale = Vector2( 4, 4 )
+destructible = false
+interactions/interactable = false
+interactions/resource = ""
+interactions/work = false
+interactions/deconstruct = false
+texture/texture = ExtResource( 2 )
+texture/modulate = Color( 0.22, 0.14, 0.03, 1 )
+texture/scale = Vector2( 4, 4 )
