@@ -25,9 +25,9 @@ func move(delta: float):
 	# move in dir, collide and slide against anything in the way
 	var pos_dif = pawn.move_and_slide(travel_vec)
 	# if not moving and we're targeting the last point, stop trying to move
-	var is_moving: bool = check_if_moving(pos_dif)
-	if not is_moving and path.size() == 1:
-		path = []
+	#var is_moving: bool = check_if_moving(pos_dif)
+	#if not is_moving and path.size() == 1:
+	#	path = []
 
 func get_current_target(targ: Vector2 = target, from: Vector2 = global_position):
 	if path.empty():
@@ -46,6 +46,7 @@ func get_next_target(targ: Vector2 = target):
 		path.remove(0)
 	# if nowhere to go after we remove current target
 	if path.empty():
+		#print("arrived at target, ", targ)
 		return null
 	#print(path)
 	# first point in path is target
@@ -59,6 +60,7 @@ func get_travel_vec(delta: float, targ: Vector2 = target, from: Vector2 = global
 	return travel_vec
 
 func check_if_at_target(targ: Vector2 = target, from: Vector2 = global_position) -> bool:
+	return targ == from
 	return (targ / inaccuracy_denom).round() == (from / inaccuracy_denom).round()
 
 func check_if_moving(pos_dif: Vector2) -> bool:

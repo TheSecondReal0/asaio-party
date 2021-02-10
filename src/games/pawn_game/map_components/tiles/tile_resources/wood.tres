@@ -12,6 +12,7 @@ destructible = false
 interactions/interactable = true
 interactions/resource = "Wood"
 interactions/work = false
+interactions/work_all_adjacent = false
 interactions/deconstruct = true
 texture/texture = ExtResource( 2 )
 texture/modulate = Color( 0.6, 0.933333, 0, 1 )

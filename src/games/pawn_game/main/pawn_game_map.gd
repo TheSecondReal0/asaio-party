@@ -46,7 +46,10 @@ func place_tile(pos: Vector2, type: String):
 	emit_signal("tile_changed", pos, old_type, type)
 	emit_signal("tile_created", tile)
 	if tile.has_node("NavigationPolygonInstance"):
-		emit_signal("new_nav_poly_instance", tile.get_node("NavigationPolygonInstance"))
+		var navpoly = tile.get_node("NavigationPolygonInstance")
+		emit_signal("new_nav_poly_instance", navpoly)
+		navpoly.enabled = false
+		navpoly.enabled = true
 
 func create_tile(pos: Vector2, type: String) -> Node:
 	pos = round_pos(pos)
@@ -114,14 +117,15 @@ func is_tile_type_walkable(type: String):
 	return tile_resources[type].walkable
 
 func interaction_selected(interaction, tile):
-	var tile_coord: Vector2 = tile.global_position
-	var tile_type: String = map_tiles[tile_coord]
-	print(interaction, " ", tile_coord, " ", tile_coord in map_tiles)
-	print(get_adjacent_tiles(tile_coord))
-	print(get_adjacent_tiles_of_type(tile_coord, tile_type))
-	var group: Dictionary = get_tile_type_group(tile_coord, tile_type)
-	print(group)
-	print(get_adjacent_walkable_tiles_of_group(group))
+	pass
+	#var tile_coord: Vector2 = tile.global_position
+	#var tile_type: String = map_tiles[tile_coord]
+	#print(interaction, " ", tile_coord, " ", tile_coord in map_tiles)
+	#print(get_adjacent_tiles(tile_coord))
+	#print(get_adjacent_tiles_of_type(tile_coord, tile_type))
+	#var group: Dictionary = get_tile_type_group(tile_coord, tile_type)
+	#print(group)
+	#print(get_adjacent_walkable_tiles_of_group(group))
 
 func load_from_json(json):
 	var tile_dict = json_to_tiles(json)

@@ -12,6 +12,7 @@ destructible = false
 interactions/interactable = true
 interactions/resource = "Gold"
 interactions/work = true
+interactions/work_all_adjacent = true
 interactions/deconstruct = false
 texture/texture = ExtResource( 2 )
 texture/modulate = Color( 1, 0.74902, 0, 1 )

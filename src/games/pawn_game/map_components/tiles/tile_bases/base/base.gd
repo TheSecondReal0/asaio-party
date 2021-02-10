@@ -1,6 +1,7 @@
 extends Node2D
 
 onready var interact_area = get_node_or_null("interact_area")
+onready var navpoly = get_node_or_null("NavigationPolygonInstance")
 
 var type: String
 var desc: String
@@ -23,6 +24,11 @@ signal interacted_with(tile_node)
 func _ready():
 	if interact_area:
 		interact_area.connect("clicked", self, "on_clicked")
+#	if navpoly:
+#		var vertices = navpoly.navpoly.get_vertices()
+#		var polygon: Polygon2D = Polygon2D.new()
+#		polygon.polygon = vertices
+#		add_child(polygon)
 
 func init_tile(tile_data: Dictionary):
 	#print(tile_data)

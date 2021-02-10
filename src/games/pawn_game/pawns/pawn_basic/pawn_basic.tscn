@@ -9,6 +9,7 @@
 [node name="pawn_basic" type="KinematicBody2D" groups=[
 "pawns",
 ]]
+collision_layer = 0
 script = ExtResource( 1 )
 inaccuracy_denom = 30
 

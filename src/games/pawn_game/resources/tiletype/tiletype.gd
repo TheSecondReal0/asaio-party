@@ -17,6 +17,7 @@ var editor_properties: Dictionary = {
 	"interactions/interactable": "interactable", 
 	"interactions/resource": "resource", 
 	"interactions/work": "work", 
+	"interactions/work_all_adjacent": "work_all_adjacent", 
 #	"interactions/mine": "mine", 
 	"interactions/deconstruct": "deconstruct", 
 #	"interactions/": "", 
@@ -35,6 +36,7 @@ var interactable: bool
 var resource: String
 # available orders for pawns to carry out on this tile
 var work: bool = false
+var work_all_adjacent: bool = false
 var deconstruct: bool = false
 
 # stored list of enabled interactions, created at runtime
@@ -93,7 +95,7 @@ func gen_sprite(alpha: float = 0.5):
 func gen_tile_data() -> Dictionary:
 	var tile_data: Dictionary = {}
 	interactions = []
-	for property in ["work", "deconstruct"]:
+	for property in ["work", "work_all_adjacent", "deconstruct"]:
 		if get(property):
 			interactions.append(property)
 	#print(type, " ", interactions)

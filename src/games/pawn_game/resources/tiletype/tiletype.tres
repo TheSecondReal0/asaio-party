@@ -12,6 +12,7 @@ destructible = false
 interactions/interactable = false
 interactions/resource = ""
 interactions/work = false
+interactions/work_all_adjacent = false
 interactions/deconstruct = false
 texture/texture = ExtResource( 2 )
 texture/modulate = Color( 1, 1, 1, 1 )

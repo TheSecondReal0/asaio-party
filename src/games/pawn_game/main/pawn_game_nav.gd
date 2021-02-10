@@ -41,6 +41,13 @@ func direct_pawns_to(pos: Vector2, rand_start: bool = false):
 			var path: PoolVector2Array = path(pawn_pos, pos)
 			pawn.path = path
 
+func direct_pawn_to(pawn: Node, pos: Vector2):
+	print("navving pawn to ", pos)
+	var pawn_pos: Vector2 = pawn.global_position
+	var path: PoolVector2Array = path(pawn_pos, pos)
+	print(path)
+	pawn.path = path
+
 func rand_pawn_pos():
 	print("randomizing pawn locations")
 	for pawn in pawns.get_children():
@@ -51,7 +58,14 @@ func random_path() -> PoolVector2Array:
 	return path()
 
 func path(start_coord: Vector2 = start, end_coord: Vector2 = end)-> PoolVector2Array:
-	return get_simple_path(start_coord, end_coord, true)
+	# offset MUST be uneven, otherwise this workaround don't werk
+	var offset: Vector2 = Vector2(0.0001, 0)
+	# adding tiny amount because for some reason you can't path to the center of a tile
+	var path: PoolVector2Array = get_simple_path(start_coord, end_coord + offset, true)
+	if path.size() > 0:
+		# subtracting that amount here to make it even once again
+		path[-1] -= offset
+	return path
 
 func random():
 	start = Vector2(rand_range(50, 974), rand_range(50, 550))
