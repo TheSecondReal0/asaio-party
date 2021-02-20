@@ -43,13 +43,13 @@ func interaction_selected(interaction: String, tile: Node2D):
 			#print(walkable)
 			var to_assign: Dictionary = selected_pawns.duplicate()
 			for pawn in to_assign:
+				if targets.empty():
+					break
 				var coord: Vector2 = targets.pop_back()
 				pathing_cache[pawn] = coord#Vector2(200.0, 200)#coord
 				#print("directing pawn to ", coord)
 				#nav.direct_pawn_to(pawn, coord)
 				#walkable.erase(coord)
-				if targets.size() < 1:
-					break
 			
 
 func gen_order_data(interaction: String, tile: Node2D) -> Dictionary:

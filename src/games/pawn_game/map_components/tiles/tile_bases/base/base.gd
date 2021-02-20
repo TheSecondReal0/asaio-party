@@ -19,7 +19,7 @@ var resource: String
 # list of available interactions
 var interactions: Array = []
 
-signal interacted_with(tile_node)
+signal interacted_with(tile_node, input)
 
 func _ready():
 	if interact_area:
@@ -43,6 +43,6 @@ func on_clicked(input: InputEventMouseButton):
 		return
 	match input.button_index:
 		BUTTON_RIGHT:
-			emit_signal("interacted_with", self)
+			emit_signal("interacted_with", self, input)
 			print(input)
 

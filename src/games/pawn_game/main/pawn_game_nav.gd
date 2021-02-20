@@ -11,6 +11,11 @@ var end: Vector2 = Vector2(974, 550)
 # so we can check if the node is null (has been freed) and remove its navpoly
 var nav_owners: Dictionary = {}
 
+# stores a bunch of arrays with inputs to direct_pawn_to()
+var queued_pathing: Array
+
+const navs_per_frame: int = 5
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 # warning-ignore:return_value_discarded
@@ -20,6 +25,15 @@ func _ready():
 # warning-ignore:unused_argument
 func _process(delta):
 	input()
+
+#func _physics_process(_delta):
+	if queued_pathing.empty():
+		return
+	for _i in navs_per_frame:
+		if queued_pathing.empty():
+			break
+		var inputs: Array = queued_pathing.pop_front()
+		callv("direct_pawn_to", inputs)
 
 func input() -> void:
 	var mouse_pos: Vector2 = get_global_mouse_position()
@@ -41,7 +55,12 @@ func direct_pawns_to(pos: Vector2, rand_start: bool = false):
 			var path: PoolVector2Array = path(pawn_pos, pos)
 			pawn.path = path
 
-func direct_pawn_to(pawn: Node, pos: Vector2):
+# actually path should ONLY be true during _process() or _physics_process()
+func direct_pawn_to(pawn: Node, pos: Vector2, actually_path: bool = false):
+	if not actually_path:
+		print("trying to direct pawn outside of _process(), adding to queue")
+		queued_pathing.append([pawn, pos, true])
+		return
 	print("navving pawn to ", pos)
 	var pawn_pos: Vector2 = pawn.global_position
 	var path: PoolVector2Array = path(pawn_pos, pos)

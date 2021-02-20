@@ -216,7 +216,9 @@ script = ExtResource( 8 )
 script = ExtResource( 7 )
 main_path = NodePath("../..")
 
-[node name="interact_popup" type="PopupMenu" parent="world_ui"]
+[node name="CanvasLayer" type="CanvasLayer" parent="world_ui"]
+
+[node name="interact_popup" type="PopupMenu" parent="world_ui/CanvasLayer"]
 margin_right = 20.0
 margin_bottom = 20.0
 script = ExtResource( 9 )
