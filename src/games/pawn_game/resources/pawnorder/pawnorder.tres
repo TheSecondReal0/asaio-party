@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://games/pawn_game/resources/pawnorder/pawnorder.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+order_name = ""
+pathing_type = 0
+use_tile_groups = false
+work_amount = 0
+replaces_tile = false
+replacement = "Grass"
+gives_item = false
+given_item = ""
