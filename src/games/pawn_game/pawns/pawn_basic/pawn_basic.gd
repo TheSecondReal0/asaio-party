@@ -6,6 +6,9 @@ export var debug_pawn: bool = false
 
 onready var mover: Node = $mover
 
+# pawn controller node in main scene
+var controller: Node
+
 var selected = false
 var old_state
 var mousePos:Vector2
