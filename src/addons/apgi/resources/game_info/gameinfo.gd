@@ -1,7 +1,7 @@
 tool
 extends Resource
 
-#class_name GameInfo
+class_name GameInfo
 
 export var game_name: String
 export(String, MULTILINE) var game_description

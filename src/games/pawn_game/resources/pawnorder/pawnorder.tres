@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 order_name = ""
+pawn_movement = true
 pathing_type = 0
 use_tile_groups = false
 work_amount = 0

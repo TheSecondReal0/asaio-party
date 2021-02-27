@@ -67,20 +67,21 @@ func gen_tile():
 			tile.add_child(navpoly_scene.instance())
 		if interactable:
 			tile.add_child(interact_area_scene.instance())
-		tile.add_child(gen_sprite(1.0))
+		tile.add_child(gen_sprite(1.0, -5))
 		tile_node = tile
 		#tile_node.init_tile(gen_tile_data())
 	var tile: Node = tile_node.duplicate()
 	tile.init_tile(gen_tile_data())
 	return tile
 
-func gen_sprite(alpha: float = 0.5):
+func gen_sprite(alpha: float = 0.5, z_index: int = 0):
 	if sprite_node == null:
 		var sprite: Sprite = Sprite.new()
 		sprite.texture = texture
 		sprite.modulate = modulate
 		sprite.modulate.a = alpha
 		sprite.scale = scale
+		sprite.z_index = z_index
 		sprite_node = sprite
 	var sprite = sprite_node.duplicate()
 	sprite.modulate.a = alpha
