@@ -45,6 +45,9 @@ func _process(_delta):
 func _gui_input(event):
 	if not event is InputEventMouseButton:
 		return
+	# this node will only get GUI input when a tile is selected, setting it as handled
+	# 	prevents this input from becoming a selection box too
+	get_tree().set_input_as_handled()
 	var mouse_pos: Vector2 = main.get_global_mouse_position()
 	#print(mouse_pos)
 	match event.button_index:

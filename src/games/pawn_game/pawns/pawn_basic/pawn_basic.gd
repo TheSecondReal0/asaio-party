@@ -49,7 +49,7 @@ func _physics_process(delta):
 		mousePos = get_global_mouse_position()
 	
 
-func _input(event):
+func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed == false and event.button_index == BUTTON_LEFT:
 		if sign(get_position().x-mousePos.x) == sign(get_global_mouse_position().x - mousePos.x) and sign(get_global_mouse_position().x-mousePos.x) == sign(get_global_mouse_position().x - get_position().x):
 			if sign(get_position().y-mousePos.y) == sign(get_global_mouse_position().y - mousePos.y) and sign(get_global_mouse_position().y-mousePos.y) == sign(get_global_mouse_position().y - get_position().y):
