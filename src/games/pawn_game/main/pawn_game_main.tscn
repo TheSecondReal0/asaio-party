@@ -226,5 +226,5 @@ script = ExtResource( 9 )
 [node name="pawn_game_ui" type="CanvasLayer" parent="."]
 
 [node name="map_editor" parent="pawn_game_ui" instance=ExtResource( 2 )]
-mouse_filter = 1
+mouse_filter = 2
 main_path = NodePath("../..")
