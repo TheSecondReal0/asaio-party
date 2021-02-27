@@ -19,7 +19,9 @@ func _draw():
 		return
 	var mousePos = mouse_down_pos
 	var rect = Rect2(mousePos.x, mousePos.y, get_global_mouse_position().x - mousePos.x, get_global_mouse_position().y - mousePos.y)
+	# draw filled transparent rectangle
 	draw_rect(rect, Color(.5, 1, 1, .25))
+	# draw solid outline
 	draw_rect(rect, Color(.5, 1, 1), false)
 
 func _unhandled_input(event):
