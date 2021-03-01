@@ -47,14 +47,13 @@ func _physics_process(delta):
 				selected = false
 				emit_signal("deselected")
 		mousePos = get_global_mouse_position()
-	
 
-func _unhandled_input(event):
-	if event is InputEventMouseButton and event.pressed == false and event.button_index == BUTTON_LEFT:
-		if sign(get_position().x-mousePos.x) == sign(get_global_mouse_position().x - mousePos.x) and sign(get_global_mouse_position().x-mousePos.x) == sign(get_global_mouse_position().x - get_position().x):
-			if sign(get_position().y-mousePos.y) == sign(get_global_mouse_position().y - mousePos.y) and sign(get_global_mouse_position().y-mousePos.y) == sign(get_global_mouse_position().y - get_position().y):
-				selected = true
-				emit_signal("selected")
+#func _unhandled_input(event):
+#	if event is InputEventMouseButton and event.pressed == false and event.button_index == BUTTON_LEFT:
+#		if sign(get_position().x-mousePos.x) == sign(get_global_mouse_position().x - mousePos.x) and sign(get_global_mouse_position().x-mousePos.x) == sign(get_global_mouse_position().x - get_position().x):
+#			if sign(get_position().y-mousePos.y) == sign(get_global_mouse_position().y - mousePos.y) and sign(get_global_mouse_position().y-mousePos.y) == sign(get_global_mouse_position().y - get_position().y):
+#				selected = true
+#				emit_signal("selected")
 
 func on_selected():
 	$Polygon2D.color = Color(0, 1, 0)
@@ -68,6 +67,13 @@ func transition(new_state: int):
 	old_state = state
 	state = new_state
 	emit_signal("transitioned", old_state, new_state)
+
+func set_selected(selected: bool):
+	selected = selected
+	if selected:
+		emit_signal("selected")
+	else:
+		emit_signal("deselected")
 
 func set_path(new_path):
 	mover.path = new_path

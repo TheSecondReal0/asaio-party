@@ -7,6 +7,7 @@ var is_mouse_down: bool = false
 var mouse_down_pos: Vector2 = Vector2(0, 0)
 
 signal interaction_selected(interaction, tile)
+signal box_selection_completed(start, end)
 
 func _ready():
 # warning-ignore:return_value_discarded
@@ -35,6 +36,7 @@ func _unhandled_input(event):
 			mouse_down_pos = get_global_mouse_position()#event.global_position
 		else:
 			is_mouse_down = false
+			emit_signal("box_selection_completed", mouse_down_pos, get_global_mouse_position())
 			return
 	update()
 
