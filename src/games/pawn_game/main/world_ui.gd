@@ -45,7 +45,7 @@ func _unhandled_input(event):
 
 func tile_interacted_with(tile: Node2D, input: InputEventMouseButton):
 	print(tile, " interacted with")
-	print(tile.orders)
+	#print(tile.orders)
 	# uncomment for crash, used for testing
 	#print(get_node_or_null("sdgf").x)
 	interact_popup.show_interactions(tile.orders, input.position, tile)

@@ -34,7 +34,7 @@ func interaction_selected(id: int):
 func show_interactions(orders: Array, pos: Vector2, tile: Node2D = null):
 	print("showing interactions: ", orders)
 	current_tile = tile
-	global_pos = get_global_mouse_position()
+	global_pos = get_parent().get_parent().get_global_mouse_position()
 	clear()
 	order_names.clear()
 	for order in orders:

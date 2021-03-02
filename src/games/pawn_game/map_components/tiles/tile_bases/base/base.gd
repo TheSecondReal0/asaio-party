@@ -38,12 +38,11 @@ func init_tile(tile_data: Dictionary):
 	#print(interactions)
 
 func on_clicked(input: InputEventMouseButton):
-	print("tile clicked")
 	# we want the ui to open on release
 	if input.pressed:
 		return
 	match input.button_index:
 		BUTTON_RIGHT:
 			emit_signal("interacted_with", self, input)
-			print(input)
+			#print(input)
 

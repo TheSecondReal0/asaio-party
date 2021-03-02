@@ -60,10 +60,10 @@ func direct_pawn_to(pawn: Node, pos: Vector2, actually_path: bool = false):
 		print("trying to direct pawn outside of _process(), adding to queue")
 		queued_pathing.append([pawn, pos, true])
 		return
-	print("navving pawn to ", pos)
+	#print("navving pawn to ", pos)
 	var pawn_pos: Vector2 = pawn.global_position
 	var path: PoolVector2Array = path(pawn_pos, pos)
-	print(path)
+	#print(path)
 	pawn.path = path
 
 func rand_pawn_pos():
