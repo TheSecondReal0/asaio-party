@@ -11,6 +11,9 @@ var controller: Node
 # pawn nav node in main scene
 var nav: Navigation2D
 
+# network ID of the player who owns this pawn
+var player_owner: int = 0
+
 var selected = false
 var old_state
 var mousePos:Vector2

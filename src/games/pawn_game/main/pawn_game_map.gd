@@ -15,7 +15,7 @@ signal new_nav_poly_instance(instance)
 
 func _ready():
 # warning-ignore:return_value_discarded
-	main.connect("tile_placed", self, "place_tile")
+	main.connect("tile_placed", self, "tile_placed")
 # warning-ignore:return_value_discarded
 	main.connect("interaction_selected", self, "interaction_selected")
 
@@ -28,7 +28,12 @@ func _process(delta):
 		var tiles = json_to_tiles(json)
 		print(tiles)
 
+func tile_placed(pos: Vector2, type: String):
+	place_tile(pos, type)
+	rpc("receive_place_tile", pos, type)
+
 func place_tile(pos: Vector2, type: String):
+	#print("placing tile, pos: ", pos, " type: ", type)
 	if not tile_resources.has(type):
 		#print("tile type does not exist")
 		return
@@ -50,6 +55,9 @@ func place_tile(pos: Vector2, type: String):
 		emit_signal("new_nav_poly_instance", navpoly)
 		navpoly.enabled = false
 		navpoly.enabled = true
+
+remote func receive_place_tile(pos: Vector2, type: String):
+	place_tile(pos, type)
 
 func create_tile(pos: Vector2, type: String) -> Node:
 	pos = round_pos(pos)
@@ -168,6 +176,18 @@ func coord_to_str(coord: Vector2) -> String:
 func str_to_coord(string: String) -> Vector2:
 	var split = string.split(",")
 	return Vector2(int(split[0]), int(split[1]))
+
+func get_tile_type_at(pos: Vector2):
+	pos = round_pos(pos)
+	if pos in map_tiles:
+		return map_tiles[pos]
+	return null
+
+func get_tile_node_at(pos: Vector2):
+	pos = round_pos(pos)
+	if pos in map_tile_nodes:
+		return map_tile_nodes[pos]
+	return null
 
 func round_pos(pos: Vector2, step: int = 20) -> Vector2:
 	return Vector2(stepify(pos.x, step), stepify(pos.y, step))

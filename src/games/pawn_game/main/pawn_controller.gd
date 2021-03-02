@@ -17,6 +17,8 @@ var occupied_coords: Dictionary = {}
 
 var pathing_cache: Dictionary = {}
 
+var pawns_created: int = 0
+
 # warning-ignore:unused_signal
 #signal command_issued(command_data)
 
@@ -29,8 +31,13 @@ func _ready():
 	main.connect("new_order", self, "new_order")
 # warning-ignore:return_value_discarded
 	main.connect("box_selection_completed", self, "box_selection_completed")
-	for _i in 50:
-		create_pawn(Vector2(rand_range(50, 974), rand_range(50, 550)))
+#	for id in Network.get_peers():
+#		var node: Node2D = Node2D.new()
+#		node.name = str(id)
+#		add_child(node)
+	if get_tree().is_network_server():
+		for _i in 50:
+			create_pawn(Vector2(rand_range(50, 974), rand_range(50, 550)))
 
 func _physics_process(_delta):
 	for pawn in pathing_cache:
@@ -40,17 +47,42 @@ func _physics_process(_delta):
 		nav.direct_pawn_to(pawn, coord)
 	pathing_cache.clear()
 
-func new_order(order: PawnOrder):
-	init_order(order)
-	#print(selected_pawns)
-	var commands: Array = order.create_commands(selected_pawns.duplicate())
+# for when a new order comes in locally AKA from this client
+func new_order(order: PawnOrder, pawns: Array = selected_pawns.duplicate()):
+	send_order(order, pawns)
+	init_order(order, pawns)
+
+# generally initiates orders (gives order info to create commands + issues commands to pawns)
+# both for orders created locally and received remotely
+func init_order(order: PawnOrder, pawns: Array):
+	order.pawn_game_map = map
+	#print(pawns)
+	var commands: Array = order.create_commands(pawns.duplicate())
 	#print(commands)
 	for command in commands:
 		issue_command(command.pawn, command)
 
-func init_order(order: PawnOrder):
-	order.pawn_game_map = map
-#	order.pawns = selected_pawns
+func send_order(order: PawnOrder, pawns: Array):
+	var order_data: Dictionary = {}
+	var properties: Array = ["order_name", "pawn_movement", "pathing_type", "use_tile_groups", "work_amount", "replaces_tile", "replacement", "gives_item", "given_item", "order_pos"]
+	for prop in properties:
+		order_data[prop] = order.get(prop)
+	var pawn_paths: Array = []
+	for pawn in pawns:
+		pawn_paths.append(get_path_to(pawn))
+	print("sending order, data: ", order_data, "pawn paths: ", pawn_paths)
+	rpc("receive_order", order_data, pawn_paths)
+
+remote func receive_order(order_data: Dictionary, pawn_paths: Array):
+	print("received order, data: ", order_data, "pawn paths: ", pawn_paths)
+	var order: PawnOrder = PawnOrder.new()
+	for prop in ["order_name", "pawn_movement", "pathing_type", "use_tile_groups", "work_amount", "replaces_tile", "replacement", "gives_item", "given_item", "order_pos"]:
+		order.set(prop, order_data[prop])
+	order.tile_node = map.get_tile_node_at(order.order_pos)
+	var pawns: Array = []
+	for path in pawn_paths:
+		pawns.append(get_node(path))
+	init_order(order, pawns)
 
 func issue_command(pawn: KinematicBody2D, command: PawnCommand):
 	pawn.new_command(command)
@@ -107,8 +139,10 @@ func get_pawns_between(pos1: Vector2, pos2: Vector2, error_margin: int = 10) -> 
 		pawns.append(pawn)
 	return pawns
 
-func create_pawn(pos: Vector2):
+func create_pawn(pos: Vector2, sync_pawn: bool = true):
 	var new_pawn: KinematicBody2D = pawn_scene.instance()
+	new_pawn.name = "pawn" + str(pawns_created)
+	pawns_created += 1
 	new_pawn.controller = self
 	new_pawn.nav = nav
 # warning-ignore:return_value_discarded
@@ -117,6 +151,11 @@ func create_pawn(pos: Vector2):
 	new_pawn.connect("deselected", self, "pawn_deselected", [new_pawn])
 	add_child(new_pawn)
 	new_pawn.global_position = pos
+	if sync_pawn:
+		rpc("receive_create_pawn", pos)
+
+remote func receive_create_pawn(pos: Vector2):
+	create_pawn(pos, false)
 
 #func gen_order_data(interaction: String, tile: Node2D) -> Dictionary:
 #	var data: Dictionary = {}
