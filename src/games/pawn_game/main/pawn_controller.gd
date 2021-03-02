@@ -42,7 +42,9 @@ func _physics_process(_delta):
 
 func new_order(order: PawnOrder):
 	init_order(order)
-	var commands: Array = order.create_commands(selected_pawns)
+	#print(selected_pawns)
+	var commands: Array = order.create_commands(selected_pawns.duplicate())
+	#print(commands)
 	for command in commands:
 		issue_command(command.pawn, command)
 

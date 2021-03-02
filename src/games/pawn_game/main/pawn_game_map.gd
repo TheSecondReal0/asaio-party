@@ -83,6 +83,8 @@ func get_x_walkable_tiles(coord: Vector2, amount: int, diagonal: bool = false, i
 		if tiles.size() == amount:
 			break
 		for coord in get_adjacent_walkable_tiles(vec, diagonal, include_self):
+			if coord in tiles:
+				continue
 			to_check.append(coord)
 	return tiles
 

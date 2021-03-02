@@ -1,7 +1,21 @@
-[gd_resource type="Resource" load_steps=3 format=2]
+[gd_resource type="Resource" load_steps=5 format=2]
 
 [ext_resource path="res://games/pawn_game/resources/tiletype/tiletype.gd" type="Script" id=1]
 [ext_resource path="res://games/pawn_game/map_components/tiles/common/textures/square.png" type="Texture" id=2]
+[ext_resource path="res://games/pawn_game/resources/pawnorder/pawnorder.gd" type="Script" id=3]
+
+[sub_resource type="Resource" id=1]
+resource_name = "Mine"
+script = ExtResource( 3 )
+order_name = "Mine Gold"
+pawn_movement = true
+pathing_type = 0
+use_tile_groups = false
+work_amount = 10
+replaces_tile = false
+replacement = "Grass"
+gives_item = true
+given_item = "Gold"
 
 [resource]
 script = ExtResource( 1 )
@@ -9,8 +23,8 @@ type = "Gold"
 desc = ""
 walkable = false
 destructible = false
-interactable = false
-orders = [  ]
+interactable = true
+orders = [ SubResource( 1 ) ]
 texture/texture = ExtResource( 2 )
 texture/modulate = Color( 1, 0.74902, 0, 1 )
 texture/scale = Vector2( 4, 4 )

@@ -51,7 +51,7 @@ func tile_interacted_with(tile: Node2D, input: InputEventMouseButton):
 	interact_popup.show_interactions(tile.orders, input.position, tile)
 
 func tile_created(tile):
-	print("tile created, ", tile)
+	#print("tile created, ", tile)
 	tile.connect("interacted_with", self, "tile_interacted_with")
 
 func interaction_selected(interaction, tile):
