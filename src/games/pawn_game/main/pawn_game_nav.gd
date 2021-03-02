@@ -20,11 +20,10 @@ const navs_per_frame: int = 5
 func _ready():
 # warning-ignore:return_value_discarded
 	map.connect("new_nav_poly_instance", self, "new_nav_poly_instance")
-	direct_pawns_to(Vector2(rand_range(50, 974), rand_range(50, 550)), true)
 
 # warning-ignore:unused_argument
 func _process(delta):
-	input()
+#	input()
 
 #func _physics_process(_delta):
 	if queued_pathing.empty():
@@ -85,6 +84,9 @@ func path(start_coord: Vector2 = start, end_coord: Vector2 = end)-> PoolVector2A
 		# subtracting that amount here to make it even once again
 		path[-1] -= offset
 	return path
+
+func request_path_to(pos: Vector2, pawn: Node2D):
+	queued_pathing.append([pawn, pos, true])
 
 func random():
 	start = Vector2(rand_range(50, 974), rand_range(50, 550))

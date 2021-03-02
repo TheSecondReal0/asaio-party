@@ -17,7 +17,7 @@ var interactable: bool
 var resource: String
 
 # list of available interactions
-var interactions: Array = []
+var orders: Array = []
 
 signal interacted_with(tile_node, input)
 
@@ -32,12 +32,13 @@ func _ready():
 
 func init_tile(tile_data: Dictionary):
 	#print(tile_data)
-	for property in ["type", "desc", "walkable", "destructible", "health", "interactable", "resource", "interactions"]:
+	for property in ["type", "desc", "walkable", "destructible", "health", "interactable", "resource", "orders"]:
 		set(property, tile_data[property])
 	
 	#print(interactions)
 
 func on_clicked(input: InputEventMouseButton):
+	print("tile clicked")
 	# we want the ui to open on release
 	if input.pressed:
 		return

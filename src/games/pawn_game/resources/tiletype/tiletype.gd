@@ -11,15 +11,20 @@ export var walkable: bool
 # whether or not this tile is destructible
 export var destructible: bool
 #export var health: int
+# whether or not you can tell a pawn to interact with this tile
+export var interactable: bool
+# list of possible orders that can be done on this tile
+export(Array, Resource) var orders setget set_orders
 
 # dict to store editor options added in script ---------------------------------
 var editor_properties: Dictionary = {
-	"interactions/interactable": "interactable", 
-	"interactions/resource": "resource", 
-	"interactions/work": "work", 
-	"interactions/work_all_adjacent": "work_all_adjacent", 
+#	"pawn_orders": "orders", 
+#	"interactions/interactable": "interactable", 
+#	"interactions/resource": "resource", 
+#	"interactions/work": "work", 
+#	"interactions/work_all_adjacent": "work_all_adjacent", 
 #	"interactions/mine": "mine", 
-	"interactions/deconstruct": "deconstruct", 
+#	"interactions/deconstruct": "deconstruct", 
 #	"interactions/": "", 
 	
 #	"commands/commandable": "commandable", 
@@ -30,8 +35,8 @@ var editor_properties: Dictionary = {
 	}
 
 # editor options added in script -----------------------------------------------
-# whether or not you can tell a pawn to interact with this tile
-var interactable: bool
+## list of possible orders that can be done on this tile
+#var orders: Array
 # what resource working this tile gives, leave blank for none
 var resource: String
 # available orders for pawns to carry out on this tile
@@ -65,6 +70,7 @@ func gen_tile():
 		var tile: Node = base_scene.instance()
 		if walkable:
 			tile.add_child(navpoly_scene.instance())
+		# if pawns can interact with this tile
 		if interactable:
 			tile.add_child(interact_area_scene.instance())
 		tile.add_child(gen_sprite(1.0, -5))
@@ -100,9 +106,16 @@ func gen_tile_data() -> Dictionary:
 		if get(property):
 			interactions.append(property)
 	#print(type, " ", interactions)
-	for property in ["type", "desc", "walkable", "destructible", "health", "interactable", "resource", "interactions"]:
+	for property in ["type", "desc", "walkable", "destructible", "health", "interactable", "resource", "orders"]:
 		tile_data[property] = get(property)
 	return tile_data
+
+func set_orders(value):
+	#print("orders set: ", value)
+	for i in value.size():
+		if not value[i] is PawnOrder:
+			value[i] = PawnOrder.new()
+	orders = value
 
 func _set(property, value):
 	if editor_properties.has(property):

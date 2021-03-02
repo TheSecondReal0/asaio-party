@@ -8,6 +8,8 @@ onready var mover: Node = $mover
 
 # pawn controller node in main scene
 var controller: Node
+# pawn nav node in main scene
+var nav: Navigation2D
 
 var selected = false
 var old_state
@@ -17,8 +19,8 @@ enum states {IDLE, MOVING, COMBAT, WORKING, HAULING}
 
 # command the pawn is following
 # some orders require multiple states (MOVING to get to tile, then WORKING to work it)
-var command: String
-var command_data: Dictionary = {}
+var command: PawnCommand
+var last_command: PawnCommand
 
 var path: PoolVector2Array setget set_path
 
@@ -31,7 +33,7 @@ signal deselected
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	mover.connect("movement_done", self, "movement_done")
 # warning-ignore:return_value_discarded
 	connect("selected", self, "on_selected")
 # warning-ignore:return_value_discarded
@@ -41,12 +43,12 @@ func _ready():
 
 func _physics_process(delta):
 	mover.move(delta)
-	if Input.is_action_just_pressed("left_click"):
-		if selected:
-			if not Input.is_action_pressed("left_shift"):
-				selected = false
-				emit_signal("deselected")
-		mousePos = get_global_mouse_position()
+#	if Input.is_action_just_pressed("left_click"):
+#		if selected:
+#			if not Input.is_action_pressed("left_shift"):
+#				selected = false
+#				emit_signal("deselected")
+#		mousePos = get_global_mouse_position()
 
 #func _unhandled_input(event):
 #	if event is InputEventMouseButton and event.pressed == false and event.button_index == BUTTON_LEFT:
@@ -54,6 +56,18 @@ func _physics_process(delta):
 #			if sign(get_position().y-mousePos.y) == sign(get_global_mouse_position().y - mousePos.y) and sign(get_global_mouse_position().y-mousePos.y) == sign(get_global_mouse_position().y - get_position().y):
 #				selected = true
 #				emit_signal("selected")
+
+func new_command(new_command: PawnCommand):
+	command = new_command
+	if command.nav_target != null:
+		nav.request_path_to(command.nav_target, self)
+
+func request_nav_to(coord: Vector2):
+	pass
+
+func movement_done():
+	last_command = command
+	command = null
 
 func on_selected():
 	$Polygon2D.color = Color(0, 1, 0)

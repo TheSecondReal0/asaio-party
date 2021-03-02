@@ -30,6 +30,11 @@ _global_script_classes=[ {
 "path": "res://addons/opensusinteraction/resources/interactui/interactui.gd"
 }, {
 "base": "Resource",
+"class": "PawnCommand",
+"language": "GDScript",
+"path": "res://games/pawn_game/resources/pawncommand/pawncommand.gd"
+}, {
+"base": "Resource",
 "class": "PawnOrder",
 "language": "GDScript",
 "path": "res://games/pawn_game/resources/pawnorder/pawnorder.gd"
@@ -44,6 +49,7 @@ _global_script_class_icons={
 "CoupCard": "",
 "GameInfo": "",
 "InteractUI": "",
+"PawnCommand": "",
 "PawnOrder": "",
 "TileType": ""
 }

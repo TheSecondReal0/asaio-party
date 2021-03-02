@@ -12,10 +12,13 @@ var target: Vector2
 
 var pos_dif_history: PoolIntArray
 
+signal movement_done
+
 func move(delta: float):
 	# do target stuff -------------------------------------------
 	var current_target = get_current_target()
 	if current_target == null:
+		emit_signal("movement_done")
 		return
 	target = current_target
 	# look at target
@@ -23,6 +26,7 @@ func move(delta: float):
 	# do movement stuff -----------------------------------------
 	var travel_vec: Vector2 = get_travel_vec(delta)
 	# move in dir, collide and slide against anything in the way
+# warning-ignore:unused_variable
 	var pos_dif = pawn.move_and_slide(travel_vec)
 	# if not moving and we're targeting the last point, stop trying to move
 	#var is_moving: bool = check_if_moving(pos_dif)

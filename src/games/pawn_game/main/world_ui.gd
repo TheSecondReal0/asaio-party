@@ -7,6 +7,7 @@ var is_mouse_down: bool = false
 var mouse_down_pos: Vector2 = Vector2(0, 0)
 
 signal interaction_selected(interaction, tile)
+signal new_order(order)
 signal box_selection_completed(start, end)
 
 func _ready():
@@ -14,6 +15,8 @@ func _ready():
 	get_parent().connect("tile_created", self, "tile_created")
 # warning-ignore:return_value_discarded
 	interact_popup.connect("interaction_selected", self, "interaction_selected")
+# warning-ignore:return_value_discarded
+	interact_popup.connect("new_order", self, "new_order")
 
 func _draw():
 	if not is_mouse_down:
@@ -42,13 +45,17 @@ func _unhandled_input(event):
 
 func tile_interacted_with(tile: Node2D, input: InputEventMouseButton):
 	print(tile, " interacted with")
-	print(tile.interactions)
+	print(tile.orders)
 	# uncomment for crash, used for testing
 	#print(get_node_or_null("sdgf").x)
-	interact_popup.show_interactions(tile.interactions, input.position, tile)
+	interact_popup.show_interactions(tile.orders, input.position, tile)
 
 func tile_created(tile):
+	print("tile created, ", tile)
 	tile.connect("interacted_with", self, "tile_interacted_with")
 
 func interaction_selected(interaction, tile):
 	emit_signal("interaction_selected", interaction, tile)
+
+func new_order(order: PawnOrder):
+	emit_signal("new_order", order)

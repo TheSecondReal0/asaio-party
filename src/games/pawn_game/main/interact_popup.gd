@@ -1,10 +1,16 @@
 extends PopupMenu
 
-signal interaction_selected(interaction, tile)
-
 var current_tile: Node2D
 
-var mouse_distance_max: int = 100
+var global_pos: Vector2
+
+var mouse_distance_max: float = 100
+
+# order name: order resource
+var order_names: Dictionary
+
+signal interaction_selected(interaction, tile)
+signal new_order(order)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -19,23 +25,28 @@ func _process(_delta):
 		close()
 
 func interaction_selected(id: int):
-	var interaction: String = get_item_text(id)
-	print("tile interaction selected: ", interaction)
-	emit_signal("interaction_selected", interaction, current_tile)
+	var order_name: String = get_item_text(id)
+	var order: PawnOrder = order_names[order_name].gen_order(global_pos, current_tile)
+	print("tile order selected: ", order)
+	emit_signal("new_order", order)
 	close()
 
-func show_interactions(interactions: Array, pos: Vector2, tile: Node2D = null):
-	print("showing interactions: ", interactions)
+func show_interactions(orders: Array, pos: Vector2, tile: Node2D = null):
+	print("showing interactions: ", orders)
 	current_tile = tile
+	global_pos = get_global_mouse_position()
 	clear()
+	order_names.clear()
+	for order in orders:
+		order_names[order.order_name] = order
 	rect_position = pos
-	gen_buttons(interactions)
+	gen_buttons(orders)
 	show()
 	grab_focus()
 
-func gen_buttons(interactions: Array):
-	for interaction in interactions:
-		add_item(interaction)
+func gen_buttons(orders: Array):
+	for order in orders:
+		add_item(order.order_name)
 
 func close():
 	clear()

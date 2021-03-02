@@ -10,6 +10,7 @@ signal tile_placed(pos, type)
 signal preview_tiles(tile_coords, type)
 signal tile_created(tile)
 signal interaction_selected(interaction, tile)
+signal new_order(order)
 signal box_selection_completed(start, end)
 
 # Called when the node enters the scene tree for the first time.
@@ -22,6 +23,8 @@ func _ready():
 	map.connect("tile_created", self, "tile_created")
 # warning-ignore:return_value_discarded
 	world_ui.connect("interaction_selected", self, "interaction_selected")
+# warning-ignore:return_value_discarded
+	world_ui.connect("new_order", self, "new_order")
 # warning-ignore:return_value_discarded
 	world_ui.connect("box_selection_completed", self, "box_selection_completed")
 
@@ -37,6 +40,9 @@ func tile_created(tile):
 
 func interaction_selected(interaction, tile):
 	emit_signal("interaction_selected", interaction, tile)
+
+func new_order(order: PawnOrder):
+	emit_signal("new_order", order)
 
 func box_selection_completed(start: Vector2, end: Vector2):
 	emit_signal("box_selection_completed", start, end)

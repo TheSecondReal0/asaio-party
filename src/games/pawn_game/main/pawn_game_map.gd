@@ -74,14 +74,16 @@ func get_tile_type_group(coord: Vector2, type: String, diagonal: bool = true, in
 	return tiles
 
 func get_x_walkable_tiles(coord: Vector2, amount: int, diagonal: bool = false, include_self: bool = true) -> Dictionary:
+	coord = round_pos(coord)
 	var tiles: Dictionary = {}
 	var to_check: Array = [coord]
 	while tiles.size() < amount:
-		var vec = to_check.pop_front()
+		var vec: Vector2 = to_check.pop_front()
 		tiles[vec] = map_tiles[vec]
 		if tiles.size() == amount:
 			break
-		to_check.append(get_adjacent_walkable_tiles(vec, diagonal, include_self))
+		for coord in get_adjacent_walkable_tiles(vec, diagonal, include_self):
+			to_check.append(coord)
 	return tiles
 
 func get_adjacent_tiles_of_type(coord: Vector2, type: String, diagonal: bool = true, include_self: bool = false) -> Dictionary:

@@ -16,7 +16,7 @@ export var given_item: String
 # world position this order was given on (where right click was)
 var order_pos: Vector2
 # tile node this order was given on (null if does not exist or not applicable)
-var tile_node: Vector2
+var tile_node: Node2D
 # pawn this order was given on (null if does not exist or not applicable)
 var target_pawn: KinematicBody2D
 
@@ -29,10 +29,65 @@ var pos_targets: Array = []
 # pawn_game_map node in main scene
 var pawn_game_map: Node2D
 
-func get_pos_targets() -> Array:
-	var targets: Array = []
+func create_commands(pawns_list: Array) -> Array:
+	var commands: Array = []
+	pawns = pawns_list
+	var amount = pawns.size()
+	if pawn_movement:
+		commands = create_movement_commands(amount)
+	else:
+		commands = create_basic_commands(amount)
+		for command in commands:
+			command.look_pos = order_pos
+	while commands.size() < pawns.size():
+		pawns.pop_back()
 	
-	var amount: int = pawns.size()
+	# assign pawns (basically random)
+	for i in commands.size():
+		commands[i].pawn = pawns[i]
+	
+	return commands
+
+func create_movement_commands(amount: int = pawns.size()) -> Array:
+	var commands: Array = []
+	pos_targets = get_pos_targets(amount)
+	
+	# can't create commands with duplicate pos targets, shouldn't make more than we want
+# warning-ignore:narrowing_conversion
+	amount = min(pos_targets.size(), amount)
+	var basic_commands: Array = create_basic_commands(amount)
+	
+	for i in amount:
+		var command: PawnCommand = basic_commands.pop_back()
+		command.nav_target = pos_targets[i]
+		commands.append(command)
+	
+	return commands
+
+func create_basic_commands(amount: int = pawns.size()):
+	var commands: Array = []
+	for i in amount:
+		commands.append(create_command())
+	return commands
+
+# creates a new command resource with general data
+# given more specific info in create_commands()
+# assigned in pawn_controller
+func create_command() -> PawnCommand:
+	var command: PawnCommand = PawnCommand.new()
+	command.order = self
+	return command
+
+func gen_order(pos: Vector2, tile: Node2D) -> PawnOrder:
+	var order: PawnOrder = self.duplicate()
+	
+	order.order_pos = pos
+	order.tile_node = tile
+	
+	return order
+
+func get_pos_targets(amount: int = pawns.size()) -> Array:
+	var targets: Array = []
 	
 	match pathing_type:
 		PATHING_TYPES.EDGE:
