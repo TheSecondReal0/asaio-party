@@ -27,6 +27,8 @@ enum states {IDLE, MOVING, COMBAT, WORKING, HAULING}
 var max_health: float = 100.0
 var health: float = max_health
 
+var base_damage: float = 20
+
 # command the pawn is following
 # some orders require multiple states (MOVING to get to tile, then WORKING to work it)
 var command: PawnCommand
@@ -58,8 +60,12 @@ func _physics_process(delta):
 
 func _process(_delta):
 	health_bar.rect_rotation = -rotation_degrees
-#	if randi() % 128 == 0:
-#		change_health(-1)
+	var collision = move_and_collide(Vector2(0,0))
+	if collision == null:
+		return
+	var pawn: KinematicBody2D = collision.collider
+	pawn.damage_pawn(base_damage * _delta)
+	#print(pawn.health)
 
 func new_command(new_command: PawnCommand):
 	command = new_command
@@ -70,6 +76,9 @@ func movement_done():
 	transition(states.IDLE)
 	last_command = command
 	command = null
+
+func damage_pawn(dmg: float):
+	change_health(-dmg)
 
 func change_health(dif: float):
 	if health == 0.0:
