@@ -1,8 +1,9 @@
 [gd_resource type="Resource" load_steps=5 format=2]
 
 [ext_resource path="res://games/pawn_game/resources/tiletype/tiletype.gd" type="Script" id=1]
-[ext_resource path="res://games/pawn_game/map_components/tiles/common/textures/square.png" type="Texture" id=2]
+[ext_resource path="res://assets/common/textures/square.png" type="Texture" id=2]
 [ext_resource path="res://games/pawn_game/resources/pawnorder/pawnorder.gd" type="Script" id=3]
+
 
 [sub_resource type="Resource" id=1]
 resource_name = "Move"

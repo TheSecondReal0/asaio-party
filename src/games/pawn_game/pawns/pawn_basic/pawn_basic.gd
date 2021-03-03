@@ -5,6 +5,9 @@ export var inaccuracy_denom: int = 15
 export var debug_pawn: bool = false
 
 onready var mover: Node = $mover
+onready var polygon: Polygon2D = $Polygon2D
+onready var health_bar: TextureProgress = $healthbar
+
 
 # pawn controller node in main scene
 var controller: Node
@@ -12,13 +15,17 @@ var controller: Node
 var nav: Navigation2D
 
 # network ID of the player who owns this pawn
-var player_owner: int = 0
+var player_id: int = 0
+var player_color: Color
 
 var selected = false
 var old_state
 var mousePos:Vector2
 var state: int = states.IDLE
 enum states {IDLE, MOVING, COMBAT, WORKING, HAULING}
+
+var max_health: float = 100.0
+var health: float = max_health
 
 # command the pawn is following
 # some orders require multiple states (MOVING to get to tile, then WORKING to work it)
@@ -36,47 +43,56 @@ signal deselected
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+# warning-ignore:return_value_discarded
 	mover.connect("movement_done", self, "movement_done")
 # warning-ignore:return_value_discarded
 	connect("selected", self, "on_selected")
 # warning-ignore:return_value_discarded
 	connect("deselected", self, "on_deselected")
-	#if debug_pawn:
-	#	$Polygon2D.color = Color(0, 1, 0)
+	polygon.color = player_color
+	update_health_bar()
 
 func _physics_process(delta):
-	mover.move(delta)
-#	if Input.is_action_just_pressed("left_click"):
-#		if selected:
-#			if not Input.is_action_pressed("left_shift"):
-#				selected = false
-#				emit_signal("deselected")
-#		mousePos = get_global_mouse_position()
+	if state == states.MOVING:
+		mover.move(delta)
 
-#func _unhandled_input(event):
-#	if event is InputEventMouseButton and event.pressed == false and event.button_index == BUTTON_LEFT:
-#		if sign(get_position().x-mousePos.x) == sign(get_global_mouse_position().x - mousePos.x) and sign(get_global_mouse_position().x-mousePos.x) == sign(get_global_mouse_position().x - get_position().x):
-#			if sign(get_position().y-mousePos.y) == sign(get_global_mouse_position().y - mousePos.y) and sign(get_global_mouse_position().y-mousePos.y) == sign(get_global_mouse_position().y - get_position().y):
-#				selected = true
-#				emit_signal("selected")
+func _process(_delta):
+	health_bar.rect_rotation = -rotation_degrees
+#	if randi() % 128 == 0:
+#		change_health(-1)
 
 func new_command(new_command: PawnCommand):
 	command = new_command
 	if command.nav_target != null:
 		nav.request_path_to(command.nav_target, self)
 
-func request_nav_to(coord: Vector2):
-	pass
-
 func movement_done():
+	transition(states.IDLE)
 	last_command = command
 	command = null
+
+func change_health(dif: float):
+	if health == 0.0:
+		return
+	health += dif
+	if health < 0.0:
+		health = 0.0
+	if health > max_health:
+		health = max_health
+	update_health_bar()
+
+func update_health_bar():
+	health_bar.value = health
+	if health == max_health:
+		health_bar.hide()
+	else:
+		health_bar.show()
 
 func on_selected():
 	$Polygon2D.color = Color(0, 1, 0)
 
 func on_deselected():
-	$Polygon2D.color = Color(1, 0, 0)
+	$Polygon2D.color = player_color
 
 # only emitting signal allows greatest flexibility/least spaghetti code
 # if we end up making more types of pawns that inherit from this script it's easier
@@ -85,12 +101,13 @@ func transition(new_state: int):
 	state = new_state
 	emit_signal("transitioned", old_state, new_state)
 
-func set_selected(selected: bool):
-	selected = selected
+func set_selected(_selected: bool):
+	selected = _selected
 	if selected:
 		emit_signal("selected")
 	else:
 		emit_signal("deselected")
 
 func set_path(new_path):
+	transition(states.MOVING)
 	mover.path = new_path

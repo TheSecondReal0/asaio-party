@@ -15,9 +15,7 @@ var reserved_coords: Dictionary = {}
 # coords pawns are chillin in, nodes keyed by coord
 var occupied_coords: Dictionary = {}
 
-var pathing_cache: Dictionary = {}
-
-var pawns_created: int = 0
+puppet var player_physics_layers: Dictionary = {}
 
 # warning-ignore:unused_signal
 #signal command_issued(command_data)
@@ -31,21 +29,18 @@ func _ready():
 	main.connect("new_order", self, "new_order")
 # warning-ignore:return_value_discarded
 	main.connect("box_selection_completed", self, "box_selection_completed")
-#	for id in Network.get_peers():
-#		var node: Node2D = Node2D.new()
-#		node.name = str(id)
-#		add_child(node)
-	if get_tree().is_network_server():
-		for _i in 50:
-			create_pawn(Vector2(rand_range(50, 974), rand_range(50, 550)))
-
-func _physics_process(_delta):
-	for pawn in pathing_cache:
-		var coord: Vector2 = pathing_cache[pawn]
-		#print("directing pawn to ", coord)
-		#print(nav.path(pawn.global_position, coord))
-		nav.direct_pawn_to(pawn, coord)
-	pathing_cache.clear()
+	var peers: Array = Network.get_peers()
+	for i in peers.size():
+		player_physics_layers[peers[i]] = pow(2, i)
+	print(player_physics_layers)
+	rset("player_physics_layers", player_physics_layers)
+	for id in Network.get_peers():
+		var node: Node2D = Node2D.new()
+		node.name = str(id)
+		add_child(node)
+	#if get_tree().is_network_server():
+	for _i in 50:
+		create_pawn(Vector2(rand_range(50, 974), rand_range(50, 550)), Network.get_my_id(), true)
 
 # for when a new order comes in locally AKA from this client
 func new_order(order: PawnOrder, pawns: Array = selected_pawns.duplicate()):
@@ -116,7 +111,7 @@ func select_pawns(pawns: Array):
 		pawn.set_selected(true)
 
 func deselect_all_pawns():
-	deselect_pawns(get_children())
+	deselect_pawns(get_my_pawns())
 
 func deselect_pawns(pawns: Array):
 	for pawn in pawns:
@@ -126,7 +121,7 @@ func get_pawns_between(pos1: Vector2, pos2: Vector2, error_margin: int = 10) -> 
 	var pawns: Array = []
 	var top_left: Vector2 = Vector2(min(pos1.x, pos2.x) - error_margin, min(pos1.y, pos2.y) - error_margin)
 	var bot_right: Vector2 = Vector2(max(pos1.x, pos2.x) + error_margin, max(pos1.y, pos2.y) + error_margin)
-	for pawn in get_children():
+	for pawn in get_my_pawns():
 		var pos: Vector2 = pawn.global_position
 		if pos.x < top_left.x:
 			continue
@@ -139,23 +134,28 @@ func get_pawns_between(pos1: Vector2, pos2: Vector2, error_margin: int = 10) -> 
 		pawns.append(pawn)
 	return pawns
 
-func create_pawn(pos: Vector2, sync_pawn: bool = true):
+func create_pawn(pos: Vector2, player_id: int, sync_pawn: bool = true):
+	var pawn_container: Node2D = get_node(str(player_id))
 	var new_pawn: KinematicBody2D = pawn_scene.instance()
-	new_pawn.name = "pawn" + str(pawns_created)
-	pawns_created += 1
+	new_pawn.name = "pawn" + str(pawn_container.get_child_count() + 1)
+	new_pawn.player_id = player_id
+	new_pawn.player_color = Network.get_color(player_id)
+	new_pawn.collision_layer = player_physics_layers[player_id]
+	new_pawn.collision_mask = pow(2, 21) - 1 - player_physics_layers[player_id]
 	new_pawn.controller = self
 	new_pawn.nav = nav
 # warning-ignore:return_value_discarded
 	new_pawn.connect("selected", self, "pawn_selected", [new_pawn])
 # warning-ignore:return_value_discarded
 	new_pawn.connect("deselected", self, "pawn_deselected", [new_pawn])
-	add_child(new_pawn)
+	pawn_container.add_child(new_pawn)
 	new_pawn.global_position = pos
 	if sync_pawn:
-		rpc("receive_create_pawn", pos)
+		rpc("receive_create_pawn", pos, player_id)
 
-remote func receive_create_pawn(pos: Vector2):
-	create_pawn(pos, false)
+remote func receive_create_pawn(pos: Vector2, player_id: int):
+	print("received create pawn")
+	create_pawn(pos, player_id, false)
 
 #func gen_order_data(interaction: String, tile: Node2D) -> Dictionary:
 #	var data: Dictionary = {}
@@ -203,8 +203,8 @@ remote func receive_create_pawn(pos: Vector2):
 #	
 #	return command
 
-func gen_pathing_targets(data: Dictionary):
-	pass
+func get_my_pawns() -> Array:
+	return get_node(str(Network.get_my_id())).get_children()
 
 func pawn_selected(pawn: Node):
 	#print("pawn selected: ", pawn)

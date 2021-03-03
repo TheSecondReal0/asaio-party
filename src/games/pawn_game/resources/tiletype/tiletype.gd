@@ -49,7 +49,7 @@ var interactions: Array = []
 
 # whether or not you can command this tile to do something
 #var commandable: bool
-var texture: Texture = preload("res://games/pawn_game/map_components/tiles/common/textures/square.png")
+var texture: Texture = load("res://games/pawn_game/map_components/tiles/common/textures/square.png")
 var modulate: Color = Color(1, 1, 1, 1)
 var scale: Vector2 = Vector2(4, 4)
 

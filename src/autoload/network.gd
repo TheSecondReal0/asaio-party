@@ -138,6 +138,9 @@ func get_color(id: int) -> Color:
 func get_my_color() -> Color:
 	return get_color(myID)
 
+func get_my_id() -> int:
+	return myID
+
 func _ready():
 	randomize()
 	# make it so when the game is paused, this script still runs

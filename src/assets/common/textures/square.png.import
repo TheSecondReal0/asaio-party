@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/square.png-097baf644520d8809cdc7ac6eb0d816c.stex"
+path="res://.import/square.png-60537dd4398d417ae09ceca77a64091f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://games/pawn_game/map_components/tiles/common/textures/square.png"
-dest_files=[ "res://.import/square.png-097baf644520d8809cdc7ac6eb0d816c.stex" ]
+source_file="res://assets/common/textures/square.png"
+dest_files=[ "res://.import/square.png-60537dd4398d417ae09ceca77a64091f.stex" ]
 
 [params]
 
