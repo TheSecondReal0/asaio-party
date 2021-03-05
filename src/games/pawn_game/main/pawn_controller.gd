@@ -1,11 +1,13 @@
 extends Node2D
 
-export(String, FILE) var pawn_scene_path
+#export(String, FILE) var pawn_scene_path
 
 onready var main: Node2D = get_parent().get_parent()
 onready var nav: Navigation2D = get_parent()
 onready var map: Node2D = get_node("../pawn_game_map")
-onready var pawn_scene: PackedScene = load(pawn_scene_path)
+#onready var pawn_scene: PackedScene = load(pawn_scene_path)
+
+var player_pawn_manager_scene: PackedScene = load("res://games/pawn_game/main/player_pawn_manager/player_pawn_manager.tscn")
 
 var selected_pawns: Array = []
 
@@ -17,12 +19,15 @@ var occupied_coords: Dictionary = {}
 
 puppet var player_physics_layers: Dictionary = {}
 
+# player pawn managers keyed by network ID
+var managers: Dictionary = {}
+
 # warning-ignore:unused_signal
 #signal command_issued(command_data)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print(Vector2(1, -1) > Vector2(0, 0))
+	$player_pawn_manager.queue_free()
 # warning-ignore:return_value_discarded
 	main.connect("interaction_selected", self, "interaction_selected")
 # warning-ignore:return_value_discarded
@@ -31,16 +36,12 @@ func _ready():
 	main.connect("box_selection_completed", self, "box_selection_completed")
 	var peers: Array = Network.get_peers()
 	for i in peers.size():
-		player_physics_layers[peers[i]] = pow(2, i)
+		# adding 1 so pawns aren't on physics layer used for walls/environment
+		player_physics_layers[peers[i]] = pow(2, i + 1)
 	print(player_physics_layers)
-	rset("player_physics_layers", player_physics_layers)
-	for id in Network.get_peers():
-		var node: Node2D = Node2D.new()
-		node.name = str(id)
-		add_child(node)
-	#if get_tree().is_network_server():
-	for _i in 50:
-		create_pawn(Vector2(rand_range(50, 974), rand_range(50, 550)), Network.get_my_id(), true)
+	if is_network_master():
+		rset("player_physics_layers", player_physics_layers)
+		rpc("create_pawn_managers", player_physics_layers)
 
 # for when a new order comes in locally AKA from this client
 func new_order(order: PawnOrder, pawns: Array = selected_pawns.duplicate()):
@@ -82,24 +83,6 @@ remote func receive_order(order_data: Dictionary, pawn_paths: Array):
 func issue_command(pawn: KinematicBody2D, command: PawnCommand):
 	pawn.new_command(command)
 
-#func interaction_selected(interaction: String, tile: Node2D):
-#	match interaction:
-#		"work_all_adjacent":
-#			var group: Dictionary = map.get_tile_type_group(tile.global_position, tile.type)
-#			var walkable: Dictionary = map.get_adjacent_walkable_tiles_of_group(group)
-#			var targets: Array = walkable.keys()
-#			#print(group)
-#			#print(walkable)
-#			var to_assign: Array = selected_pawns.duplicate()
-#			for pawn in to_assign:
-#				if targets.empty():
-#					break
-#				var coord: Vector2 = targets.pop_back()
-#				pathing_cache[pawn] = coord#Vector2(200.0, 200)#coord
-#				#print("directing pawn to ", coord)
-#				#nav.direct_pawn_to(pawn, coord)
-#				#walkable.erase(coord)
-
 func box_selection_completed(start: Vector2, end: Vector2):
 	if not Input.is_action_pressed("left_shift"):
 		deselect_all_pawns()
@@ -134,74 +117,18 @@ func get_pawns_between(pos1: Vector2, pos2: Vector2, error_margin: int = 10) -> 
 		pawns.append(pawn)
 	return pawns
 
-func create_pawn(pos: Vector2, player_id: int, sync_pawn: bool = true):
-	var pawn_container: Node2D = get_node(str(player_id))
-	var new_pawn: KinematicBody2D = pawn_scene.instance()
-	new_pawn.name = "pawn" + str(pawn_container.get_child_count() + 1)
-	new_pawn.player_id = player_id
-	new_pawn.player_color = Network.get_color(player_id)
-	new_pawn.collision_layer = player_physics_layers[player_id]
-	new_pawn.collision_mask = pow(2, 21) - 1 - player_physics_layers[player_id]
-	new_pawn.controller = self
-	new_pawn.nav = nav
+puppetsync func create_pawn_managers(physics_layers: Dictionary = player_physics_layers):
+	for player_id in physics_layers.keys():
+		var manager: Node2D = player_pawn_manager_scene.instance()
+		manager.name = str(player_id)
+		manager.player_id = player_id
+		manager.physics_layer = physics_layers[player_id]
 # warning-ignore:return_value_discarded
-	new_pawn.connect("selected", self, "pawn_selected", [new_pawn])
+		manager.connect("pawn_selected", self, "pawn_selected")
 # warning-ignore:return_value_discarded
-	new_pawn.connect("deselected", self, "pawn_deselected", [new_pawn])
-	pawn_container.add_child(new_pawn)
-	new_pawn.global_position = pos
-	if sync_pawn:
-		rpc("receive_create_pawn", pos, player_id)
-
-remote func receive_create_pawn(pos: Vector2, player_id: int):
-	print("received create pawn")
-	create_pawn(pos, player_id, false)
-
-#func gen_order_data(interaction: String, tile: Node2D) -> Dictionary:
-#	var data: Dictionary = {}
-#	data["action"] = interaction
-#	data["tile"] = tile
-#	data["tile_coord"] = tile.global_position
-#	data["tile_type"] = tile.type
-#	data["selected_pawns"] = selected_pawns.duplicate()
-#	data["needs_movement"] = true
-#	data["pawn_tile_orient"] = "center"
-#	data["pawns_needed_per_tile"] = 1
-#	data["tile_group"] = true
-#	
-#	match interaction:
-#		"work":
-#			data["pawn_tile_orient"] = "edge"
-#			pass
-#		"work_all_adjacent":
-#			data["pawn_tile_orient"] = "edge"
-#			data["tile_group"] = true
-#			pass
-#		"deconstruct":
-#			data["pawn_tile_orient"] = "edge"
-#			pass
-#	
-#	data["commands"] = gen_commands(data)
-#	return data
-
-#func gen_commands(data: Dictionary):
-#	# commands keyed by nodes
-#	var commands: Dictionary = {}
-#	var pawn_amount: int = data["selected_pawns"].size()
-#	var targets: Array = []
-#	if data["tile_group"]:
-#		var group: Dictionary = map.get_tile_type_group(data["tile_coord"], data["tile_type"])
-#		var walkable: Dictionary = map.get_adjacent_walkable_tiles_of_group(group)
-#		targets = walkable.keys()
-#	else:
-#		targets = [data["tile_coord"]]
-#	
-#	return commands
-
-#func gen_command():
-#	var command: Dictionary = {}
-#	
-#	return command
+		manager.connect("pawn_deselected", self, "pawn_deselected")
+		managers[player_id] = manager
+		add_child(manager)
 
 func get_my_pawns() -> Array:
 	return get_node(str(Network.get_my_id())).get_children()
