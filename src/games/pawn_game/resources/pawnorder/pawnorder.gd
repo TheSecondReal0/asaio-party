@@ -50,7 +50,8 @@ func create_commands(pawns_list: Array) -> Array:
 
 func create_movement_commands(amount: int = pawns.size()) -> Array:
 	var commands: Array = []
-	pos_targets = get_pos_targets(amount)
+	if pos_targets.empty():
+		pos_targets = get_pos_targets(amount)
 	
 	# can't create commands with duplicate pos targets, shouldn't make more than we want
 # warning-ignore:narrowing_conversion

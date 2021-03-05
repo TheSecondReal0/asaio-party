@@ -1,6 +1,8 @@
 extends KinematicBody2D
 
 export var speed: int = 50
+export var max_health: float = 100.0
+export var base_damage: float = 20
 export var inaccuracy_denom: int = 15
 export var debug_pawn: bool = false
 
@@ -17,6 +19,7 @@ var nav: Navigation2D
 # network ID of the player who owns this pawn
 var player_id: int = 0
 var player_color: Color
+var pawn_type: int
 
 var selected = false
 var old_state
@@ -24,10 +27,7 @@ var mousePos:Vector2
 var state: int = states.IDLE
 enum states {IDLE, MOVING, COMBAT, WORKING, HAULING}
 
-var max_health: float = 100.0
 var health: float = max_health
-
-var base_damage: float = 20
 
 # command the pawn is following
 # some orders require multiple states (MOVING to get to tile, then WORKING to work it)
@@ -42,6 +42,8 @@ signal transitioned(old_state, new_state)
 signal selected
 # emitted when this pawn is deselected
 signal deselected
+# emitted when this pawn dies lol what a loser
+signal died
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -82,6 +84,7 @@ func damage_pawn(dmg: float):
 
 func change_health(dif: float):
 	if health == 0.0:
+		emit_signal("died")
 		return
 	health += dif
 	if health < 0.0:

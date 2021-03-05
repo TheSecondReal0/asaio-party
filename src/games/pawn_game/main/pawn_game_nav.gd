@@ -56,6 +56,8 @@ func direct_pawns_to(pos: Vector2, rand_start: bool = false):
 
 # actually path should ONLY be true during _process() or _physics_process()
 func direct_pawn_to(pawn: Node, pos: Vector2, actually_path: bool = false):
+	if pawn == null:
+		return
 	if not actually_path:
 		print("trying to direct pawn outside of _process(), adding to queue")
 		queued_pathing.append([pawn, pos, true])

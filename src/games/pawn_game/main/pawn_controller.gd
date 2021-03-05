@@ -45,22 +45,33 @@ func _ready():
 
 # for when a new order comes in locally AKA from this client
 func new_order(order: PawnOrder, pawns: Array = selected_pawns.duplicate()):
-	send_order(order, pawns)
+	for pawn in selected_pawns:
+		if pawn == null:
+			selected_pawns.erase(pawn)
+	for pawn in pawns:
+		if pawn == null:
+			pawns.erase(pawn)
 	init_order(order, pawns)
+	send_order(order, pawns)
 
 # generally initiates orders (gives order info to create commands + issues commands to pawns)
 # both for orders created locally and received remotely
 func init_order(order: PawnOrder, pawns: Array):
 	order.pawn_game_map = map
+	for pawn in pawns:
+		if pawn == null:
+			pawns.erase(pawn)
+			continue
 	#print(pawns)
 	var commands: Array = order.create_commands(pawns.duplicate())
 	#print(commands)
+	print("assigning commands")
 	for command in commands:
 		issue_command(command.pawn, command)
 
 func send_order(order: PawnOrder, pawns: Array):
 	var order_data: Dictionary = {}
-	var properties: Array = ["order_name", "pawn_movement", "pathing_type", "use_tile_groups", "work_amount", "replaces_tile", "replacement", "gives_item", "given_item", "order_pos"]
+	var properties: Array = ["order_name", "pawn_movement", "pathing_type", "use_tile_groups", "work_amount", "replaces_tile", "replacement", "gives_item", "given_item", "order_pos", "pos_targets"]
 	for prop in properties:
 		order_data[prop] = order.get(prop)
 	var pawn_paths: Array = []
@@ -72,15 +83,26 @@ func send_order(order: PawnOrder, pawns: Array):
 remote func receive_order(order_data: Dictionary, pawn_paths: Array):
 	print("received order, data: ", order_data, "pawn paths: ", pawn_paths)
 	var order: PawnOrder = PawnOrder.new()
-	for prop in ["order_name", "pawn_movement", "pathing_type", "use_tile_groups", "work_amount", "replaces_tile", "replacement", "gives_item", "given_item", "order_pos"]:
+	for prop in ["order_name", "pawn_movement", "pathing_type", "use_tile_groups", "work_amount", "replaces_tile", "replacement", "gives_item", "given_item", "order_pos", "pos_targets"]:
 		order.set(prop, order_data[prop])
 	order.tile_node = map.get_tile_node_at(order.order_pos)
 	var pawns: Array = []
 	for path in pawn_paths:
-		pawns.append(get_node(path))
+		#print(path == "")
+		if path == "":
+			continue
+		var pawn = get_node_or_null(path)
+		# if pawn is dead or otherwise doesn't exist skip this iteration
+		# 	avoids crash caused by loser pawns dying
+		if pawn == null:
+			continue
+		pawns.append(pawn)
 	init_order(order, pawns)
 
 func issue_command(pawn: KinematicBody2D, command: PawnCommand):
+	# if pawn don't exist
+	if pawn == null:
+		return
 	pawn.new_command(command)
 
 func box_selection_completed(start: Vector2, end: Vector2):
@@ -127,6 +149,8 @@ puppetsync func create_pawn_managers(physics_layers: Dictionary = player_physics
 		manager.connect("pawn_selected", self, "pawn_selected")
 # warning-ignore:return_value_discarded
 		manager.connect("pawn_deselected", self, "pawn_deselected")
+# warning-ignore:return_value_discarded
+		manager.connect("pawn_died", self, "pawn_died")
 		managers[player_id] = manager
 		add_child(manager)
 
@@ -141,4 +165,7 @@ func pawn_selected(pawn: Node):
 func pawn_deselected(pawn: Node):
 	#print("pawn deselected: ", pawn)
 # warning-ignore:return_value_discarded
+	selected_pawns.erase(pawn)
+
+func pawn_died(pawn: Node):
 	selected_pawns.erase(pawn)
