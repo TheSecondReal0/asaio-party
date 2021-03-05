@@ -19,6 +19,8 @@ var nav: Navigation2D
 # network ID of the player who owns this pawn
 var player_id: int = 0
 var player_color: Color
+onready var outline_color: Color = player_color.inverted()
+var outline_thickness: float = 1
 var pawn_type: int
 
 var selected = false
@@ -69,6 +71,10 @@ func _process(_delta):
 	pawn.damage_pawn(base_damage * _delta)
 	#print(pawn.health)
 
+func _draw():
+	if selected:
+		draw_outline()
+
 func new_command(new_command: PawnCommand):
 	command = new_command
 	if command.nav_target != null:
@@ -100,11 +106,20 @@ func update_health_bar():
 	else:
 		health_bar.show()
 
+func draw_outline():
+	var poly = polygon.get_polygon()
+	for i in poly.size():
+		draw_line(poly[i - 1], poly[i], outline_color, outline_thickness)
+
 func on_selected():
-	$Polygon2D.color = Color(0, 1, 0)
+	#polygon.hide()
+	update()
+	#$Polygon2D.color = Color(0, 1, 0)
 
 func on_deselected():
-	$Polygon2D.color = player_color
+	polygon.show()
+	update()
+	#$Polygon2D.color = player_color
 
 # only emitting signal allows greatest flexibility/least spaghetti code
 # if we end up making more types of pawns that inherit from this script it's easier
