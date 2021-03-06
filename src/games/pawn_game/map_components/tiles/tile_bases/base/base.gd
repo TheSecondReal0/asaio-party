@@ -9,7 +9,11 @@ var desc: String
 var walkable: bool
 # whether or not this tile is destructible
 var destructible: bool
-var health: int
+var max_health: float
+var health: float = max_health
+# whether or not to damage pawns
+var damage_pawns: bool
+var damage: int
 
 # whether or not you can tell a pawn to interact with this tile
 var interactable: bool
@@ -20,6 +24,7 @@ var resource: String
 var orders: Array = []
 
 signal interacted_with(tile_node, input)
+signal tile_destroyed(tile_node)
 
 func _ready():
 	if interact_area:
@@ -30,11 +35,24 @@ func _ready():
 #		polygon.polygon = vertices
 #		add_child(polygon)
 
+# warning-ignore:function_conflicts_variable
+func damage(dmg: float):
+	if not destructible:
+		return
+	if health == 0.0:
+		return
+	health -= dmg
+	if health < 0.0:
+		print("tile destroyed, ", global_position)
+		emit_signal("tile_destroyed", self)
+		health = 0.0
+
 func init_tile(tile_data: Dictionary):
 	#print(tile_data)
-	for property in ["type", "desc", "walkable", "destructible", "health", "interactable", "resource", "orders"]:
+	for property in ["type", "desc", "walkable", "destructible", "health", "damage_pawns", "damage", "interactable", "resource", "orders"]:
 		set(property, tile_data[property])
-	
+	max_health = tile_data["health"]
+	health = max_health
 	#print(interactions)
 
 func on_clicked(input: InputEventMouseButton):

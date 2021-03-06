@@ -67,8 +67,8 @@ func _process(_delta):
 	var collision = move_and_collide(Vector2(0,0))
 	if collision == null:
 		return
-	var pawn: KinematicBody2D = collision.collider
-	pawn.damage_pawn(base_damage * _delta)
+	var collider = collision.collider
+	collider.damage(base_damage * _delta)
 	#print(pawn.health)
 
 func _draw():
@@ -85,7 +85,7 @@ func movement_done():
 	last_command = command
 	command = null
 
-func damage_pawn(dmg: float):
+func damage(dmg: float):
 	change_health(-dmg)
 
 func change_health(dif: float):
@@ -137,4 +137,5 @@ func set_selected(_selected: bool):
 
 func set_path(new_path):
 	transition(states.MOVING)
+	#print("received path: ", new_path)
 	mover.path = new_path

@@ -81,7 +81,7 @@ func get_tile_type_group(coord: Vector2, type: String, diagonal: bool = true, in
 			to_check.erase(vec)
 	return tiles
 
-func get_x_walkable_tiles(coord: Vector2, amount: int, diagonal: bool = false, include_self: bool = true) -> Dictionary:
+func get_x_walkable_tiles(coord: Vector2, amount: int, diagonal: bool = false, include_self: bool = false) -> Dictionary:
 	coord = round_pos(coord)
 	var tiles: Dictionary = {}
 	var to_check: Array = [coord]
@@ -139,6 +139,8 @@ func get_adjacent_tiles(coord: Vector2, diagonal: bool = true, include_self: boo
 func is_tile_type_walkable(type: String):
 	return tile_resources[type].walkable
 
+# warning-ignore:unused_argument
+# warning-ignore:unused_argument
 func interaction_selected(interaction, tile):
 	pass
 	#var tile_coord: Vector2 = tile.global_position

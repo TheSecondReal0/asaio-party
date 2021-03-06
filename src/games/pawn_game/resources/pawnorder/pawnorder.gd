@@ -7,6 +7,8 @@ export var pawn_movement: bool = true
 enum PATHING_TYPES {EDGE, CENTER, POINTER}
 export(PATHING_TYPES) var pathing_type
 export var use_tile_groups: bool = false
+export var no_pawn_limit: bool = false
+export var edge_includes_diagonal: bool = false
 export var work_amount: int = 0
 export var replaces_tile: bool = false
 export var replacement: String = "Grass"
@@ -94,13 +96,35 @@ func get_pos_targets(amount: int = pawns.size()) -> Array:
 	
 	match pathing_type:
 		PATHING_TYPES.EDGE:
+			if not use_tile_groups:
+				var walkable_tiles: Dictionary = pawn_game_map.get_adjacent_walkable_tiles(rounded_pos, edge_includes_diagonal)
+				var walkable_coords: Array = walkable_tiles.keys()
+				var coords: Array = []
+				for i in amount:
+					# if there are more pawns than walkable tiles, roll over the count
+					coords.append(walkable_coords[i % walkable_coords.size()])
+				return coords
 			var tile_group: Dictionary = pawn_game_map.get_tile_type_group(rounded_pos, tile_node.type)
-			var walkable_tiles: Dictionary = pawn_game_map.get_adjacent_walkable_tiles_of_group(tile_group)
+			var walkable_tiles: Dictionary = pawn_game_map.get_adjacent_walkable_tiles_of_group(tile_group, edge_includes_diagonal)
 			return walkable_tiles.keys()
 		PATHING_TYPES.CENTER:
+			if not use_tile_groups:
+				if no_pawn_limit:
+					var coords: Array = []
+					for i in amount:
+						coords.append(rounded_pos)
+					return coords
+				else:
+					var walkable_tiles: Dictionary = pawn_game_map.get_x_walkable_tiles(rounded_pos, amount, edge_includes_diagonal)
+					return walkable_tiles.keys()
 			var tile_group: Dictionary = pawn_game_map.get_tile_type_group(rounded_pos, tile_node.type)
 			return tile_group.keys()
 		PATHING_TYPES.POINTER:
+			if not use_tile_groups:
+				var coords: Array = []
+				for i in amount:
+					coords.append(order_pos)
+				return coords
 			if amount == 1:
 				# return one target which is exactly where the player right clicked
 				return [order_pos]
