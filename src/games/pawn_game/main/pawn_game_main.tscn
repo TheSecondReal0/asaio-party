@@ -36,9 +36,15 @@ script = ExtResource( 10 )
 [node name="world_ui" type="Node2D" parent="."]
 z_index = 5
 script = ExtResource( 8 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="preview_tiles" type="Node2D" parent="world_ui"]
 script = ExtResource( 7 )
+__meta__ = {
+"_edit_lock_": true
+}
 main_path = NodePath("../..")
 
 [node name="pawn_game_ui" type="CanvasLayer" parent="."]

@@ -3,6 +3,8 @@ extends Node2D
 onready var interact_area = get_node_or_null("interact_area")
 onready var navpoly = get_node_or_null("NavigationPolygonInstance")
 
+var player_id: int
+
 var type: String
 var desc: String
 # whether or not a pawn can walk through this tile
