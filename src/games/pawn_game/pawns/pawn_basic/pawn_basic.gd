@@ -7,6 +7,7 @@ export var debug_pawn: bool = false
 onready var mover: Node = $mover
 onready var polygon: Polygon2D = $Polygon2D
 onready var health_bar: TextureProgress = $healthbar
+onready var work_bar: TextureProgress = $workbar
 
 
 # pawn controller node in main scene
@@ -21,6 +22,7 @@ var player_color: Color
 var selected = false
 var old_state
 var mousePos:Vector2
+var workProgress = 0
 var state: int = states.IDLE
 enum states {IDLE, MOVING, COMBAT, WORKING, HAULING}
 
@@ -53,13 +55,20 @@ func _ready():
 	connect("deselected", self, "on_deselected")
 	polygon.color = player_color
 	update_health_bar()
+	update_work_bar()
 
 func _physics_process(delta):
 	if state == states.MOVING:
 		mover.move(delta)
+	if state == states.WORKING: #tick up work progress value
+		workProgress += delta
+		update_work_bar()
+		if workProgress > 10:
+			workProgress = 0
 
 func _process(_delta):
 	health_bar.rect_rotation = -rotation_degrees
+	work_bar.rect_rotation = -rotation_degrees
 	var collision = move_and_collide(Vector2(0,0))
 	if collision == null:
 		return
@@ -71,9 +80,14 @@ func new_command(new_command: PawnCommand):
 	command = new_command
 	if command.nav_target != null:
 		nav.request_path_to(command.nav_target, self)
+		
 
 func movement_done():
-	transition(states.IDLE)
+	if command.tileType == "Gold":
+		workProgress = 0;
+		transition(states.WORKING)
+	else:
+		transition(states.IDLE)
 	last_command = command
 	command = null
 
@@ -96,6 +110,13 @@ func update_health_bar():
 		health_bar.hide()
 	else:
 		health_bar.show()
+		
+func update_work_bar():
+	work_bar.value = workProgress
+	if workProgress < .1:
+		work_bar.hide()
+	else:
+		work_bar.show()
 
 func on_selected():
 	$Polygon2D.color = Color(0, 1, 0)
@@ -108,6 +129,9 @@ func on_deselected():
 func transition(new_state: int):
 	old_state = state
 	state = new_state
+	if state != states.WORKING and old_state == states.WORKING:
+		workProgress = 0
+		update_work_bar()
 	emit_signal("transitioned", old_state, new_state)
 
 func set_selected(_selected: bool):
