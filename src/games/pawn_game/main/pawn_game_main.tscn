@@ -51,4 +51,6 @@ main_path = NodePath("../..")
 [node name="interact_popup" type="PopupMenu" parent="pawn_game_ui"]
 margin_right = 20.0
 margin_bottom = 20.0
+size_flags_horizontal = 12
+size_flags_vertical = 12
 script = ExtResource( 9 )

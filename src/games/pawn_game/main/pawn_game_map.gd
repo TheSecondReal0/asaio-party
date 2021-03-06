@@ -32,6 +32,9 @@ func tile_placed(pos: Vector2, type: String):
 	place_tile(pos, type)
 	rpc("receive_place_tile", pos, type)
 
+func tile_destroyed(tile_node: Node2D):
+	place_tile(tile_node.global_position, "Grass")
+
 func place_tile(pos: Vector2, type: String):
 	#print("placing tile, pos: ", pos, " type: ", type)
 	if not tile_resources.has(type):
@@ -47,6 +50,7 @@ func place_tile(pos: Vector2, type: String):
 		map_tile_nodes[pos].queue_free()
 	map_tiles[pos] = type
 	var tile = create_tile(pos, type)
+	tile.connect("tile_destroyed", self, "tile_destroyed")
 	map_tile_nodes[pos] = tile
 	emit_signal("tile_changed", pos, old_type, type)
 	emit_signal("tile_created", tile)
@@ -87,7 +91,8 @@ func get_x_walkable_tiles(coord: Vector2, amount: int, diagonal: bool = false, i
 	var to_check: Array = [coord]
 	while tiles.size() < amount:
 		var vec: Vector2 = to_check.pop_front()
-		tiles[vec] = map_tiles[vec]
+		if is_tile_type_walkable(map_tiles[vec]):
+			tiles[vec] = map_tiles[vec]
 		if tiles.size() == amount:
 			break
 		for coord in get_adjacent_walkable_tiles(vec, diagonal, include_self):
@@ -96,7 +101,7 @@ func get_x_walkable_tiles(coord: Vector2, amount: int, diagonal: bool = false, i
 			to_check.append(coord)
 	return tiles
 
-func get_adjacent_tiles_of_type(coord: Vector2, type: String, diagonal: bool = true, include_self: bool = false) -> Dictionary:
+func get_adjacent_tiles_of_type(coord: Vector2, type: String, diagonal: bool = false, include_self: bool = false) -> Dictionary:
 	var tiles: Dictionary = {}
 	var adjacent: Dictionary = get_adjacent_tiles(coord, diagonal, include_self)
 	for coord in adjacent:

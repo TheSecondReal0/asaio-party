@@ -10,6 +10,7 @@ order_name = "Move to Grass"
 pawn_movement = true
 pathing_type = 2
 use_tile_groups = true
+no_pawn_limit = false
 edge_includes_diagonal = false
 work_amount = 0
 replaces_tile = false
