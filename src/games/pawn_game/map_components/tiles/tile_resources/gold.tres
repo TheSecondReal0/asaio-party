@@ -5,12 +5,12 @@
 [ext_resource path="res://games/pawn_game/resources/pawnorder/pawnorder.gd" type="Script" id=3]
 
 [sub_resource type="Resource" id=1]
-resource_name = "Mine"
 script = ExtResource( 3 )
 order_name = "Mine Gold"
 pawn_movement = true
 pathing_type = 0
-use_tile_groups = false
+use_tile_groups = true
+edge_includes_diagonal = false
 work_amount = 10
 replaces_tile = false
 replacement = "Grass"
@@ -23,6 +23,9 @@ type = "Gold"
 desc = ""
 walkable = false
 destructible = false
+health = 100
+damage_pawns = false
+damage = 20
 interactable = true
 orders = [ SubResource( 1 ) ]
 texture/texture = ExtResource( 2 )

@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
+[ext_resource path="res://games/pawn_game/main/pawn_game_ui.gd" type="Script" id=1]
 [ext_resource path="res://games/pawn_game/map_editor/map_editor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://games/pawn_game/main/pawn_game_cam.gd" type="Script" id=3]
 [ext_resource path="res://games/pawn_game/main/pawn_game_map.gd" type="Script" id=4]
@@ -9,6 +10,7 @@
 [ext_resource path="res://games/pawn_game/main/world_ui.gd" type="Script" id=8]
 [ext_resource path="res://games/pawn_game/main/interact_popup.gd" type="Script" id=9]
 [ext_resource path="res://games/pawn_game/main/pawn_controller.gd" type="Script" id=10]
+[ext_resource path="res://games/pawn_game/main/player_pawn_manager/player_pawn_manager.tscn" type="PackedScene" id=11]
 
 [node name="pawn_game_main" type="Node2D"]
 script = ExtResource( 5 )
@@ -28,7 +30,8 @@ main_path = NodePath("../..")
 
 [node name="pawn_controller" type="Node2D" parent="pawn_game_nav"]
 script = ExtResource( 10 )
-pawn_scene_path = "res://games/pawn_game/pawns/pawn_basic/pawn_basic.tscn"
+
+[node name="player_pawn_manager" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 11 )]
 
 [node name="world_ui" type="Node2D" parent="."]
 z_index = 5
@@ -38,15 +41,16 @@ script = ExtResource( 8 )
 script = ExtResource( 7 )
 main_path = NodePath("../..")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="world_ui"]
-
-[node name="interact_popup" type="PopupMenu" parent="world_ui/CanvasLayer"]
-margin_right = 20.0
-margin_bottom = 20.0
-script = ExtResource( 9 )
-
 [node name="pawn_game_ui" type="CanvasLayer" parent="."]
+script = ExtResource( 1 )
 
 [node name="map_editor" parent="pawn_game_ui" instance=ExtResource( 2 )]
 mouse_filter = 2
 main_path = NodePath("../..")
+
+[node name="interact_popup" type="PopupMenu" parent="pawn_game_ui"]
+margin_right = 20.0
+margin_bottom = 20.0
+size_flags_horizontal = 12
+size_flags_vertical = 12
+script = ExtResource( 9 )

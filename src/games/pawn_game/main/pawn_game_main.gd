@@ -4,6 +4,7 @@ export (String, DIR) var tile_resource_dir = "res://games/pawn_game/map_componen
 
 onready var map: Node2D = $pawn_game_nav/pawn_game_map
 onready var world_ui: Node2D = $world_ui
+onready var pawn_game_ui: CanvasLayer = $pawn_game_ui
 onready var editor: Control = $pawn_game_ui/map_editor
 
 signal tile_placed(pos, type)
@@ -16,17 +17,17 @@ signal box_selection_completed(start, end)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 # warning-ignore:return_value_discarded
+	map.connect("tile_created", self, "tile_created")
+# warning-ignore:return_value_discarded
+	world_ui.connect("box_selection_completed", self, "box_selection_completed")
+# warning-ignore:return_value_discarded
+	pawn_game_ui.connect("interaction_selected", self, "interaction_selected")
+# warning-ignore:return_value_discarded
+	pawn_game_ui.connect("new_order", self, "new_order")
+# warning-ignore:return_value_discarded
 	editor.connect("tile_placed", self, "tile_placed")
 # warning-ignore:return_value_discarded
 	editor.connect("preview_tiles", self, "preview_tiles")
-# warning-ignore:return_value_discarded
-	map.connect("tile_created", self, "tile_created")
-# warning-ignore:return_value_discarded
-	world_ui.connect("interaction_selected", self, "interaction_selected")
-# warning-ignore:return_value_discarded
-	world_ui.connect("new_order", self, "new_order")
-# warning-ignore:return_value_discarded
-	world_ui.connect("box_selection_completed", self, "box_selection_completed")
 
 func tile_placed(pos, type):
 	#print("main tile placed")

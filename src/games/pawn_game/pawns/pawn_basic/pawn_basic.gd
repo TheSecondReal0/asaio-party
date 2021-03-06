@@ -1,6 +1,8 @@
 extends KinematicBody2D
 
 export var speed: int = 50
+export var max_health: float = 100.0
+export var base_damage: float = 20
 export var inaccuracy_denom: int = 15
 export var debug_pawn: bool = false
 
@@ -18,6 +20,9 @@ var nav: Navigation2D
 # network ID of the player who owns this pawn
 var player_id: int = 0
 var player_color: Color
+onready var outline_color: Color = player_color.inverted()
+var outline_thickness: float = 1
+var pawn_type: int
 
 var selected = false
 var old_state
@@ -26,10 +31,7 @@ var workProgress = 0
 var state: int = states.IDLE
 enum states {IDLE, MOVING, COMBAT, WORKING, HAULING}
 
-var max_health: float = 100.0
 var health: float = max_health
-
-var base_damage: float = 20
 
 # command the pawn is following
 # some orders require multiple states (MOVING to get to tile, then WORKING to work it)
@@ -44,6 +46,8 @@ signal transitioned(old_state, new_state)
 signal selected
 # emitted when this pawn is deselected
 signal deselected
+# emitted when this pawn dies lol what a loser
+signal died
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -72,9 +76,13 @@ func _process(_delta):
 	var collision = move_and_collide(Vector2(0,0))
 	if collision == null:
 		return
-	var pawn: KinematicBody2D = collision.collider
-	pawn.damage_pawn(base_damage * _delta)
+	var collider = collision.collider
+	collider.damage(base_damage * _delta)
 	#print(pawn.health)
+
+func _draw():
+	if selected:
+		draw_outline()
 
 func new_command(new_command: PawnCommand):
 	command = new_command
@@ -91,11 +99,12 @@ func movement_done():
 	last_command = command
 	command = null
 
-func damage_pawn(dmg: float):
+func damage(dmg: float):
 	change_health(-dmg)
 
 func change_health(dif: float):
 	if health == 0.0:
+		emit_signal("died")
 		return
 	health += dif
 	if health < 0.0:
@@ -118,11 +127,20 @@ func update_work_bar():
 	else:
 		work_bar.show()
 
+func draw_outline():
+	var poly = polygon.get_polygon()
+	for i in poly.size():
+		draw_line(poly[i - 1], poly[i], outline_color, outline_thickness)
+
 func on_selected():
-	$Polygon2D.color = Color(0, 1, 0)
+	#polygon.hide()
+	update()
+	#$Polygon2D.color = Color(0, 1, 0)
 
 func on_deselected():
-	$Polygon2D.color = player_color
+	polygon.show()
+	update()
+	#$Polygon2D.color = player_color
 
 # only emitting signal allows greatest flexibility/least spaghetti code
 # if we end up making more types of pawns that inherit from this script it's easier
@@ -143,4 +161,5 @@ func set_selected(_selected: bool):
 
 func set_path(new_path):
 	transition(states.MOVING)
+	#print("received path: ", new_path)
 	mover.path = new_path

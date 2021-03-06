@@ -4,14 +4,14 @@
 [ext_resource path="res://assets/common/textures/square.png" type="Texture" id=2]
 [ext_resource path="res://games/pawn_game/resources/pawnorder/pawnorder.gd" type="Script" id=3]
 
-
 [sub_resource type="Resource" id=1]
-resource_name = "Move"
 script = ExtResource( 3 )
 order_name = "Move to Grass"
 pawn_movement = true
 pathing_type = 2
-use_tile_groups = false
+use_tile_groups = true
+no_pawn_limit = false
+edge_includes_diagonal = false
 work_amount = 0
 replaces_tile = false
 replacement = "Grass"
@@ -24,8 +24,11 @@ type = "Grass"
 desc = ""
 walkable = true
 destructible = false
+health = 100
+damage_pawns = false
+damage = 20
 interactable = true
 orders = [ SubResource( 1 ) ]
 texture/texture = ExtResource( 2 )
-texture/modulate = Color( 0.36, 0.57, 0.35, 1 )
+texture/modulate = Color( 0.36, 0.57, 0.36, 1 )
 texture/scale = Vector2( 4, 4 )

@@ -9,7 +9,7 @@ var mouse_distance_max: float = 100
 # order name: order resource
 var order_names: Dictionary
 
-signal interaction_selected(interaction, tile)
+#signal interaction_selected(interaction, tile)
 signal new_order(order)
 
 # Called when the node enters the scene tree for the first time.
@@ -36,6 +36,7 @@ func show_interactions(orders: Array, pos: Vector2, tile: Node2D = null):
 	current_tile = tile
 	global_pos = get_parent().get_parent().get_global_mouse_position()
 	clear()
+	rect_size = Vector2(0, 0)
 	order_names.clear()
 	for order in orders:
 		order_names[order.order_name] = order
