@@ -65,6 +65,8 @@ func pawn_died(pawn: KinematicBody2D):
 
 puppet func receive_pawn_died(pawn_path: String):
 	var pawn: KinematicBody2D = get_node(pawn_path)
+	if pawn == null:
+		return
 	emit_signal("pawn_died", pawn)
 	pawn.queue_free()
 	remove_pawn_null_references()
