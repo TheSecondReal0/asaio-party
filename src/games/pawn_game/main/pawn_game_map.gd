@@ -29,13 +29,13 @@ func _process(delta):
 		print(tiles)
 
 func tile_placed(pos: Vector2, type: String):
-	place_tile(pos, type)
-	rpc("receive_place_tile", pos, type)
+	place_tile(pos, type, Network.get_my_id())
+	rpc("receive_place_tile", pos, type, Network.get_my_id())
 
 func tile_destroyed(tile_node: Node2D):
-	place_tile(tile_node.global_position, "Grass")
+	place_tile(tile_node.global_position, "Grass", 0)
 
-func place_tile(pos: Vector2, type: String):
+func place_tile(pos: Vector2, type: String, player_id: int):
 	#print("placing tile, pos: ", pos, " type: ", type)
 	if not tile_resources.has(type):
 		#print("tile type does not exist")
@@ -50,6 +50,7 @@ func place_tile(pos: Vector2, type: String):
 		map_tile_nodes[pos].queue_free()
 	map_tiles[pos] = type
 	var tile = create_tile(pos, type)
+	tile.player_id = player_id
 	tile.connect("tile_destroyed", self, "tile_destroyed")
 	map_tile_nodes[pos] = tile
 	emit_signal("tile_changed", pos, old_type, type)
@@ -60,8 +61,8 @@ func place_tile(pos: Vector2, type: String):
 		navpoly.enabled = false
 		navpoly.enabled = true
 
-remote func receive_place_tile(pos: Vector2, type: String):
-	place_tile(pos, type)
+remote func receive_place_tile(pos: Vector2, type: String, player_id: int):
+	place_tile(pos, type, player_id)
 
 func create_tile(pos: Vector2, type: String) -> Node:
 	pos = round_pos(pos)
@@ -160,7 +161,7 @@ func interaction_selected(interaction, tile):
 func load_from_json(json):
 	var tile_dict = json_to_tiles(json)
 	for key in tile_dict:
-		place_tile(key, tile_dict[key])
+		place_tile(key, tile_dict[key], 0)
 
 # warning-ignore:unused_argument
 func tiles_to_json(tiles: Dictionary = map_tiles) -> String:

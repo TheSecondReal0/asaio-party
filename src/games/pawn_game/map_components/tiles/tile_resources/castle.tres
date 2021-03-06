@@ -8,6 +8,7 @@
 resource_name = "Attack"
 script = ExtResource( 2 )
 order_name = "Attack Castle"
+available_for = 2
 pawn_movement = true
 pathing_type = 1
 use_tile_groups = false
@@ -23,6 +24,7 @@ given_item = ""
 resource_name = "Surround"
 script = ExtResource( 2 )
 order_name = "Surround Castle"
+available_for = 0
 pawn_movement = true
 pathing_type = 1
 use_tile_groups = false

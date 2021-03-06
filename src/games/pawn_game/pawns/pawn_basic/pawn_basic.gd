@@ -77,7 +77,8 @@ func _process(_delta):
 	if collision == null:
 		return
 	var collider = collision.collider
-	collider.damage(base_damage * _delta)
+	if collider.player_id != player_id:
+		collider.damage(base_damage * _delta)
 	#print(pawn.health)
 
 func _draw():

@@ -3,6 +3,8 @@ extends Resource
 class_name PawnOrder
 
 export var order_name: String
+enum PLAYER_GROUPS {EVERYONE, TILE_OWNER, ENEMIES}
+export(PLAYER_GROUPS) var available_for = PLAYER_GROUPS.EVERYONE
 export var pawn_movement: bool = true
 enum PATHING_TYPES {EDGE, CENTER, POINTER}
 export(PATHING_TYPES) var pathing_type
@@ -134,3 +136,15 @@ func get_pos_targets(amount: int = pawns.size()) -> Array:
 			var walkable_tiles: Dictionary = pawn_game_map.get_x_walkable_tiles(rounded_pos, amount)
 			return walkable_tiles.keys()
 	return targets
+
+func available_for_this_client(tile_owner: int) -> bool:
+	if tile_owner == 0:
+		return true
+	match available_for:
+		PLAYER_GROUPS.EVERYONE:
+			return true
+		PLAYER_GROUPS.TILE_OWNER:
+			return tile_owner == Network.get_my_id()
+		PLAYER_GROUPS.ENEMIES:
+			return tile_owner != Network.get_my_id()
+	return false

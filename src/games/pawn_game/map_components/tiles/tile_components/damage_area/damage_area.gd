@@ -1,5 +1,6 @@
 extends Area2D
 
+onready var player_id: int = get_parent().player_id
 onready var damage: int = get_parent().damage
 
 func _physics_process(delta):
@@ -8,7 +9,7 @@ func _physics_process(delta):
 		return
 	for body in bodies:
 		if not body.is_in_group("pawns"):
-			#print("collider not pawn")
 			return
-		#print(body)
+		if body.player_id == player_id:
+			return
 		body.damage(damage * delta)

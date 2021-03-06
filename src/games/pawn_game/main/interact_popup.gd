@@ -31,7 +31,12 @@ func interaction_selected(id: int):
 	emit_signal("new_order", order)
 	close()
 
-func show_interactions(orders: Array, pos: Vector2, tile: Node2D = null):
+func show_interactions(orders: Array, pos: Vector2, tile: Node2D):
+	orders = orders.duplicate(true)
+	for order in orders:
+		print(order.order_name, ", ", order.available_for_this_client(tile.player_id))
+		if not order.available_for_this_client(tile.player_id):
+			orders.erase(order)
 	print("showing interactions: ", orders)
 	current_tile = tile
 	global_pos = get_parent().get_parent().get_global_mouse_position()
