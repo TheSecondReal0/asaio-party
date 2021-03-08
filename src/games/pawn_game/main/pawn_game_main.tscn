@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://games/pawn_game/main/pawn_game_ui.gd" type="Script" id=1]
 [ext_resource path="res://games/pawn_game/map_editor/map_editor.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://games/pawn_game/main/interact_popup.gd" type="Script" id=9]
 [ext_resource path="res://games/pawn_game/main/pawn_controller.gd" type="Script" id=10]
 [ext_resource path="res://games/pawn_game/main/player_pawn_manager/player_pawn_manager.tscn" type="PackedScene" id=11]
+[ext_resource path="res://games/pawn_game/main/astar_nav.gd" type="Script" id=12]
 
 [node name="pawn_game_main" type="Node2D"]
 script = ExtResource( 5 )
@@ -23,6 +24,9 @@ script = ExtResource( 3 )
 
 [node name="pawn_game_nav" type="Navigation2D" parent="."]
 script = ExtResource( 6 )
+
+[node name="astar_nav" type="Node2D" parent="pawn_game_nav"]
+script = ExtResource( 12 )
 
 [node name="pawn_game_map" type="Node2D" parent="pawn_game_nav"]
 script = ExtResource( 4 )
