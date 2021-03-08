@@ -101,6 +101,9 @@ func get_pawns_between(pos1: Vector2, pos2: Vector2, error_margin: int = 10) -> 
 		list.append(pawn)
 	return list
 
+func get_all_pawns():
+	return get_children()
+
 func pawn_selected(pawn: KinematicBody2D):
 	emit_signal("pawn_selected", pawn)
 
