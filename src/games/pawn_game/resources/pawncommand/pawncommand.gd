@@ -6,6 +6,7 @@ class_name PawnCommand
 var order: Resource
 # the pawn this command is assigned to
 var pawn: KinematicBody2D
+var tileType
 
 # where the pawn should go
 var nav_target: Vector2

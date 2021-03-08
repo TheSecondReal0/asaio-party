@@ -65,6 +65,7 @@ func create_movement_commands(amount: int = pawns.size()) -> Array:
 	for i in amount:
 		var command: PawnCommand = basic_commands.pop_back()
 		command.nav_target = pos_targets[i]
+		command.tileType = tile_node.type
 		commands.append(command)
 	
 	return commands
