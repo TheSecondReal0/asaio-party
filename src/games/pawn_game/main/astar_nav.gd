@@ -45,7 +45,7 @@ func remove_coord(coord: Vector2):
 	var id: int = coord_ids[coord]
 	astar.remove_point(id)
 	var diag_pairs: Dictionary = get_adjacent_diag_pairs(coord)
-	print("diag pairs of ", coord, ": ", diag_pairs)
+	#print("diag pairs of ", coord, ": ", diag_pairs)
 	for from_coord in diag_pairs:
 		disconnect_coords(from_coord, diag_pairs[from_coord])
 # warning-ignore:return_value_discarded
