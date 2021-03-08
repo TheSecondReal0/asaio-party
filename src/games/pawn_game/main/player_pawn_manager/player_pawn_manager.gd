@@ -56,14 +56,12 @@ puppet func receive_create_pawn(pos: Vector2, type: int):
 	create_pawn(pos, type)
 
 func pawn_died(pawn: KinematicBody2D):
-	if not is_network_master():
-		return
 	emit_signal("pawn_died", pawn)
 	rpc("receive_pawn_died", get_path_to(pawn))
 	pawn.queue_free()
 	remove_pawn_null_references()
 
-puppet func receive_pawn_died(pawn_path: String):
+remote func receive_pawn_died(pawn_path: String):
 	var pawn: KinematicBody2D = get_node(pawn_path)
 	if pawn == null:
 		return

@@ -12,4 +12,7 @@ func _physics_process(delta):
 			return
 		if body.player_id == player_id:
 			return
-		body.damage(damage * delta)
+		body.damage(calc_damage(delta))
+
+func calc_damage(delta: float):
+	return damage * delta

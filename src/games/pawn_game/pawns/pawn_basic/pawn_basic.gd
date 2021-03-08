@@ -6,6 +6,7 @@ export var base_damage: float = 20
 export var inaccuracy_denom: int = 15
 export var debug_pawn: bool = false
 
+onready var damage_area: Area2D = $damage_area
 onready var mover: Node = $mover
 onready var polygon: Polygon2D = $Polygon2D
 onready var health_bar: TextureProgress = $healthbar
@@ -55,6 +56,8 @@ func _ready():
 	connect("selected", self, "on_selected")
 # warning-ignore:return_value_discarded
 	connect("deselected", self, "on_deselected")
+	$damage_area.collision_layer = collision_layer
+	$damage_area.collision_mask = collision_mask
 	polygon.color = player_color
 	update_health_bar()
 
@@ -64,12 +67,18 @@ func _physics_process(delta):
 
 func _process(_delta):
 	health_bar.rect_rotation = -rotation_degrees
-	var collision = move_and_collide(Vector2(0,0))
-	if collision == null:
-		return
-	var collider = collision.collider
-	if collider.player_id != player_id:
-		collider.damage(base_damage * _delta)
+	damage_objects(damage_area.get_overlapping_bodies(), _delta)
+#	var collision = move_and_collide(Vector2(0,0))
+#	if collision == null:
+#		return
+#	var collider = collision.collider
+#	if collider.player_id == player_id:
+#		return
+#	if collider.has_method("calc_damage"):
+#		damage(collider.calc_damage(_delta) / 2)
+#		collider.damage(calc_damage(_delta) / 2)
+#	else:
+#		collider.damage(calc_damage(_delta))
 	#print(pawn.health)
 
 func _draw():
@@ -86,16 +95,33 @@ func movement_done():
 	last_command = command
 	command = null
 
+func damage_objects(objects: Array, delta: float):
+	for object in objects:
+		if object.player_id == player_id:
+			objects.erase(object)
+	if objects.empty():
+		return
+	var dmg: float = calc_damage(delta) / objects.size()
+	for object in objects:
+#		if object.has_method("calc_damage"):
+#			damage(object.calc_damage(delta))
+#			object.damage(dmg)
+#		else:
+		object.damage(dmg)
+
 func damage(dmg: float):
 	change_health(-dmg)
 
+func calc_damage(delta: float):
+	return base_damage * delta
+
 func change_health(dif: float):
 	if health == 0.0:
-		emit_signal("died")
 		return
 	health += dif
 	if health < 0.0:
 		health = 0.0
+		emit_signal("died")
 	if health > max_health:
 		health = max_health
 	update_health_bar()
