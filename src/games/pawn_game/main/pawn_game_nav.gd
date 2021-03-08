@@ -1,7 +1,7 @@
 extends Navigation2D
 
+onready var astar_nav: Node2D = $astar_nav
 onready var map: Node2D = $pawn_game_map
-onready var line: Line2D = $Line2D
 onready var pawns = $pawn_controller
 
 var start: Vector2 = Vector2(200, 50)
@@ -33,16 +33,6 @@ func _process(delta):
 			break
 		var inputs: Array = queued_pathing.pop_front()
 		callv("direct_pawn_to", inputs)
-
-func input() -> void:
-	var mouse_pos: Vector2 = get_global_mouse_position()
-	if Input.is_action_just_pressed("right_click"):
-		print("right click, mouse pos: ", mouse_pos)
-		direct_pawns_to(mouse_pos)#, true)
-	#if Input.is_action_just_pressed("left_click"):
-	#	print("left click, mouse pos: ", mouse_pos)
-	#	direct_pawns_to(mouse_pos, true)#, true)
-		#handle_new_movement(mouse_pos)
 
 func direct_pawns_to(pos: Vector2, rand_start: bool = false):
 	print("directing pawns to ", pos)
@@ -78,6 +68,7 @@ func random_path() -> PoolVector2Array:
 	return path()
 
 func path(start_coord: Vector2 = start, end_coord: Vector2 = end)-> PoolVector2Array:
+	return astar_nav.path(start_coord, end_coord)
 	# offset MUST be uneven, otherwise this workaround don't werk
 	var offset: Vector2 = Vector2(0.0001, 0)
 	# adding tiny amount because for some reason you can't path to the center of a tile
