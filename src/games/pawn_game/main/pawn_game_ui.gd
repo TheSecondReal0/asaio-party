@@ -1,8 +1,19 @@
 extends CanvasLayer
 
-onready var main: Node2D = get_parent()
-onready var interact_popup: PopupMenu = $interact_popup
+export var main_path: NodePath
+export var map_editor_path: NodePath
+export var shop_ui_path: NodePath
+export var resources_ui_path: NodePath
+export var interact_popup_path: NodePath
+export var map_editor_only: bool = false
 
+onready var main: Node2D = get_node(main_path)
+onready var map_editor: Control = get_node(map_editor_path)
+onready var shop_ui: Control = get_node(shop_ui_path)
+onready var resources_ui: VBoxContainer = get_node(resources_ui_path)
+onready var interact_popup: PopupMenu = get_node(interact_popup_path)
+
+signal pawn_purchased
 signal interaction_selected(interaction, tile)
 signal new_order(order)
 
@@ -11,9 +22,15 @@ func _ready():
 # warning-ignore:return_value_discarded
 	main.connect("tile_created", self, "tile_created")
 # warning-ignore:return_value_discarded
+	shop_ui.connect("pawn_purchased", self, "pawn_purchased")
+# warning-ignore:return_value_discarded
 	interact_popup.connect("interaction_selected", self, "interaction_selected")
 # warning-ignore:return_value_discarded
 	interact_popup.connect("new_order", self, "new_order")
+	if map_editor_only:
+		for child in get_children():
+			if not child == map_editor:
+				child.hide()
 
 func tile_interacted_with(tile: Node2D, input: InputEventMouseButton):
 	print(tile, " interacted with")
@@ -25,6 +42,9 @@ func tile_interacted_with(tile: Node2D, input: InputEventMouseButton):
 func tile_created(tile):
 	#print("tile created, ", tile)
 	tile.connect("interacted_with", self, "tile_interacted_with")
+
+func pawn_purchased():
+	emit_signal("pawn_purchased")
 
 func interaction_selected(interaction, tile):
 	emit_signal("interaction_selected", interaction, tile)

@@ -1,6 +1,7 @@
 extends Node2D
 
 export var main_path: NodePath
+export(String, FILE, "*.tres") var default_map_json = "res://games/pawn_game/maps/test_map.tres"
 
 onready var main: Node2D = get_node(main_path)
 onready var tile_resources: Dictionary = main.get_tile_resources()
@@ -11,6 +12,7 @@ var map_tile_nodes: Dictionary = {}
 
 signal tile_changed(pos, old_type, new_type)
 signal tile_created(tile)
+signal castle_created(tile)
 signal new_nav_poly_instance(instance)
 
 func _ready():
@@ -20,13 +22,13 @@ func _ready():
 	main.connect("interaction_selected", self, "interaction_selected")
 
 # warning-ignore:unused_argument
-func _process(delta):
-	if Input.is_action_just_pressed("r"):
-		print(map_tiles)
-		var json = tiles_to_json(map_tiles)
-		print(json)
-		var tiles = json_to_tiles(json)
-		print(tiles)
+#func _process(delta):
+#	if Input.is_action_just_pressed("r"):
+#		print(map_tiles)
+#		var json = tiles_to_json(map_tiles)
+#		print(json)
+#		var tiles = json_to_tiles(json)
+#		print(tiles)
 
 func tile_placed(pos: Vector2, type: String):
 	place_tile(pos, type, Network.get_my_id())
@@ -55,6 +57,8 @@ func place_tile(pos: Vector2, type: String, player_id: int):
 	map_tile_nodes[pos] = tile
 	emit_signal("tile_changed", pos, old_type, type)
 	emit_signal("tile_created", tile)
+	if type == "Castle":
+		emit_signal("castle_created", tile)
 	if tile.has_node("NavigationPolygonInstance"):
 		var navpoly = tile.get_node("NavigationPolygonInstance")
 		emit_signal("new_nav_poly_instance", navpoly)
@@ -157,6 +161,15 @@ func interaction_selected(interaction, tile):
 	#var group: Dictionary = get_tile_type_group(tile_coord, tile_type)
 	#print(group)
 	#print(get_adjacent_walkable_tiles_of_group(group))
+
+func load_default_json():
+	load_json(default_map_json)
+
+func load_json(file_path: String):
+	var file = File.new()
+	file.open(file_path, File.READ)
+	var json: String = file.get_as_text()
+	load_from_json(json)
 
 func load_from_json(json):
 	var tile_dict = json_to_tiles(json)

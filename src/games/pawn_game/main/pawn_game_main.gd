@@ -5,7 +5,10 @@ export (String, DIR) var tile_resource_dir = "res://games/pawn_game/map_componen
 onready var map: Node2D = $pawn_game_nav/pawn_game_map
 onready var world_ui: Node2D = $world_ui
 onready var pawn_game_ui: CanvasLayer = $pawn_game_ui
-onready var editor: Control = $pawn_game_ui/map_editor
+onready var editor: Control = pawn_game_ui.map_editor
+
+# storing how much of each resource we have
+var resources: Dictionary = {"Gold": 0}
 
 signal tile_placed(pos, type)
 signal preview_tiles(tile_coords, type)
@@ -13,6 +16,8 @@ signal tile_created(tile)
 signal interaction_selected(interaction, tile)
 signal new_order(order)
 signal box_selection_completed(start, end)
+signal pawn_purchased
+signal resource_updated(resource, value)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,6 +26,8 @@ func _ready():
 # warning-ignore:return_value_discarded
 	world_ui.connect("box_selection_completed", self, "box_selection_completed")
 # warning-ignore:return_value_discarded
+	pawn_game_ui.connect("pawn_purchased", self, "pawn_purchased")
+# warning-ignore:return_value_discarded
 	pawn_game_ui.connect("interaction_selected", self, "interaction_selected")
 # warning-ignore:return_value_discarded
 	pawn_game_ui.connect("new_order", self, "new_order")
@@ -28,6 +35,7 @@ func _ready():
 	editor.connect("tile_placed", self, "tile_placed")
 # warning-ignore:return_value_discarded
 	editor.connect("preview_tiles", self, "preview_tiles")
+	map.load_default_json()
 
 func tile_placed(pos, type):
 	#print("main tile placed")
@@ -48,7 +56,20 @@ func new_order(order: PawnOrder):
 func box_selection_completed(start: Vector2, end: Vector2):
 	emit_signal("box_selection_completed", start, end)
 
+func pawn_purchased():
+	emit_signal("pawn_purchased")
+
+func update_resource(resource: String, amount: int):
+	resources[resource] += amount
+	emit_signal("resource_updated", resource, get_resource_amount(resource))
+
+func get_resource_amount(resource: String) -> int:
+	if not resource in resources:
+		return 0
+	return resources[resource]
+
 func get_tile_resources():
+# warning-ignore:shadowed_variable
 	var resources: Array = Helpers.load_files_in_dir_with_exts(tile_resource_dir, [".tres"])
 	var res_dict: Dictionary = {}
 	for res in resources:
