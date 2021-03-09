@@ -28,6 +28,7 @@ func _ready():
 	editor.connect("tile_placed", self, "tile_placed")
 # warning-ignore:return_value_discarded
 	editor.connect("preview_tiles", self, "preview_tiles")
+	map.load_default_json()
 
 func tile_placed(pos, type):
 	#print("main tile placed")

@@ -1,7 +1,10 @@
 extends CanvasLayer
 
 onready var main: Node2D = get_parent()
+onready var map_editor: Control = $map_editor
 onready var interact_popup: PopupMenu = $interact_popup
+
+export var map_editor_only: bool = false
 
 signal interaction_selected(interaction, tile)
 signal new_order(order)
@@ -14,6 +17,10 @@ func _ready():
 	interact_popup.connect("interaction_selected", self, "interaction_selected")
 # warning-ignore:return_value_discarded
 	interact_popup.connect("new_order", self, "new_order")
+	if map_editor_only:
+		for child in get_children():
+			if not child == map_editor:
+				child.hide()
 
 func tile_interacted_with(tile: Node2D, input: InputEventMouseButton):
 	print(tile, " interacted with")
