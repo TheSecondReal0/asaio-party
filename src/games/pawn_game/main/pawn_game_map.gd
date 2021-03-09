@@ -193,7 +193,7 @@ func load_json(file_path: String):
 func load_from_json(json):
 	var tile_dict = json_to_tiles(json)
 	for key in tile_dict:
-		place_tile(key, tile_dict[key], 0)
+		queue_place_tile(key, tile_dict[key], 0)
 
 # warning-ignore:unused_argument
 func tiles_to_json(tiles: Dictionary = map_tiles) -> String:
