@@ -10,6 +10,8 @@ onready var tile_resources: Dictionary = main.get_tile_resources()
 var map_tiles: Dictionary = {}
 var map_tile_nodes: Dictionary = {}
 
+var place_tile_queue: Array = []
+
 signal tile_changed(pos, old_type, new_type)
 signal tile_created(tile)
 signal castle_created(tile)
@@ -31,8 +33,14 @@ func _ready():
 #		print(tiles)
 
 func tile_placed(pos: Vector2, type: String):
+	#queue_place_tile(pos, type, Network.get_my_id())
 	place_tile(pos, type, Network.get_my_id())
 	rpc("receive_place_tile", pos, type, Network.get_my_id())
+
+#func queue_place_tile(pos, type, player_id):
+#	var args: Array = []
+#	args.append(pos)
+#	args.append(type)
 
 func tile_destroyed(tile_node: Node2D):
 	place_tile(tile_node.global_position, "Grass", 0)
