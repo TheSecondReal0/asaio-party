@@ -104,9 +104,10 @@ func new_command(new_command: PawnCommand):
 		
 
 func movement_done():
-	if command.tileType == "Gold":
-		workProgress = 0;
-		transition(states.WORKING)
+	if command != null:
+		if command.tileType == "Gold":
+			workProgress = 0;
+			transition(states.WORKING)
 	else:
 		transition(states.IDLE)
 	

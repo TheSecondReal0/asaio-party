@@ -24,23 +24,24 @@ func _ready():
 	main.connect("interaction_selected", self, "interaction_selected")
 
 # warning-ignore:unused_argument
-#func _process(delta):
-#	if Input.is_action_just_pressed("r"):
-#		print(map_tiles)
-#		var json = tiles_to_json(map_tiles)
-#		print(json)
-#		var tiles = json_to_tiles(json)
-#		print(tiles)
+func _process(delta):
+	#for _i in 5:
+		if place_tile_queue.empty():
+			return
+		var args: Array = place_tile_queue.pop_front()
+		place_tile(args[0], args[1], args[2])
 
 func tile_placed(pos: Vector2, type: String):
-	#queue_place_tile(pos, type, Network.get_my_id())
-	place_tile(pos, type, Network.get_my_id())
+	queue_place_tile(pos, type, Network.get_my_id())
+	#place_tile(pos, type, Network.get_my_id())
 	rpc("receive_place_tile", pos, type, Network.get_my_id())
 
-#func queue_place_tile(pos, type, player_id):
-#	var args: Array = []
-#	args.append(pos)
-#	args.append(type)
+func queue_place_tile(pos, type, player_id):
+	var args: Array = []
+	args.append(pos)
+	args.append(type)
+	args.append(player_id)
+	place_tile_queue.append(args)
 
 func tile_destroyed(tile_node: Node2D):
 	place_tile(tile_node.global_position, "Grass", 0)
@@ -74,7 +75,8 @@ func place_tile(pos: Vector2, type: String, player_id: int):
 		navpoly.enabled = true
 
 remote func receive_place_tile(pos: Vector2, type: String, player_id: int):
-	place_tile(pos, type, player_id)
+	queue_place_tile(pos, type, player_id)
+	#place_tile(pos, type, player_id)
 
 func create_tile(pos: Vector2, type: String) -> Node:
 	pos = round_pos(pos)
