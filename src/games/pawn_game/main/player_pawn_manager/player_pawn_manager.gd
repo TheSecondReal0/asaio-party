@@ -136,12 +136,12 @@ func remove_pawn_null_references():
 			if pawn == null:
 				pawns_by_type[type].erase(pawn)
 
-func get_reserved_coords(excluded: PoolVector2Array = []) -> PoolVector2Array:
+func get_reserved_coords(excluded: Array = []) -> PoolVector2Array:
 	if excluded.empty():
 		return pawn_reserved_coords.values() as PoolVector2Array
 	var coords: PoolVector2Array = []
 	for pawn in pawn_reserved_coords:
-		if not pawn_reserved_coords[pawn] in excluded:
+		if not pawn in excluded:
 			coords.append(pawn_reserved_coords[pawn])
 	return coords
 
