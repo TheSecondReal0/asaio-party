@@ -49,6 +49,8 @@ signal selected
 signal deselected
 # emitted when this pawn dies lol what a loser
 signal died
+#emitted when finished working 
+signal worked(resource)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -71,6 +73,7 @@ func _physics_process(delta):
 		workProgress += delta
 		update_work_bar()
 		if workProgress > 10:
+			emit_signal("worked","Gold")
 			workProgress = 0
 
 func _process(_delta):
@@ -106,6 +109,7 @@ func movement_done():
 		transition(states.WORKING)
 	else:
 		transition(states.IDLE)
+	
 	last_command = command
 	command = null
 
