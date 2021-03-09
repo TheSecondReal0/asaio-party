@@ -88,6 +88,7 @@ func pawn_died(pawn: KinematicBody2D):
 	
 func pawn_worked(resource):
 	update_resource(resource)
+	main.update_resource(resource,1)
 
 remote func receive_pawn_died(pawn_path: String):
 	var pawn: KinematicBody2D = get_node(pawn_path)
