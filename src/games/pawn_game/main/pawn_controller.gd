@@ -132,10 +132,12 @@ remote func receive_order(order_data: Dictionary, pawn_paths: Array):
 	init_order(order, pawns)
 
 func get_reserved_coords(excluded: Array = []) -> Array:
-	var reserved: Array = []
-	for manager in managers.values():
-		reserved += manager.get_reserved_coords(excluded)
-	return reserved
+	# only gets tiles reserved by your pawns because you will just fight enemy ones
+	return get_my_manager().get_reserved_coords(excluded)
+#	var reserved: Array = []
+#	for manager in managers.values():
+#		reserved += manager.get_reserved_coords(excluded)
+#	return reserved
 
 func issue_command(pawn: KinematicBody2D, command: PawnCommand):
 	# if pawn don't exist
