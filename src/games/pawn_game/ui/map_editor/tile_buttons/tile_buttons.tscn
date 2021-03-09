@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://games/pawn_game/map_editor/tile_buttons/tile_buttons.gd" type="Script" id=1]
+[ext_resource path="res://games/pawn_game/ui/map_editor/tile_buttons/tile_buttons.gd" type="Script" id=1]
 
 [node name="tile_buttons" type="HBoxContainer"]
 anchor_top = 1.0

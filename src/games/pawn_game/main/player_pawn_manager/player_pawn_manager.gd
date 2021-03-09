@@ -1,9 +1,14 @@
 extends Node2D
 
 onready var controller: Node2D = get_parent()
+var map: Node2D
 
 var player_id: int
 var physics_layer: int
+
+# player's castle tile
+var castle: Node2D
+var castle_pos: Vector2
 
 var pawns: Array = []
 enum PAWN_TYPES {BASIC, MEDIC, GIANT}
@@ -19,10 +24,20 @@ signal pawn_deselected(pawn)
 signal pawn_died(pawn)
 
 func _ready():
+	if map == null:
+		return
+	map.connect("castle_created", self, "castle_created")
 	set_network_master(player_id)
 	if is_network_master():
 		for _i in 50:
 			create_pawn(Vector2(rand_range(50, 974), rand_range(50, 550)))
+
+func castle_created(tile: Node2D):
+	if tile.player_id != player_id:
+		return
+	castle = tile
+	castle_pos = tile.global_position
+	print("new castle: ", castle_pos)
 
 func create_pawn(pos: Vector2, type: int = PAWN_TYPES.BASIC):
 	var new_pawn: KinematicBody2D = get_pawn_scene(type).instance()

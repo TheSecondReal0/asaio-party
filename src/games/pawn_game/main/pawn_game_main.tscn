@@ -1,7 +1,7 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://games/pawn_game/main/pawn_game_ui.gd" type="Script" id=1]
-[ext_resource path="res://games/pawn_game/map_editor/map_editor.tscn" type="PackedScene" id=2]
+[ext_resource path="res://games/pawn_game/ui/map_editor/map_editor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://games/pawn_game/main/pawn_game_cam.gd" type="Script" id=3]
 [ext_resource path="res://games/pawn_game/main/pawn_game_map.gd" type="Script" id=4]
 [ext_resource path="res://games/pawn_game/main/pawn_game_main.gd" type="Script" id=5]
@@ -13,6 +13,7 @@
 [ext_resource path="res://games/pawn_game/main/player_pawn_manager/player_pawn_manager.tscn" type="PackedScene" id=11]
 [ext_resource path="res://games/pawn_game/main/astar_nav.gd" type="Script" id=12]
 [ext_resource path="res://games/pawn_game/ui/shop_ui/shop_ui.tscn" type="PackedScene" id=13]
+[ext_resource path="res://games/pawn_game/ui/resources_ui/resources_ui.tscn" type="PackedScene" id=14]
 
 [node name="pawn_game_main" type="Node2D"]
 script = ExtResource( 5 )
@@ -54,12 +55,44 @@ main_path = NodePath("../..")
 
 [node name="pawn_game_ui" type="CanvasLayer" parent="."]
 script = ExtResource( 1 )
+main_path = NodePath("..")
+map_editor_path = NodePath("map_editor")
+shop_ui_path = NodePath("shop_ui")
+resources_ui_path = NodePath("margin/resources_ui")
+interact_popup_path = NodePath("interact_popup")
+
+[node name="margin" type="MarginContainer" parent="pawn_game_ui"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="resources_ui" parent="pawn_game_ui/margin" instance=ExtResource( 14 )]
+anchor_left = 0.0
+anchor_right = 0.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 1014.0
+margin_bottom = 590.0
 
 [node name="map_editor" parent="pawn_game_ui" instance=ExtResource( 2 )]
 mouse_filter = 2
 main_path = NodePath("../..")
+pawn_game_ui_path = NodePath("..")
+map_path = NodePath("../../pawn_game_nav/pawn_game_map")
 
 [node name="shop_ui" parent="pawn_game_ui" instance=ExtResource( 13 )]
+anchor_top = 0.8
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
 mouse_filter = 2
 
 [node name="interact_popup" type="PopupMenu" parent="pawn_game_ui"]

@@ -12,6 +12,7 @@ var map_tile_nodes: Dictionary = {}
 
 signal tile_changed(pos, old_type, new_type)
 signal tile_created(tile)
+signal castle_created(tile)
 signal new_nav_poly_instance(instance)
 
 func _ready():
@@ -56,6 +57,8 @@ func place_tile(pos: Vector2, type: String, player_id: int):
 	map_tile_nodes[pos] = tile
 	emit_signal("tile_changed", pos, old_type, type)
 	emit_signal("tile_created", tile)
+	if type == "Castle":
+		emit_signal("castle_created", tile)
 	if tile.has_node("NavigationPolygonInstance"):
 		var navpoly = tile.get_node("NavigationPolygonInstance")
 		emit_signal("new_nav_poly_instance", navpoly)

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://games/pawn_game/map_editor/map_editor.gd" type="Script" id=1]
-[ext_resource path="res://games/pawn_game/map_editor/tile_buttons/tile_buttons.tscn" type="PackedScene" id=2]
+[ext_resource path="res://games/pawn_game/ui/map_editor/map_editor.gd" type="Script" id=1]
+[ext_resource path="res://games/pawn_game/ui/map_editor/tile_buttons/tile_buttons.tscn" type="PackedScene" id=2]
 
 [node name="map_editor" type="Control"]
 anchor_right = 1.0
@@ -21,13 +21,15 @@ __meta__ = {
 layer = 4
 
 [node name="tile_buttons" parent="CanvasLayer" instance=ExtResource( 2 )]
+anchor_top = 0.9
+margin_top = 5.0
 
 [node name="save_load" type="HBoxContainer" parent="CanvasLayer"]
-anchor_top = 1.0
+anchor_top = 0.9
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 10.0
-margin_top = -60.0
+margin_top = 5.0
 margin_right = -10.0
 margin_bottom = -10.0
 mouse_filter = 2
@@ -39,7 +41,7 @@ __meta__ = {
 [node name="save_button" type="Button" parent="CanvasLayer/save_load"]
 margin_left = 917.0
 margin_right = 958.0
-margin_bottom = 50.0
+margin_bottom = 45.0
 text = "Save"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -48,7 +50,7 @@ __meta__ = {
 [node name="load_button" type="Button" parent="CanvasLayer/save_load"]
 margin_left = 962.0
 margin_right = 1004.0
-margin_bottom = 50.0
+margin_bottom = 45.0
 text = "Load"
 
 [node name="save_file_dia" type="FileDialog" parent="CanvasLayer"]
@@ -60,8 +62,8 @@ window_title = "Save map json"
 resizable = true
 access = 2
 filters = PoolStringArray( "*.json" )
-current_dir = "C:/Users/Charlie/Desktop/Asaio_Pawn/0.7/asaio-party/src"
-current_path = "C:/Users/Charlie/Desktop/Asaio_Pawn/0.7/asaio-party/src/"
+current_dir = "/Documents/Godot/Godot Projects/asaio-party/src"
+current_path = "/Documents/Godot/Godot Projects/asaio-party/src/"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -75,8 +77,8 @@ window_title = "Open a File"
 mode = 0
 access = 2
 filters = PoolStringArray( "*.json" )
-current_dir = "C:/Users/Charlie/Desktop/Asaio_Pawn/0.7/asaio-party/src"
-current_path = "C:/Users/Charlie/Desktop/Asaio_Pawn/0.7/asaio-party/src/"
+current_dir = "/Documents/Godot/Godot Projects/asaio-party/src"
+current_path = "/Documents/Godot/Godot Projects/asaio-party/src/"
 [connection signal="pressed" from="CanvasLayer/save_load/save_button" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/save_load/load_button" to="." method="_on_load_button_pressed"]
 [connection signal="file_selected" from="CanvasLayer/save_file_dia" to="." method="_on_FileDialog_file_selected"]

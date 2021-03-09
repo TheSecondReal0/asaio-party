@@ -1,16 +1,13 @@
 extends Control
 
+export var pawn_price: int = 1
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+onready var buy_pawn_button: Button = $Button
 
+signal pawn_purchased
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	buy_pawn_button.connect("pressed", self, "buy_pawn_button_pressed")
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func buy_pawn_button_pressed():
+	emit_signal("pawn_purchased")

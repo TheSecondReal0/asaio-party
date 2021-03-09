@@ -172,6 +172,7 @@ puppetsync func create_pawn_managers(physics_layers: Dictionary = player_physics
 	for player_id in physics_layers.keys():
 		var manager: Node2D = player_pawn_manager_scene.instance()
 		manager.name = str(player_id)
+		manager.map = map
 		manager.player_id = player_id
 		manager.physics_layer = physics_layers[player_id]
 # warning-ignore:return_value_discarded

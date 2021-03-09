@@ -1,11 +1,14 @@
 extends Control
 
 export var main_path: NodePath
+export var pawn_game_ui_path: NodePath
+export var map_path: NodePath
 
 onready var main: Node2D = get_node(main_path)
+onready var pawn_game_ui: CanvasLayer = get_node(pawn_game_ui_path)
 onready var tile_resources: Dictionary = get_tile_resources()
 onready var tile_buttons: Node = $CanvasLayer/tile_buttons
-onready var map: Node = get_parent().get_parent().get_node("pawn_game_nav").get_node("pawn_game_map")
+onready var map: Node = get_node(map_path)
 onready var preview_tiles_node: Node = $preview_tiles
 
 var selected: String = ""
@@ -67,6 +70,7 @@ func _gui_input(event):
 			pass
 
 func type_selected(type: String):
+	print("selected")
 	selected = type
 	#preview_tile = gen_preview_tile(type)
 	mouse_filter = MOUSE_FILTER_STOP
@@ -74,6 +78,7 @@ func type_selected(type: String):
 
 # warning-ignore:unused_argument
 func type_deselected(type: String):
+	print("deselected")
 	selected = ""
 	emit_signal("preview_tiles", [], selected)
 	mouse_filter = MOUSE_FILTER_IGNORE
