@@ -23,6 +23,7 @@ var basic_pawn_scene = load("res://games/pawn_game/pawns/pawn_basic/pawn_basic.t
 signal pawn_selected(pawn)
 signal pawn_deselected(pawn)
 signal pawn_died(pawn)
+signal my_castle_created
 
 func _ready():
 	if map == null:
@@ -32,21 +33,33 @@ func _ready():
 # warning-ignore:return_value_discarded
 	main.connect("pawn_purchased", self, "pawn_purchased")
 	set_network_master(player_id)
-	if is_network_master():
-		for _i in 50:
-			create_pawn(Vector2(rand_range(50, 974), rand_range(50, 550)))
+#	if is_network_master():
+#		for _i in 50:
+#			create_pawn(Vector2(rand_range(50, 974), rand_range(50, 550)))
 
 func castle_created(tile: Node2D):
 	if tile.player_id != player_id:
 		return
+	if castle != null:
+		map.tile_destroyed(castle)
+		for pawn in get_all_pawns():
+			pawn.queue_free()
 	castle = tile
 	castle_pos = tile.global_position
-	print("new castle: ", castle_pos)
+	spawn_starting_pawns()
+	if player_id == Network.get_my_id():
+		emit_signal("my_castle_created")
+#	print("new castle: ", castle_pos)
 
 func pawn_purchased():
 	if castle == null or castle_pos == null:
 		return
 	create_pawn(castle_pos)
+
+func spawn_starting_pawns(amount: int = controller.starting_pawn_amount):
+	var positions: Array = map.get_x_walkable_tiles(castle_pos, amount).keys()
+	for pos in positions:
+		create_pawn(pos)
 
 func create_pawn(pos: Vector2, type: int = PAWN_TYPES.BASIC):
 	var new_pawn: KinematicBody2D = get_pawn_scene(type).instance()
@@ -70,7 +83,9 @@ func create_pawn(pos: Vector2, type: int = PAWN_TYPES.BASIC):
 	new_pawn.connect("deselected", self, "pawn_deselected", [new_pawn])
 # warning-ignore:return_value_discarded
 	new_pawn.connect("died", self, "pawn_died", [new_pawn])
-	new_pawn.connect("worked",self, "pawn_worked")
+	if player_id == Network.get_my_id():
+# warning-ignore:return_value_discarded
+		new_pawn.connect("worked",self, "pawn_worked")
 	add_child(new_pawn)
 	new_pawn.global_position = pos
 	if is_network_master():

@@ -23,6 +23,8 @@ func _ready():
 # warning-ignore:return_value_discarded
 	main.connect("tile_created", self, "tile_created")
 # warning-ignore:return_value_discarded
+	main.connect("my_castle_created", self, "my_castle_created")
+# warning-ignore:return_value_discarded
 	shop_ui.connect("pawn_purchased", self, "pawn_purchased")
 # warning-ignore:return_value_discarded
 	interact_popup.connect("interaction_selected", self, "interaction_selected")
@@ -57,3 +59,8 @@ func new_order(order: PawnOrder):
 
 func resource_updated(resource, value):
 	emit_signal("resource_updated", resource, value)
+
+func my_castle_created():
+	map_editor.close_editor()
+	map_editor.hide()
+	shop_ui.show()

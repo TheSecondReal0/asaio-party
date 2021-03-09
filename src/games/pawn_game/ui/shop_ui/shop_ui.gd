@@ -3,7 +3,7 @@ extends Control
 export var pawn_price: int = 1
 onready var main = get_parent().get_parent()
 
-onready var buy_pawn_button: Button = $Button
+onready var buy_pawn_button: Button = $HBoxContainer/Button
 
 signal pawn_purchased
 
