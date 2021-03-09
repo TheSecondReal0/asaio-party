@@ -9,6 +9,7 @@ var type: String
 var desc: String
 # whether or not a pawn can walk through this tile
 var walkable: bool
+var pawn_on = false
 # whether or not this tile is destructible
 var destructible: bool
 var max_health: float

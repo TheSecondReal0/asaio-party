@@ -46,6 +46,7 @@ func create_pawn(pos: Vector2, type: int = PAWN_TYPES.BASIC):
 	new_pawn.connect("deselected", self, "pawn_deselected", [new_pawn])
 # warning-ignore:return_value_discarded
 	new_pawn.connect("died", self, "pawn_died", [new_pawn])
+	new_pawn.connect("worked",self, "pawn_worked", [new_pawn])
 	add_child(new_pawn)
 	new_pawn.global_position = pos
 	if is_network_master():
@@ -60,6 +61,9 @@ func pawn_died(pawn: KinematicBody2D):
 	rpc("receive_pawn_died", get_path_to(pawn))
 	pawn.queue_free()
 	remove_pawn_null_references()
+	
+func pawn_worked(resource):
+	update_resource(resource)
 
 remote func receive_pawn_died(pawn_path: String):
 	var pawn: KinematicBody2D = get_node(pawn_path)
