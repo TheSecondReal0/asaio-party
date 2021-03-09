@@ -1,6 +1,7 @@
 extends Node2D
 
 onready var controller: Node2D = get_parent()
+onready var main: Node2D = controller.main
 var map: Node2D
 
 var player_id: int
@@ -26,7 +27,10 @@ signal pawn_died(pawn)
 func _ready():
 	if map == null:
 		return
+# warning-ignore:return_value_discarded
 	map.connect("castle_created", self, "castle_created")
+# warning-ignore:return_value_discarded
+	main.connect("pawn_purchased", self, "pawn_purchased")
 	set_network_master(player_id)
 	if is_network_master():
 		for _i in 50:
@@ -38,6 +42,11 @@ func castle_created(tile: Node2D):
 	castle = tile
 	castle_pos = tile.global_position
 	print("new castle: ", castle_pos)
+
+func pawn_purchased():
+	if castle == null or castle_pos == null:
+		return
+	create_pawn(castle_pos)
 
 func create_pawn(pos: Vector2, type: int = PAWN_TYPES.BASIC):
 	var new_pawn: KinematicBody2D = get_pawn_scene(type).instance()
