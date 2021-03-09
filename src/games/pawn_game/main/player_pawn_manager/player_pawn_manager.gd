@@ -49,7 +49,8 @@ func castle_created(tile: Node2D):
 			pawn.queue_free()
 	castle = tile
 	castle_pos = tile.global_position
-	spawn_starting_pawns()
+	if player_id == Network.get_my_id():
+		spawn_starting_pawns()
 	if player_id == Network.get_my_id():
 		emit_signal("my_castle_created")
 #	print("new castle: ", castle_pos)
@@ -125,6 +126,8 @@ remote func receive_pawn_died(pawn_path: String):
 	remove_pawn_null_references()
 
 func remove_pawn_null_references():
+	while null in pawn_reserved_coords:
+		pawn_reserved_coords.erase(null)
 	for pawn in pawns:
 		if pawn == null:
 			pawns.erase(pawn)
