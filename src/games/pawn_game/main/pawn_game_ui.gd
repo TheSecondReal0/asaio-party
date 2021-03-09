@@ -16,6 +16,7 @@ onready var interact_popup: PopupMenu = get_node(interact_popup_path)
 signal pawn_purchased
 signal interaction_selected(interaction, tile)
 signal new_order(order)
+signal resource_updated(resource, value)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,6 +28,8 @@ func _ready():
 	interact_popup.connect("interaction_selected", self, "interaction_selected")
 # warning-ignore:return_value_discarded
 	interact_popup.connect("new_order", self, "new_order")
+# warning-ignore:return_value_discarded
+	main.connect("resource_updated", self, "resource_updated")
 	if map_editor_only:
 		for child in get_children():
 			if not child == map_editor:
@@ -51,3 +54,6 @@ func interaction_selected(interaction, tile):
 
 func new_order(order: PawnOrder):
 	emit_signal("new_order", order)
+
+func resource_updated(resource, value):
+	emit_signal("resource_updated", resource, value)
