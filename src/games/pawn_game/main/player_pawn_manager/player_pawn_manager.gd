@@ -1,9 +1,15 @@
 extends Node2D
 
 onready var controller: Node2D = get_parent()
+onready var main: Node2D = controller.main
+var map: Node2D
 
 var player_id: int
 var physics_layer: int
+
+# player's castle tile
+var castle: Node2D
+var castle_pos: Vector2
 
 var pawns: Array = []
 enum PAWN_TYPES {BASIC, MEDIC, GIANT}
@@ -19,10 +25,28 @@ signal pawn_deselected(pawn)
 signal pawn_died(pawn)
 
 func _ready():
+	if map == null:
+		return
+# warning-ignore:return_value_discarded
+	map.connect("castle_created", self, "castle_created")
+# warning-ignore:return_value_discarded
+	main.connect("pawn_purchased", self, "pawn_purchased")
 	set_network_master(player_id)
 	if is_network_master():
 		for _i in 50:
 			create_pawn(Vector2(rand_range(50, 974), rand_range(50, 550)))
+
+func castle_created(tile: Node2D):
+	if tile.player_id != player_id:
+		return
+	castle = tile
+	castle_pos = tile.global_position
+	print("new castle: ", castle_pos)
+
+func pawn_purchased():
+	if castle == null or castle_pos == null:
+		return
+	create_pawn(castle_pos)
 
 func create_pawn(pos: Vector2, type: int = PAWN_TYPES.BASIC):
 	var new_pawn: KinematicBody2D = get_pawn_scene(type).instance()
@@ -46,6 +70,7 @@ func create_pawn(pos: Vector2, type: int = PAWN_TYPES.BASIC):
 	new_pawn.connect("deselected", self, "pawn_deselected", [new_pawn])
 # warning-ignore:return_value_discarded
 	new_pawn.connect("died", self, "pawn_died", [new_pawn])
+	new_pawn.connect("worked",self, "pawn_worked", [new_pawn])
 	add_child(new_pawn)
 	new_pawn.global_position = pos
 	if is_network_master():
@@ -60,6 +85,10 @@ func pawn_died(pawn: KinematicBody2D):
 	rpc("receive_pawn_died", get_path_to(pawn))
 	pawn.queue_free()
 	remove_pawn_null_references()
+	
+func pawn_worked(resource):
+	update_resource(resource)
+	main.update_resource(resource,1)
 
 remote func receive_pawn_died(pawn_path: String):
 	var pawn: KinematicBody2D = get_node(pawn_path)
@@ -100,6 +129,9 @@ func get_pawns_between(pos1: Vector2, pos2: Vector2, error_margin: int = 10) -> 
 			continue
 		list.append(pawn)
 	return list
+
+func get_all_pawns():
+	return get_children()
 
 func pawn_selected(pawn: KinematicBody2D):
 	emit_signal("pawn_selected", pawn)

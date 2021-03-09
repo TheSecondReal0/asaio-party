@@ -22,6 +22,9 @@ puppet var player_physics_layers: Dictionary = {}
 # player pawn managers keyed by network ID
 var managers: Dictionary = {}
 
+var health_sync_delay: float = 1.0
+var time_since_health_sync: float = 0.0
+
 # warning-ignore:unused_signal
 #signal command_issued(command_data)
 
@@ -42,6 +45,32 @@ func _ready():
 	if is_network_master():
 		rset("player_physics_layers", player_physics_layers)
 		rpc("create_pawn_managers", player_physics_layers)
+
+func process(delta):
+	if not get_tree().is_network_server():
+		return
+	time_since_health_sync += delta
+	if time_since_health_sync > health_sync_delay:
+		sync_pawn_health()
+		time_since_health_sync = 0.0
+
+func sync_pawn_health():
+	if not get_tree().is_network_server():
+		return
+	var pawns: Array = []
+	for manager in managers.values():
+		pawns += manager.get_all_pawns()
+	var pawn_health: Dictionary = {}
+	for pawn in pawns:
+		pawn_health[get_path_to(pawn)] = pawn.health
+	rpc("receive_pawn_health", pawn_health)
+
+puppet func receive_pawn_health(pawn_health: Dictionary):
+	for path in pawn_health:
+		var pawn = get_node_or_null(path)
+		if pawn == null:
+			continue
+		pawn.health = pawn_health[path]
 
 # for when a new order comes in locally AKA from this client
 func new_order(order: PawnOrder, pawns: Array = selected_pawns.duplicate()):
@@ -143,6 +172,7 @@ puppetsync func create_pawn_managers(physics_layers: Dictionary = player_physics
 	for player_id in physics_layers.keys():
 		var manager: Node2D = player_pawn_manager_scene.instance()
 		manager.name = str(player_id)
+		manager.map = map
 		manager.player_id = player_id
 		manager.physics_layer = physics_layers[player_id]
 # warning-ignore:return_value_discarded
