@@ -86,55 +86,64 @@ func create_tile(pos: Vector2, type: String) -> Node:
 	new_tile.global_position = pos
 	return new_tile
 
-func get_tile_type_group(coord: Vector2, type: String, diagonal: bool = true, include_self: bool = true) -> Dictionary:
+func get_tile_type_group(coord: Vector2, type: String, diagonal: bool = true, excluded: Array = []) -> Dictionary:
 	var tiles: Dictionary = {}
 	var to_check: Array = [coord]
 	while not to_check.empty():
 		for vec in to_check:
-			var adjacent: Dictionary = get_adjacent_tiles_of_type(vec, type, diagonal, include_self)
+			var adjacent: Dictionary = get_adjacent_tiles_of_type(vec, type, diagonal)
 			for tile_coord in adjacent:
 				if tile_coord in tiles:
 					continue
 				tiles[tile_coord] = adjacent[tile_coord]
 				to_check.append(tile_coord)
 			to_check.erase(vec)
+	for coord in tiles:
+		if coord in excluded:
+# warning-ignore:return_value_discarded
+			tiles.erase(coord)
 	return tiles
 
-func get_x_walkable_tiles(coord: Vector2, amount: int, diagonal: bool = false, include_self: bool = false) -> Dictionary:
+func get_x_walkable_tiles(coord: Vector2, amount: int, diagonal: bool = false, excluded: Array = []) -> Dictionary:
 	coord = round_pos(coord)
 	var tiles: Dictionary = {}
 	var to_check: Array = [coord]
 	while tiles.size() < amount:
 		var vec: Vector2 = to_check.pop_front()
-		if is_tile_type_walkable(map_tiles[vec]):
+		if is_tile_type_walkable(map_tiles[vec]) and not vec in excluded:
 			tiles[vec] = map_tiles[vec]
 		if tiles.size() == amount:
 			break
-		for coord in get_adjacent_walkable_tiles(vec, diagonal, include_self):
+		for coord in get_adjacent_walkable_tiles(vec, diagonal):
 			if coord in tiles:
 				continue
 			to_check.append(coord)
 	return tiles
 
-func get_adjacent_tiles_of_type(coord: Vector2, type: String, diagonal: bool = false, include_self: bool = false) -> Dictionary:
+func get_adjacent_tiles_of_type(coord: Vector2, type: String, diagonal: bool = false) -> Dictionary:
 	var tiles: Dictionary = {}
-	var adjacent: Dictionary = get_adjacent_tiles(coord, diagonal, include_self)
+	var adjacent: Dictionary = get_adjacent_tiles(coord, diagonal)
 	for coord in adjacent:
 		if adjacent[coord] == type:
 			tiles[coord] = adjacent[coord]
 	return tiles
 
-func get_adjacent_walkable_tiles_of_group(tiles: Dictionary, diagonal: bool = false, include_self: bool = false) -> Dictionary:
+func get_adjacent_walkable_tiles_of_group(tiles: Dictionary, diagonal: bool = false, excluded: Array = []) -> Dictionary:
 	var walkable: Dictionary = {}
 	for coord in tiles:
-		var adjacent: Dictionary = get_adjacent_walkable_tiles(coord, diagonal, include_self)
+		var adjacent: Dictionary = get_adjacent_walkable_tiles(coord, diagonal)
 		for vec in adjacent:
+			#if not vec in excluded:
 			walkable[vec] = adjacent[vec]
-	return walkable
+	var returned: Dictionary = {}
+	for coord in walkable:
+		if not coord in excluded:
+			returned[coord] = walkable[coord]
+	return returned
 
-func get_adjacent_walkable_tiles(coord: Vector2, diagonal: bool = false, include_self: bool = false) -> Dictionary:
+func get_adjacent_walkable_tiles(coord: Vector2, diagonal: bool = false) -> Dictionary:
 	var walkable: Dictionary = {}
-	var adjacent: Dictionary = get_adjacent_tiles(coord, diagonal, include_self)
+	var adjacent: Dictionary = get_adjacent_tiles(coord, diagonal)
 	for coord in adjacent:
 		if is_tile_type_walkable(adjacent[coord]):
 			walkable[coord] = adjacent[coord]

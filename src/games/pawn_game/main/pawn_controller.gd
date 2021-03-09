@@ -88,6 +88,7 @@ func new_order(order: PawnOrder, pawns: Array = selected_pawns.duplicate()):
 # generally initiates orders (gives order info to create commands + issues commands to pawns)
 # both for orders created locally and received remotely
 func init_order(order: PawnOrder, pawns: Array):
+	order.pawn_controller = self
 	order.pawn_game_map = map
 	for pawn in pawns:
 		if pawn == null:
@@ -129,6 +130,12 @@ remote func receive_order(order_data: Dictionary, pawn_paths: Array):
 			continue
 		pawns.append(pawn)
 	init_order(order, pawns)
+
+func get_reserved_coords(excluded: Array = []) -> Array:
+	var reserved: Array = []
+	for manager in managers.values():
+		reserved += manager.get_reserved_coords(excluded)
+	return reserved
 
 func issue_command(pawn: KinematicBody2D, command: PawnCommand):
 	# if pawn don't exist

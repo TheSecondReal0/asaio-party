@@ -29,6 +29,7 @@ var selected = false
 var old_state
 var mousePos:Vector2
 var workProgress = 0
+var nav_target: Vector2
 var state: int = states.IDLE
 enum states {IDLE, MOVING, COMBAT, WORKING, HAULING}
 
@@ -101,7 +102,6 @@ func new_command(new_command: PawnCommand):
 	command = new_command
 	if command.nav_target != null:
 		nav.request_path_to(command.nav_target, self)
-		
 
 func movement_done():
 	if command != null:
@@ -164,6 +164,11 @@ func draw_outline():
 	for i in poly.size():
 		draw_line(poly[i - 1], poly[i], outline_color, outline_thickness)
 
+func get_nav_target():
+	if nav_target == null:
+		return global_position
+	return nav_target
+
 func on_selected():
 	#polygon.hide()
 	update()
@@ -192,6 +197,7 @@ func set_selected(_selected: bool):
 		emit_signal("deselected")
 
 func set_path(new_path):
-	transition(states.MOVING)
 	#print("received path: ", new_path)
+	nav_target = new_path[-1]
 	mover.path = new_path
+	transition(states.MOVING)
