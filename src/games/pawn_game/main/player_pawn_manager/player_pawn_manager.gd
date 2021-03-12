@@ -126,11 +126,12 @@ remote func receive_pawn_died(pawn_path: String):
 	remove_pawn_null_references()
 
 func remove_pawn_null_references():
-	while null in pawn_reserved_coords:
+	for pawn in pawn_reserved_coords:
 # warning-ignore:return_value_discarded
-		pawn_reserved_coords.erase(null)
+		if pawn == null or not is_instance_valid(pawn):
+			pawn_reserved_coords.erase(pawn)
 	for pawn in pawns:
-		if pawn == null:
+		if pawn == null or not is_instance_valid(pawn):
 			pawns.erase(pawn)
 	for type in pawns_by_type.keys():
 		for pawn in pawns_by_type[type]:
@@ -138,11 +139,14 @@ func remove_pawn_null_references():
 				pawns_by_type[type].erase(pawn)
 
 func get_reserved_coords(excluded: Array = []) -> PoolVector2Array:
+	remove_pawn_null_references()
 	if excluded.empty():
 		return pawn_reserved_coords.values() as PoolVector2Array
 	var coords: PoolVector2Array = []
 	for pawn in pawn_reserved_coords:
 		if not pawn in excluded:
+			if not is_instance_valid(pawn):
+				continue
 			coords.append(pawn_reserved_coords[pawn])
 	return coords
 

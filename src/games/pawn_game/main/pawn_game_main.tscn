@@ -34,7 +34,7 @@ script = ExtResource( 12 )
 [node name="pawn_game_map" type="Node2D" parent="pawn_game_nav"]
 script = ExtResource( 4 )
 main_path = NodePath("../..")
-tiles_per_frame = 100
+tiles_per_frame = 25
 
 [node name="map_generator" type="Node2D" parent="pawn_game_nav"]
 script = ExtResource( 15 )

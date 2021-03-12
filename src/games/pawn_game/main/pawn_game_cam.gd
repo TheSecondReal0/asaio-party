@@ -1,7 +1,7 @@
 extends Camera2D
 
-var top_left_bound: Vector2 = Vector2(-1000, -600)
-var bottom_right_bound: Vector2 = Vector2(1000, 600)
+var top_left_bound: Vector2 = Vector2(-1500, -900)
+var bottom_right_bound: Vector2 = Vector2(1500, 900)
 
 # storage of cam velocity, for inertial cam moving
 var velocity: Vector2 = Vector2(0, 0)
