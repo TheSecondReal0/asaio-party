@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://games/pawn_game/main/pawn_game_ui.gd" type="Script" id=1]
 [ext_resource path="res://games/pawn_game/ui/map_editor/map_editor.tscn" type="PackedScene" id=2]
@@ -14,10 +14,12 @@
 [ext_resource path="res://games/pawn_game/main/astar_nav.gd" type="Script" id=12]
 [ext_resource path="res://games/pawn_game/ui/shop_ui/shop_ui.tscn" type="PackedScene" id=13]
 [ext_resource path="res://games/pawn_game/ui/resources_ui/resources_ui.tscn" type="PackedScene" id=14]
+[ext_resource path="res://games/pawn_game/main/map_generator.gd" type="Script" id=15]
 
 [node name="pawn_game_main" type="Node2D"]
 script = ExtResource( 5 )
 tile_resource_dir = "res://games/pawn_game/map_components/tiles/tile_resources"
+release_mode = false
 
 [node name="pawn_game_cam" type="Camera2D" parent="."]
 position = Vector2( 512, 300 )
@@ -30,9 +32,16 @@ script = ExtResource( 6 )
 [node name="astar_nav" type="Node2D" parent="pawn_game_nav"]
 script = ExtResource( 12 )
 
+[node name="map_generator" type="Node2D" parent="pawn_game_nav"]
+script = ExtResource( 15 )
+width = 150
+height = 90
+gold_threshold = 0.2
+
 [node name="pawn_game_map" type="Node2D" parent="pawn_game_nav"]
 script = ExtResource( 4 )
 main_path = NodePath("../..")
+tiles_per_frame = 100
 
 [node name="pawn_controller" type="Node2D" parent="pawn_game_nav"]
 script = ExtResource( 10 )
@@ -95,6 +104,7 @@ margin_top = 5.0
 margin_right = -10.0
 margin_bottom = -10.0
 mouse_filter = 2
+pawn_price = 10
 
 [node name="interact_popup" type="PopupMenu" parent="pawn_game_ui"]
 margin_right = 20.0

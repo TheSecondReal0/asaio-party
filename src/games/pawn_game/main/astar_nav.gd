@@ -27,6 +27,8 @@ func path(start: Vector2, end: Vector2):
 	var start_id: int = astar.get_closest_point(start)
 	var end_id: int = astar.get_closest_point(end)
 	var astar_path: PoolVector2Array = astar.get_point_path(start_id, end_id)
+	if astar_path.empty():
+		return astar_path
 	if astar_path[-1] != end:
 		astar_path.append(end)
 	return astar_path
