@@ -8,8 +8,6 @@ export var gold_threshold: float = .25
 var simplex: OpenSimplexNoise = OpenSimplexNoise.new()
 var simplex_seed: int = randi()#2360192022#randi()
 
-var map_coord_noise: Dictionary = {}
-
 var map_gen_order: PoolStringArray = ["Mountain", "Gold"]
 
 var simplex_settings: Dictionary = {
@@ -28,12 +26,16 @@ var simplex_settings: Dictionary = {
 	}, 
 }
 
+signal map_generated(map_tile_types)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-#	print(randi())
-	pass # Replace with function body.
+	if get_tree().is_network_server():
+		rpc("receive_seed", simplex_seed)
+		generate_map()
 
-func generate_map() -> Dictionary:
+func generate_map():
+	print("generating map")
 	var map_layers: Dictionary = {}
 	for type in map_gen_order:
 		config_simplex(type)
@@ -52,15 +54,11 @@ func generate_map() -> Dictionary:
 			map_tile_types[coord] = "Grass"
 #	for coord in map_coord_noise:
 #		map_tile_types[coord] = noise_to_tile_type(map_coord_noise[coord])
-	return map_tile_types
+	emit_signal("map_generated", map_tile_types)
 
-func noise_to_tile_type(noise: float):
-	var type: String = "Grass"
-	if noise < -.1:
-		type = "Mountain"
-	if noise > .34:
-		type = "Gold"
-	return type
+puppet func receive_seed(map_seed: int):
+	simplex_seed = map_seed
+	generate_map()
 
 func gen_map_noise() -> Dictionary:
 	var coord_noise = get_coord_noise()

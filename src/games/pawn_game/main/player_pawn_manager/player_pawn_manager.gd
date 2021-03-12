@@ -127,6 +127,7 @@ remote func receive_pawn_died(pawn_path: String):
 
 func remove_pawn_null_references():
 	while null in pawn_reserved_coords:
+# warning-ignore:return_value_discarded
 		pawn_reserved_coords.erase(null)
 	for pawn in pawns:
 		if pawn == null:

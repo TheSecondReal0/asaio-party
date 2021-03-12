@@ -24,7 +24,8 @@ func _ready():
 	main.connect("tile_placed", self, "tile_placed")
 # warning-ignore:return_value_discarded
 	main.connect("interaction_selected", self, "interaction_selected")
-	create_procedural_map()
+# warning-ignore:return_value_discarded
+	generator.connect("map_generated", self, "map_generated")
 
 # warning-ignore:unused_argument
 func _process(delta):
@@ -39,8 +40,7 @@ func tile_placed(pos: Vector2, type: String):
 	#place_tile(pos, type, Network.get_my_id())
 	rpc("receive_place_tile", pos, type, Network.get_my_id())
 
-func create_procedural_map():
-	var map_coord_type: Dictionary = generator.generate_map()
+func map_generated(map_coord_type: Dictionary):
 	for coord in map_coord_type:
 		queue_place_tile(coord, map_coord_type[coord], 0)
 

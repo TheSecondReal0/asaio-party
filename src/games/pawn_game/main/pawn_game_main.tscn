@@ -22,7 +22,6 @@ tile_resource_dir = "res://games/pawn_game/map_components/tiles/tile_resources"
 release_mode = false
 
 [node name="pawn_game_cam" type="Camera2D" parent="."]
-position = Vector2( 512, 300 )
 current = true
 script = ExtResource( 3 )
 
@@ -32,16 +31,16 @@ script = ExtResource( 6 )
 [node name="astar_nav" type="Node2D" parent="pawn_game_nav"]
 script = ExtResource( 12 )
 
-[node name="map_generator" type="Node2D" parent="pawn_game_nav"]
-script = ExtResource( 15 )
-width = 150
-height = 90
-gold_threshold = 0.2
-
 [node name="pawn_game_map" type="Node2D" parent="pawn_game_nav"]
 script = ExtResource( 4 )
 main_path = NodePath("../..")
 tiles_per_frame = 100
+
+[node name="map_generator" type="Node2D" parent="pawn_game_nav"]
+script = ExtResource( 15 )
+width = 150
+height = 90
+gold_threshold = 0.25
 
 [node name="pawn_controller" type="Node2D" parent="pawn_game_nav"]
 script = ExtResource( 10 )

@@ -120,7 +120,7 @@ func damage_objects(objects: Array, delta: float):
 			objects.erase(object)
 	if objects.empty():
 		return
-	var dmg: float = calc_damage(delta) / objects.size()
+	var dmg: float = calc_damage(delta)# / objects.size()
 	for object in objects:
 #		if object.has_method("calc_damage"):
 #			damage(object.calc_damage(delta))
