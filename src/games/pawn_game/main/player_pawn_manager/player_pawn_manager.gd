@@ -146,6 +146,7 @@ func get_reserved_coords(excluded: Array = []) -> PoolVector2Array:
 	for pawn in pawn_reserved_coords:
 		if not pawn in excluded:
 			if not is_instance_valid(pawn):
+				print("pawn instance not valid")
 				continue
 			coords.append(pawn_reserved_coords[pawn])
 	return coords
