@@ -14,6 +14,8 @@ var map_tile_nodes: Dictionary = {}
 
 var place_tile_queue: Array = []
 
+var map_created: bool = false
+
 signal tile_changed(pos, old_type, new_type)
 signal tile_created(tile)
 signal castle_created(tile)
@@ -29,8 +31,15 @@ func _ready():
 
 # warning-ignore:unused_argument
 func _process(delta):
+	if place_tile_queue.empty():
+		if not map_created:
+			print("map created")
+			map_created = true
+		return
 	for _i in tiles_per_frame:
 		if place_tile_queue.empty():
+			print("map created")
+			map_created = true
 			return
 		var args: Array = place_tile_queue.pop_front()
 		place_tile(args[0], args[1], args[2])
@@ -41,6 +50,7 @@ func tile_placed(pos: Vector2, type: String):
 	rpc("receive_place_tile", pos, type, Network.get_my_id())
 
 func map_generated(map_coord_type: Dictionary):
+	print("creating map")
 	for coord in map_coord_type:
 		queue_place_tile(coord, map_coord_type[coord], 0)
 
