@@ -39,6 +39,7 @@ tiles_per_frame = 25
 script = ExtResource( 15 )
 width = 200
 height = 120
+water_threshold = -0.4
 
 [node name="pawn_controller" type="Node2D" parent="pawn_game_nav"]
 script = ExtResource( 10 )

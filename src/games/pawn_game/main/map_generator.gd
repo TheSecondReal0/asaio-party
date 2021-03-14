@@ -3,6 +3,7 @@ extends Node2D
 export var width: int = 100
 export var height: int = 60
 export var mountain_threshold: float = .1
+export var water_threshold: float = -.3
 export var gold_threshold: float = .25
 
 var simplex: OpenSimplexNoise = OpenSimplexNoise.new()
@@ -49,6 +50,9 @@ func generate_map():
 				map_tile_types[coord] = "Gold"
 				continue
 			map_tile_types[coord] = "Mountain"
+			continue
+		elif mountain_layer[coord] < water_threshold:
+			map_tile_types[coord] = "Water"
 			continue
 		else:
 			map_tile_types[coord] = "Grass"
