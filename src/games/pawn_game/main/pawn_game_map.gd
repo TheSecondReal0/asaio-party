@@ -15,9 +15,13 @@ var map_tile_nodes: Dictionary = {}
 var place_tile_queue: Array = []
 
 var map_created: bool = false
+var map_start_time
+var map_end_time
 
 signal tile_changed(pos, old_type, new_type)
 signal tile_created(tile)
+signal walkable_tile_created(pos, movement_cost)
+signal walkable_tile_destroyed(pos)
 signal castle_created(tile)
 signal new_nav_poly_instance(instance)
 
@@ -35,11 +39,15 @@ func _process(delta):
 		if not map_created:
 			print("map created")
 			map_created = true
+			map_end_time = OS.get_system_time_msecs()
+			print(float(map_end_time - map_start_time) / 1000)
 		return
 	for _i in tiles_per_frame:
 		if place_tile_queue.empty():
 			print("map created")
 			map_created = true
+			map_end_time = OS.get_system_time_msecs()
+			print(float(map_end_time - map_start_time) / 1000)
 			return
 		var args: Array = place_tile_queue.pop_front()
 		place_tile(args[0], args[1], args[2])
@@ -51,6 +59,7 @@ func tile_placed(pos: Vector2, type: String):
 
 func map_generated(map_coord_type: Dictionary):
 	print("creating map")
+	map_start_time = OS.get_system_time_msecs()
 	for coord in map_coord_type:
 		queue_place_tile(coord, map_coord_type[coord], 0)
 
@@ -80,10 +89,15 @@ func place_tile(pos: Vector2, type: String, player_id: int):
 	map_tiles[pos] = type
 	var tile = create_tile(pos, type)
 	tile.player_id = player_id
+	if old_type != null:
+		if is_tile_type_walkable(old_type):
+			emit_signal("walkable_tile_destroyed", pos)
 	tile.connect("tile_destroyed", self, "tile_destroyed")
 	map_tile_nodes[pos] = tile
 	emit_signal("tile_changed", pos, old_type, type)
 	emit_signal("tile_created", tile)
+	if is_tile_type_walkable(type):
+		emit_signal("walkable_tile_created", pos, get_movement_cost(pos))
 	if type == "Castle":
 		emit_signal("castle_created", tile)
 	if tile.has_node("NavigationPolygonInstance"):
@@ -185,6 +199,9 @@ func get_adjacent_tiles(coord: Vector2, diagonal: bool = true, include_self: boo
 
 func is_tile_type_walkable(type: String):
 	return tile_resources[type].walkable
+
+func get_movement_cost(coord: Vector2) -> float:
+	return tile_resources[map_tiles[coord]].movement_cost
 
 # warning-ignore:unused_argument
 # warning-ignore:unused_argument

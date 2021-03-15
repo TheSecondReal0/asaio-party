@@ -20,9 +20,11 @@ func move(delta: float):
 	if current_target == null:
 		emit_signal("movement_done")
 		return
+	if target != current_target:
+		pawn.look_at(current_target)
 	target = current_target
 	# look at target
-	pawn.look_at(target)
+	#pawn.look_at(target)
 	# do movement stuff -----------------------------------------
 	var travel_vec: Vector2 = get_travel_vec(delta)
 	# move in dir, collide and slide against anything in the way
@@ -60,7 +62,7 @@ func get_travel_vec(delta: float, targ: Vector2 = target, from: Vector2 = global
 	var dir_to: Vector2 = from.direction_to(targ)
 	var distance_to: float = from.distance_to(targ)
 	# clamped to avoid pawn from constantly missing target
-	var travel_vec: Vector2 = (dir_to * speed).clamped(distance_to / delta)
+	var travel_vec: Vector2 = (dir_to * speed / get_movement_cost_ratio()).clamped(distance_to / delta)
 	return travel_vec
 
 func check_if_at_target(targ: Vector2 = target, from: Vector2 = global_position) -> bool:
@@ -76,6 +78,12 @@ func check_if_moving(pos_dif: Vector2) -> bool:
 	if pawn.debug_pawn:
 		print(avg)
 	return is_moving
+
+func get_movement_cost_ratio() -> float:
+	return get_parent().controller.get_movement_cost_ratio(global_position)
+
+func get_movement_cost():
+	return get_parent().controller.get_movement_cost(global_position)
 
 func avg_array(array) -> int:
 	var sum: int = 0

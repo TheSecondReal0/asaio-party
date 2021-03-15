@@ -9,6 +9,7 @@ export (String, MULTILINE) var desc
 export var player_accessible: bool = false
 # whether or not a pawn can walk through this tile
 export var walkable: bool
+export var movement_cost: float = 10.0
 # whether or not this tile is destructible
 export var destructible: bool
 export var health: int = 100

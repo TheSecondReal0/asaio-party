@@ -189,6 +189,12 @@ func get_my_pawns() -> Array:
 func get_my_manager():
 	return managers[Network.get_my_id()]
 
+func get_movement_cost_ratio(coord: Vector2) -> float:
+	return get_movement_cost(coord) / 10.0
+
+func get_movement_cost(coord: Vector2) -> float:
+	return map.get_movement_cost(Vector2(stepify(coord.x, 20), stepify(coord.y, 20)))
+
 func pawn_selected(pawn: Node):
 	#print("pawn selected: ", pawn)
 	selected_pawns.append(pawn)

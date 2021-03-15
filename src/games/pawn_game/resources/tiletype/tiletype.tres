@@ -9,6 +9,7 @@ type = ""
 desc = ""
 player_accessible = false
 walkable = false
+movement_cost = 10.0
 destructible = false
 health = 100
 damage_pawns = false

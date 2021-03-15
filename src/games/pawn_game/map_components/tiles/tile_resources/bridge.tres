@@ -9,6 +9,7 @@ type = "Bridge"
 desc = ""
 player_accessible = false
 walkable = true
+movement_cost = 1.5
 destructible = false
 health = 100
 damage_pawns = false

@@ -5,12 +5,18 @@ onready var map: Node2D = get_node("../pawn_game_map")
 # {coordinate: astar id}
 var coord_ids: Dictionary = {}
 
-var astar: AStar2D = AStar2D.new()#load("res://games/pawn_game/resources/astar/basic_astar/basic_astar.gd").new()
+var astar: AStar2D = AStar2D.new()#load("res://games/pawn_game/resources/astar/basic_astar/basic_astar.gd").new()#AStar2D.new()
 
 func _ready():
 # warning-ignore:return_value_discarded
-	map.connect("tile_changed", self, "tile_changed")
+	#map.connect("tile_changed", self, "tile_changed")
+# warning-ignore:return_value_discarded
+	map.connect("walkable_tile_created", self, "walkable_tile_created")
+# warning-ignore:return_value_discarded
+	map.connect("walkable_tile_destroyed", self, "walkable_tile_destroyed")
 
+# NOT CALLED ANYMORE
+# TRANSITIONED TO walkable_tile_created() AND walkable_tile_destroyed()
 func tile_changed(coord: Vector2, old_type, new_type: String):
 	var old_walkable: bool
 	if old_type == null:
@@ -22,6 +28,12 @@ func tile_changed(coord: Vector2, old_type, new_type: String):
 		remove_coord(coord)
 	if new_walkable:
 		add_coord(coord)
+
+func walkable_tile_created(coord: Vector2, movement_cost: float):
+	add_coord(coord, movement_cost)
+
+func walkable_tile_destroyed(coord: Vector2):
+	remove_coord(coord)
 
 func path(start: Vector2, end: Vector2):
 	var start_id: int = astar.get_closest_point(start)
