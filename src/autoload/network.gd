@@ -24,12 +24,12 @@ func host():
 	#mapGenerator.generateMapCoords(Vector2(512, 300), 0, 10000, 150, PI / 40, 5, 1)
 	server = true
 	clients = []
-	#peer = WebSocketServer.new()
-	#peer.listen(port, PoolStringArray(), true)
-	#get_tree().set_network_peer(peer)
-	peer = NetworkedMultiplayerENet.new()
-	peer.create_server(port, 100)
-	get_tree().network_peer = peer
+	peer = WebSocketServer.new()
+	peer.listen(port, PoolStringArray(), true)
+	get_tree().set_network_peer(peer)
+	#peer = NetworkedMultiplayerENet.new()
+	#peer.create_server(port, 100)
+	#get_tree().network_peer = peer
 # warning-ignore:return_value_discarded
 	get_tree().change_scene_to(load("res://assets/main/main.tscn"))
 	myID = 1
@@ -38,16 +38,20 @@ func host():
 	colors[1] = myColor
 	print("Server started")
 
-func client(ip):
+func client(ip: String):
 	server = false
 	clients = []
-	#peer = WebSocketClient.new()
-	#var url = "" + str(ip) + ":" + str(port) # You use "ws://" at the beginning of the address for WebSocket connections
-	#var error = peer.connect_to_url(url, PoolStringArray(), true)
-	#get_tree().set_network_peer(peer)
-	peer = NetworkedMultiplayerENet.new()
-	peer.create_client(ip, port)
-	get_tree().network_peer = peer
+	peer = WebSocketClient.new()
+	var url: String
+	if ":" in ip:
+		url = ip
+	else:
+		url = "" + str(ip) + ":" + str(port) # You use "ws://" at the beginning of the address for WebSocket connections
+	var error = peer.connect_to_url(url, PoolStringArray(), true)
+	get_tree().set_network_peer(peer)
+	#peer = NetworkedMultiplayerENet.new()
+	#peer.create_client(ip, port)
+	#get_tree().network_peer = peer
 	set_network_master(1)
 	print("connecting to " + ip)
 
@@ -156,10 +160,10 @@ func _ready():
 # warning-ignore:return_value_discarded
 	get_tree().connect("server_disconnected", self, "_server_disconnected")
 
-#func _process(delta):
-#	if peer != null:
-#		if server:
-#			if peer.is_listening():
-#				peer.poll()
-#		elif (peer.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED || peer.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTING):
-#			peer.poll()
+func _process(delta):
+	if peer != null:
+		if server:
+			if peer.is_listening():
+				peer.poll()
+		elif (peer.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED || peer.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTING):
+			peer.poll()

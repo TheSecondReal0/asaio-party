@@ -40,14 +40,18 @@ func _process(delta):
 			print("map created")
 			map_created = true
 			map_end_time = OS.get_system_time_msecs()
+			if map_start_time == null:
+				print("map start time is null")
+				return
 			print(float(map_end_time - map_start_time) / 1000)
 		return
 	for _i in tiles_per_frame:
 		if place_tile_queue.empty():
-			print("map created")
-			map_created = true
-			map_end_time = OS.get_system_time_msecs()
-			print(float(map_end_time - map_start_time) / 1000)
+			if not map_created:
+				print("map created")
+				map_created = true
+				map_end_time = OS.get_system_time_msecs()
+				print(float(map_end_time - map_start_time) / 1000)
 			return
 		var args: Array = place_tile_queue.pop_front()
 		place_tile(args[0], args[1], args[2])
