@@ -3,8 +3,9 @@ extends Node2D
 export (String, DIR) var tile_resource_dir = "res://games/pawn_game/map_components/tiles/tile_resources/"
 export var release_mode: bool = true
 
-onready var map: Node2D = $pawn_game_nav/pawn_game_map
-onready var pawn_controller: Node2D = $pawn_game_nav/pawn_controller
+onready var world: Node2D = $pawn_game_world
+onready var map: Node2D = world.get_node("pawn_game_map")
+onready var pawn_controller: Node2D = world.get_node("pawn_controller")
 onready var world_ui: Node2D = $world_ui
 onready var pawn_game_ui: CanvasLayer = $pawn_game_ui
 onready var editor: Control = pawn_game_ui.map_editor

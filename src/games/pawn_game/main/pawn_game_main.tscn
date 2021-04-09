@@ -5,7 +5,7 @@
 [ext_resource path="res://games/pawn_game/main/pawn_game_cam.gd" type="Script" id=3]
 [ext_resource path="res://games/pawn_game/main/pawn_game_map.gd" type="Script" id=4]
 [ext_resource path="res://games/pawn_game/main/pawn_game_main.gd" type="Script" id=5]
-[ext_resource path="res://games/pawn_game/main/pawn_game_nav.gd" type="Script" id=6]
+[ext_resource path="res://games/pawn_game/main/pawn_game_world.gd" type="Script" id=6]
 [ext_resource path="res://games/pawn_game/main/preview_tiles.gd" type="Script" id=7]
 [ext_resource path="res://games/pawn_game/main/world_ui.gd" type="Script" id=8]
 [ext_resource path="res://games/pawn_game/main/interact_popup.gd" type="Script" id=9]
@@ -26,29 +26,29 @@ release_mode = false
 current = true
 script = ExtResource( 3 )
 
-[node name="pawn_game_nav" type="Navigation2D" parent="."]
+[node name="pawn_game_world" type="Node2D" parent="."]
 script = ExtResource( 6 )
 
-[node name="astar_nav" type="Node2D" parent="pawn_game_nav"]
+[node name="astar_nav" type="Node2D" parent="pawn_game_world"]
 script = ExtResource( 12 )
 
-[node name="pawn_game_map" type="Node2D" parent="pawn_game_nav"]
+[node name="pawn_game_map" type="Node2D" parent="pawn_game_world"]
 script = ExtResource( 4 )
 main_path = NodePath("../..")
 tiles_per_frame = 100
 
-[node name="map_generator" type="Node2D" parent="pawn_game_nav"]
+[node name="map_generator" type="Node2D" parent="pawn_game_world"]
 script = ExtResource( 15 )
 width = 150
 height = 150
 water_threshold = -0.4
 
-[node name="pawn_controller" type="Node2D" parent="pawn_game_nav"]
+[node name="pawn_controller" type="Node2D" parent="pawn_game_world"]
 script = ExtResource( 10 )
 
-[node name="player_pawn_manager" parent="pawn_game_nav/pawn_controller" instance=ExtResource( 11 )]
+[node name="player_pawn_manager" parent="pawn_game_world/pawn_controller" instance=ExtResource( 11 )]
 
-[node name="job_manager" type="Node2D" parent="pawn_game_nav"]
+[node name="job_manager" type="Node2D" parent="pawn_game_world"]
 script = ExtResource( 16 )
 
 [node name="world_ui" type="Node2D" parent="."]
@@ -97,7 +97,7 @@ margin_bottom = 590.0
 mouse_filter = 2
 main_path = NodePath("../..")
 pawn_game_ui_path = NodePath("..")
-map_path = NodePath("../../pawn_game_nav/pawn_game_map")
+map_path = NodePath("../../pawn_game_world/pawn_game_map")
 
 [node name="shop_ui" parent="pawn_game_ui" instance=ExtResource( 13 )]
 visible = false

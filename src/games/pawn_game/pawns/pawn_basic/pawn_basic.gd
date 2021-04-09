@@ -16,7 +16,7 @@ onready var work_bar: TextureProgress = $workbar
 # pawn controller node in main scene
 var controller: Node
 # pawn nav node in main scene
-var nav: Navigation2D
+var nav: Node2D
 
 # network ID of the player who owns this pawn
 var player_id: int = 0

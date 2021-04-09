@@ -1,11 +1,15 @@
 extends Node2D
 
+export var navs_per_frame: int = 10
+
 onready var map: Node2D = get_node("../pawn_game_map")
 
 # {coordinate: astar id}
 var coord_ids: Dictionary = {}
 
 var astar: AStar2D = AStar2D.new()#load("res://games/pawn_game/resources/astar/basic_astar/basic_astar.gd").new()#AStar2D.new()
+
+var queued_pathing: Array = []
 
 func _ready():
 # warning-ignore:return_value_discarded
@@ -14,6 +18,33 @@ func _ready():
 	map.connect("walkable_tile_created", self, "walkable_tile_created")
 # warning-ignore:return_value_discarded
 	map.connect("walkable_tile_destroyed", self, "walkable_tile_destroyed")
+
+# warning-ignore:unused_argument
+func _process(delta):
+	if queued_pathing.empty():
+		return
+	for _i in navs_per_frame:
+		if queued_pathing.empty():
+			break
+		var inputs: Array = queued_pathing.pop_front()
+		callv("direct_pawn_to", inputs)
+
+# actually path should ONLY be true during _process() or _physics_process()
+func direct_pawn_to(pawn: Node, pos: Vector2, actually_path: bool = false):
+	if pawn == null or not is_instance_valid(pawn):
+		return
+	if not actually_path:
+		print("trying to direct pawn outside of _process(), adding to queue")
+		queued_pathing.append([pawn, pos, true])
+		return
+	#print("navving pawn to ", pos)
+	var pawn_pos: Vector2 = pawn.global_position
+	var path: PoolVector2Array = path(pawn_pos, pos)
+	#print(path)
+	pawn.path = path
+
+func request_path_to(pos: Vector2, pawn: Node2D):
+	queued_pathing.append([pawn, pos, true])
 
 # NOT CALLED ANYMORE
 # TRANSITIONED TO walkable_tile_created() AND walkable_tile_destroyed()

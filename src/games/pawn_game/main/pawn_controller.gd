@@ -3,7 +3,8 @@ extends Node2D
 #export(String, FILE) var pawn_scene_path
 
 onready var main: Node2D = get_parent().get_parent()
-onready var nav: Navigation2D = get_parent()
+onready var world: Node2D = get_parent()
+onready var nav: Node2D = world.get_node("astar_nav")
 onready var map: Node2D = get_node("../pawn_game_map")
 #onready var pawn_scene: PackedScene = load(pawn_scene_path)
 
