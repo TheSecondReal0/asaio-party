@@ -22,3 +22,15 @@ func create_panel(player_id: int):
 	panel.player_name = Network.names[player_id]
 	player_panels[player_id] = panel
 	container.add_child(panel)
+
+func get_player_health() -> Dictionary:
+	var player_health: Dictionary = {}
+	for player in player_panels.keys():
+		player_health[player] = player_panels[player].health
+	return player_health
+
+func _on_action_manager_new_player_damage(player_damage: Dictionary):
+	for player in player_damage:
+		var panel: Node = player_panels[player]
+		panel.set_health(panel.health - player_damage[player])
+	get_parent().new_player_health(get_player_health())

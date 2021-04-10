@@ -15,9 +15,22 @@ func _ready():
 	name_label.text = player_name
 
 func new_actions(actions: Array):
-	action0_label.text = actions[0]
-	action1_label.text = actions[1]
-	action2_label.text = actions[2]
+	var used_actions: Array = []
+	for action in actions:
+		var new_action: String
+		if " " in action:
+			print("space in action: ", action)
+			var player_str: String = action.split(" ")[1]
+			print("player_str: ", player_str)
+			var player_int: int = int(player_str)
+			print("player_int: ", player_int)
+			new_action = action.replace(player_str, Network.names[player_int])
+		else:
+			new_action = action
+		used_actions.append(new_action)
+	action0_label.text = used_actions[0]
+	action1_label.text = used_actions[1]
+	action2_label.text = used_actions[2]
 
 func new_round():
 	set_health(3)

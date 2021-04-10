@@ -35,7 +35,7 @@ func _on_available_action_chosen(action: String):
 	action_queue.append(action)
 	action_queue_text.append(action)
 	queue.add_action(action)
-	if action_queue.size() == 3:
+	if action_queue.size() == 3 and Network.get_my_id() in get_parent().alive_players:
 		submit_button.disabled = false
 
 func _on_available_player_action_chosen(action: String, player_id: int, player_name: String):
@@ -46,5 +46,5 @@ func _on_available_player_action_chosen(action: String, player_id: int, player_n
 	action_queue.append(action + " " + str(player_id))
 	action_queue_text.append(action_text)
 	queue.add_action(action_text)
-	if action_queue.size() == 3:
+	if action_queue.size() == 3 and Network.get_my_id() in get_parent().alive_players:
 		submit_button.disabled = false
