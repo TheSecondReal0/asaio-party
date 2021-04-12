@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 export var navs_per_frame: int = 10
 
@@ -7,7 +7,7 @@ onready var map: Node2D = get_node("../pawn_game_map")
 # {coordinate: astar id}
 var coord_ids: Dictionary = {}
 
-var astar: AStar2D = AStar2D.new()#load("res://games/pawn_game/resources/astar/basic_astar/basic_astar.gd").new()#AStar2D.new()
+var astar: AStar2D = load("res://games/pawn_game/resources/astar/basic_astar/basic_astar.gd").new()#AStar2D.new()
 
 var queued_pathing: Array = []
 
