@@ -19,9 +19,22 @@ func button_pressed(action: String, button: Button):
 	player_drop.hide()
 	if action in player_actions:
 		queued_player_action = action
-		show_dropdown(button)
+		if get_alive_players().size() > 2:
+			show_dropdown(button)
+			return
+		else:
+			var alive_players_exc_me: Array = get_alive_players().duplicate()
+			alive_players_exc_me.erase(Network.get_my_id())
+			var target: int = alive_players_exc_me[0]
+			_on_player_drop_player_selected(target, Network.names[target])
 		return
 	emit_signal("action_chosen", action)
+
+func new_round():
+	if not Network.get_my_id() in get_alive_players():
+		for button in get_children():
+			if button is Button:
+				button.disabled = true
 
 # warning-ignore:unused_argument
 func show_dropdown(button: Button):
@@ -40,6 +53,9 @@ func create_button(action: String):
 	add_child(button)
 # warning-ignore:return_value_discarded
 	button.connect("pressed", self, "button_pressed", [action, button])
+
+func get_alive_players() -> Array:
+	return get_parent().get_parent().alive_players
 
 # warning-ignore:unused_argument
 func _on_player_drop_player_selected(id: int, player_name: String):

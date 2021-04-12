@@ -39,7 +39,7 @@ func new_actions(new_actions):
 		for player in player_damage:
 			if player_damage[player] != 0:
 				print("ending round early, ", player, " was damaged")
-				
+				return
 
 func execute_actions() -> Dictionary:
 	var player_damage: Dictionary = {}
@@ -59,6 +59,8 @@ func execute_actions() -> Dictionary:
 			continue
 		if target in rushing:
 			rushing.erase(player)
+		if target in rushed:
+			rushed.erase(player)
 		# comment out if can't cancel rush on second actoin
 		if target in rushing_2:
 			rushing_2.erase(player)
@@ -80,6 +82,12 @@ func execute_actions() -> Dictionary:
 			damage = 1
 		player_damage[target] += damage
 	for player in rushing_2:
+		if player in shooting.values():
+			print("rushing player ", player, " was shot, cancelling rush")
+			continue
+		if player in was_staring.values():
+			print("rushing player ", player, " was stared at, cancelling rush")
+			continue
 		var target: int = rushing_2[player]
 		var damage: int = 1
 		player_damage[target] += damage

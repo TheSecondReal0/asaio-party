@@ -15,6 +15,7 @@ func new_round():
 	action_queue.clear()
 	action_queue_text.clear()
 	queue.new_round()
+	available.new_round()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
