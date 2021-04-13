@@ -13,6 +13,7 @@ onready var editor: Control = pawn_game_ui.map_editor
 # storing how much of each resource we have
 var resources: Dictionary = {"Gold": 0}
 
+signal new_interactables(interactables)
 signal tile_placed(pos, type)
 signal preview_tiles(tile_coords, type)
 signal tile_created(tile)
@@ -25,6 +26,8 @@ signal my_castle_created
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+# warning-ignore:return_value_discarded
+	world.connect("new_interactables", self, "new_interactables")
 # warning-ignore:return_value_discarded
 	map.connect("tile_created", self, "tile_created")
 # warning-ignore:return_value_discarded
@@ -52,6 +55,9 @@ func preview_tiles(tile_coords, type):
 
 func tile_created(tile):
 	emit_signal("tile_created", tile)
+
+func new_interactables(interactables: Dictionary):
+	emit_signal("new_interactables", interactables)
 
 func interaction_selected(interaction, tile):
 	emit_signal("interaction_selected", interaction, tile)

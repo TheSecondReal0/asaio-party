@@ -5,7 +5,7 @@ export(String, FILE, "*.tres") var default_map_json = "res://games/pawn_game/map
 export var tiles_per_frame: int = 10
 
 onready var main: Node2D = get_node(main_path)
-onready var generator: Node2D = get_node("../map_generator")
+onready var generator: Node = get_node("../map_generator")
 onready var tile_resources: Dictionary = main.get_tile_resources()
 
 # {Vector2: tile type name}
@@ -206,6 +206,18 @@ func is_tile_type_walkable(type: String):
 
 func get_movement_cost(coord: Vector2) -> float:
 	return tile_resources[map_tiles[coord]].movement_cost
+
+func get_interactables_at(coord: Vector2) -> Array:
+	coord = round_pos(coord)
+	#print("getting interactable tiles at ", coord)
+	var interactables: Array = []
+	var tile: Node = get_tile_node_at(coord)
+	#print("found tile ", tile)
+	if not is_instance_valid(tile) or tile == null:
+		return []
+	if tile.interactable:
+		interactables.append(tile)
+	return interactables
 
 # warning-ignore:unused_argument
 # warning-ignore:unused_argument

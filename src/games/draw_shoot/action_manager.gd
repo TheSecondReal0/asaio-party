@@ -66,13 +66,19 @@ func execute_actions() -> Dictionary:
 			rushing_2.erase(player)
 		
 		var damage: int = 0
-		if player in shooting and target in shooting:
-			if shooting[target] == player:
+		if player in shooting and target in shooting and shooting[target] == player:
+			print("both ", player, " and ", target, " shooting")
+			if true:
+			#if shooting[target] == player:
+				print("aiming at each other")
 				if player in aiming and target in aiming:
+					print("both aiming")
 					damage = 0
 				elif player in aiming and not target in aiming:
+					print(player, " aiming but not ", target)
 					damage = 1
 				elif not player in aiming and not target in aiming:
+					print("neither aiming")
 					damage = 0
 		elif player in aiming:
 			print(player, " is aiming so 2 dmg")

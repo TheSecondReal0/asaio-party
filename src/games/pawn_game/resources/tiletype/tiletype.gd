@@ -80,8 +80,8 @@ func gen_tile():
 	if tile_node == null:
 		var tile: Node = base_scene.instance()
 		# if pawns can interact with this tile
-		if interactable:
-			tile.add_child(interact_area_scene.instance())
+		#if interactable:
+		#	tile.add_child(interact_area_scene.instance())
 		#if walkable:
 		#	tile.add_child(navpoly_scene.instance())
 		if destructible:

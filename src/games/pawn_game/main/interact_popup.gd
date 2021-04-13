@@ -31,6 +31,12 @@ func interaction_selected(id: int):
 	emit_signal("new_order", order)
 	close()
 
+func new_interactables(interactables: Dictionary):
+	var tile: Node2D = interactables["tiles"][0]
+	var orders: Array = tile.get_orders()
+	var pos: Vector2 = interactables["input_event"].global_position
+	show_interactions(orders, pos, tile)
+
 func show_interactions(orders: Array, pos: Vector2, tile: Node2D):
 	orders = orders.duplicate(true)
 	for order in orders:

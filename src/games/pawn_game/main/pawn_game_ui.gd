@@ -21,6 +21,8 @@ signal resource_updated(resource, value)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 # warning-ignore:return_value_discarded
+	main.connect("new_interactables", self, "new_interactables")
+# warning-ignore:return_value_discarded
 	main.connect("tile_created", self, "tile_created")
 # warning-ignore:return_value_discarded
 	main.connect("my_castle_created", self, "my_castle_created")
@@ -38,11 +40,16 @@ func _ready():
 				child.hide()
 
 func tile_interacted_with(tile: Node2D, input: InputEventMouseButton):
+	return
+# warning-ignore:unreachable_code
 	print(tile, " interacted with")
 	#print(tile.orders)
 	# uncomment for crash, used for testing
 	#print(get_node_or_null("sdgf").x)
 	interact_popup.show_interactions(tile.orders, input.position, tile)
+
+func new_interactables(interactables: Dictionary):
+	interact_popup.new_interactables(interactables)
 
 func tile_created(tile):
 	#print("tile created, ", tile)

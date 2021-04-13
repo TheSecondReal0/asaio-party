@@ -67,3 +67,5 @@ func on_clicked(input: InputEventMouseButton):
 			emit_signal("interacted_with", self, input)
 			#print(input)
 
+func get_orders():
+	return orders

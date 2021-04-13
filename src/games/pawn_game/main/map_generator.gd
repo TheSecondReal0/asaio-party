@@ -2,6 +2,8 @@ extends Node
 
 export var width: int = 100
 export var height: int = 60
+export var use_fixed_seed: bool = false
+export var fixed_seed: int = 2360192022
 export var mountain_threshold: float = .1
 export var water_threshold: float = -.3
 export var gold_threshold: float = .25
@@ -31,6 +33,8 @@ signal map_generated(map_tile_types)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if fixed_seed:
+		simplex_seed = fixed_seed
 	if get_tree().is_network_server():
 		rpc("receive_seed", simplex_seed)
 		generate_map()

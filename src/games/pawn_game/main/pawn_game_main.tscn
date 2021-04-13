@@ -39,8 +39,9 @@ tiles_per_frame = 100
 
 [node name="map_generator" type="Node" parent="pawn_game_world"]
 script = ExtResource( 15 )
-width = 150
-height = 150
+width = 125
+height = 125
+use_fixed_seed = true
 water_threshold = -0.4
 
 [node name="pawn_controller" type="Node2D" parent="pawn_game_world"]
