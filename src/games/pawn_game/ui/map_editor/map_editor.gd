@@ -24,7 +24,7 @@ signal preview_tiles(tile_coords, type)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#print(tile_resources)
-	if main.release_mode:
+	if main.is_release_mode_enabled():
 		$save_load.hide()
 # warning-ignore:return_value_discarded
 	tile_buttons.connect("type_selected", self, "type_selected")
@@ -73,6 +73,12 @@ func _gui_input(event):
 		BUTTON_MIDDLE:
 			pass
 
+func open():
+	show()
+
+func close():
+	close_editor()
+
 func close_editor():
 	type_deselected(selected)
 	hide()
@@ -94,7 +100,7 @@ func type_deselected(type: String):
 
 func get_tile_resources():
 	var resources: Dictionary = main.get_tile_resources()
-	if not main.release_mode:
+	if not main.is_release_mode_enabled():
 		return resources
 	var actual: Dictionary = {}
 	for type in resources:

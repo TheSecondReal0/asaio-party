@@ -2,16 +2,23 @@ extends CanvasLayer
 
 export var main_path: NodePath
 export var map_editor_path: NodePath
+export var blueprint_ui_path: NodePath
 export var shop_ui_path: NodePath
+export var menu_buttons_path: NodePath
 export var resources_ui_path: NodePath
 export var interact_popup_path: NodePath
 export var map_editor_only: bool = false
 
 onready var main: Node2D = get_node(main_path)
 onready var map_editor: Control = get_node(map_editor_path)
+onready var blueprint_ui: Control = get_node(blueprint_ui_path)
 onready var shop_ui: Control = get_node(shop_ui_path)
+onready var menu_buttons: Control = get_node(menu_buttons_path)
 onready var resources_ui: VBoxContainer = get_node(resources_ui_path)
 onready var interact_popup: PopupMenu = get_node(interact_popup_path)
+
+var menus: Array = ["map_editor", "blueprint_ui", "shop_ui"]
+var open_menu: String = ""
 
 signal pawn_purchased
 signal interaction_selected(interaction, tile)
@@ -34,19 +41,33 @@ func _ready():
 	interact_popup.connect("new_order", self, "new_order")
 # warning-ignore:return_value_discarded
 	main.connect("resource_updated", self, "resource_updated")
+	menu_buttons.connect("ui_toggled", self, "ui_toggled")
 	if map_editor_only:
 		for child in get_children():
 			if not child == map_editor:
 				child.hide()
 
-func tile_interacted_with(tile: Node2D, input: InputEventMouseButton):
-	return
-# warning-ignore:unreachable_code
-	print(tile, " interacted with")
-	#print(tile.orders)
-	# uncomment for crash, used for testing
-	#print(get_node_or_null("sdgf").x)
-	interact_popup.show_interactions(tile.orders, input.position, tile)
+func ui_toggled(ui_name: String):
+	print("ui_toggled: ", ui_name, " current ui: ", open_menu)
+	if not ui_name in menus:
+		return
+	if open_menu != "":
+		get_node(open_menu).close()
+		get_node(open_menu).hide()
+	if ui_name != open_menu:
+		get_node(ui_name).open()
+		open_menu = ui_name
+	else:
+		open_menu = ""
+
+#func tile_interacted_with(tile: Node2D, input: InputEventMouseButton):
+#	return
+## warning-ignore:unreachable_code
+#	print(tile, " interacted with")
+#	#print(tile.orders)
+#	# uncomment for crash, used for testing
+#	#print(get_node_or_null("sdgf").x)
+#	interact_popup.show_interactions(tile.orders, input.position, tile)
 
 func new_interactables(interactables: Dictionary):
 	interact_popup.new_interactables(interactables)
@@ -68,7 +89,10 @@ func resource_updated(resource, value):
 	emit_signal("resource_updated", resource, value)
 
 func my_castle_created():
-	if main.release_mode:
+	if is_release_mode_enabled():
 		map_editor.close_editor()
 		map_editor.hide()
 	shop_ui.show()
+
+func is_release_mode_enabled():
+	return main.release_mode_enabled

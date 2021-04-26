@@ -1,16 +1,13 @@
 extends HBoxContainer
 
+signal ui_toggled(ui_name)
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	for button in get_children():
+		button.connect("pressed", self, "button_pressed", [button])
 
+func button_pressed(button: Button):
+	emit_signal("ui_toggled", button.name)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func is_release_mode_enabled():
+	return get_parent().is_release_mode_enabled()

@@ -49,6 +49,13 @@ func _gui_input(event):
 			for coord in tile_coords:
 				emit_signal("blueprint_placed", coord, selected)
 
+func open():
+	show()
+
+func close():
+	selected = null
+	hide()
+
 func get_tile_positions(start_pos: Vector2, end_pos: Vector2, step: int = 20):
 	start_pos = round_pos(start_pos)
 	end_pos = round_pos(end_pos)

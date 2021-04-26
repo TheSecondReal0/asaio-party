@@ -1,7 +1,7 @@
 extends Node2D
 
 export (String, DIR) var tile_resource_dir = "res://games/pawn_game/map_components/tiles/tile_resources/"
-export var release_mode: bool = true
+export var release_mode_enabled: bool = true
 
 onready var world: Node2D = $pawn_game_world
 onready var map: Node2D = world.get_node("pawn_game_map")
@@ -93,3 +93,6 @@ func get_tile_resources():
 
 func round_pos(pos: Vector2, step: int = 20) -> Vector2:
 	return Vector2(stepify(pos.x, step), stepify(pos.y, step))
+
+func is_release_mode_enabled():
+	return release_mode_enabled

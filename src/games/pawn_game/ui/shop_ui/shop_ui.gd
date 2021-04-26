@@ -11,6 +11,12 @@ func _ready():
 # warning-ignore:return_value_discarded
 	buy_pawn_button.connect("pressed", self, "buy_pawn_button_pressed")
 
+func open():
+	show()
+
+func close():
+	hide()
+
 func buy_pawn_button_pressed():
 	if(main.get_resource_amount("Gold") >= pawn_price):
 		emit_signal("pawn_purchased")
