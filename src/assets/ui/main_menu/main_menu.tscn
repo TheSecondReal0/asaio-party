@@ -78,5 +78,6 @@ __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
+
 [connection signal="pressed" from="joinButton" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="hostButton" to="." method="_on_hostButton_pressed"]

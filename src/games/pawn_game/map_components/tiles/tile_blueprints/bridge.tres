@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource( 1 )
-create_tile = ExtResource( 2 )
+tile_type = ExtResource( 2 )
 buildable_on = [ "Grass" ]
 work = 10
 resource_cost = {

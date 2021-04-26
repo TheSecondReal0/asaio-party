@@ -29,8 +29,6 @@ func _ready():
 # warning-ignore:return_value_discarded
 	main.connect("tile_placed", self, "tile_placed")
 # warning-ignore:return_value_discarded
-	main.connect("interaction_selected", self, "interaction_selected")
-# warning-ignore:return_value_discarded
 	generator.connect("map_generated", self, "map_generated")
 
 # warning-ignore:unused_argument
@@ -127,7 +125,7 @@ func get_tile_type_group(coord: Vector2, type: String, diagonal: bool = true, ex
 	var to_check: Array = [coord]
 	while not to_check.empty():
 		for vec in to_check:
-			var adjacent: Dictionary = get_adjacent_tiles_of_type(vec, type, diagonal)
+			var adjacent: Dictionary = get_adjacent_tiles_of_type(vec, type, diagonal, true)
 			for tile_coord in adjacent:
 				if tile_coord in tiles:
 					continue
@@ -156,9 +154,11 @@ func get_x_walkable_tiles(coord: Vector2, amount: int, diagonal: bool = false, e
 			to_check.append(coord)
 	return tiles
 
-func get_adjacent_tiles_of_type(coord: Vector2, type: String, diagonal: bool = false) -> Dictionary:
+func get_adjacent_tiles_of_type(coord: Vector2, type: String, diagonal: bool = false, include_self: bool = false) -> Dictionary:
 	var tiles: Dictionary = {}
 	var adjacent: Dictionary = get_adjacent_tiles(coord, diagonal)
+	if include_self:
+		adjacent[coord] = type
 	for coord in adjacent:
 		if adjacent[coord] == type:
 			tiles[coord] = adjacent[coord]
@@ -218,19 +218,6 @@ func get_interactables_at(coord: Vector2) -> Array:
 	if tile.interactable:
 		interactables.append(tile)
 	return interactables
-
-# warning-ignore:unused_argument
-# warning-ignore:unused_argument
-func interaction_selected(interaction, tile):
-	pass
-	#var tile_coord: Vector2 = tile.global_position
-	#var tile_type: String = map_tiles[tile_coord]
-	#print(interaction, " ", tile_coord, " ", tile_coord in map_tiles)
-	#print(get_adjacent_tiles(tile_coord))
-	#print(get_adjacent_tiles_of_type(tile_coord, tile_type))
-	#var group: Dictionary = get_tile_type_group(tile_coord, tile_type)
-	#print(group)
-	#print(get_adjacent_walkable_tiles_of_group(group))
 
 func load_default_json():
 	load_json(default_map_json)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://games/pawn_game/main/pawn_game_ui.gd" type="Script" id=1]
 [ext_resource path="res://games/pawn_game/ui/map_editor/map_editor.tscn" type="PackedScene" id=2]
@@ -16,6 +16,9 @@
 [ext_resource path="res://games/pawn_game/ui/resources_ui/resources_ui.tscn" type="PackedScene" id=14]
 [ext_resource path="res://games/pawn_game/main/map_generator.gd" type="Script" id=15]
 [ext_resource path="res://games/pawn_game/main/job_manager.gd" type="Script" id=16]
+[ext_resource path="res://games/pawn_game/main/pawn_game_blueprints.gd" type="Script" id=17]
+[ext_resource path="res://games/pawn_game/ui/blueprint_ui/blueprint_ui.gd" type="Script" id=18]
+[ext_resource path="res://games/pawn_game/main/preview_blueprints.gd" type="Script" id=19]
 
 [node name="pawn_game_main" type="Node2D"]
 script = ExtResource( 5 )
@@ -36,6 +39,9 @@ script = ExtResource( 12 )
 script = ExtResource( 4 )
 main_path = NodePath("../..")
 tiles_per_frame = 100
+
+[node name="pawn_game_blueprints" type="Node2D" parent="pawn_game_world"]
+script = ExtResource( 17 )
 
 [node name="map_generator" type="Node" parent="pawn_game_world"]
 script = ExtResource( 15 )
@@ -65,6 +71,12 @@ __meta__ = {
 "_edit_lock_": true
 }
 main_path = NodePath("../..")
+
+[node name="preview_blueprints" type="Node2D" parent="world_ui"]
+script = ExtResource( 19 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="pawn_game_ui" type="CanvasLayer" parent="."]
 script = ExtResource( 1 )
@@ -100,8 +112,16 @@ main_path = NodePath("../..")
 pawn_game_ui_path = NodePath("..")
 map_path = NodePath("../../pawn_game_world/pawn_game_map")
 
+[node name="blueprint_ui" type="Control" parent="pawn_game_ui"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="shop_ui" parent="pawn_game_ui" instance=ExtResource( 13 )]
-visible = false
 anchor_top = 0.9
 margin_left = 10.0
 margin_top = 5.0
@@ -109,6 +129,26 @@ margin_right = -10.0
 margin_bottom = -10.0
 mouse_filter = 2
 pawn_price = 10
+
+[node name="menu_buttons" type="HBoxContainer" parent="pawn_game_ui"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="construction" type="Button" parent="pawn_game_ui/menu_buttons"]
+margin_right = 93.0
+margin_bottom = 20.0
+text = "Construction"
+
+[node name="pawn_shop" type="Button" parent="pawn_game_ui/menu_buttons"]
+margin_left = 97.0
+margin_right = 177.0
+margin_bottom = 20.0
+text = "Pawn Shop"
 
 [node name="interact_popup" type="PopupMenu" parent="pawn_game_ui"]
 margin_right = 20.0
