@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://games/pawn_game/main/pawn_game_ui.gd" type="Script" id=1]
 [ext_resource path="res://games/pawn_game/ui/map_editor/map_editor.tscn" type="PackedScene" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://games/pawn_game/ui/blueprint_ui/blueprint_ui.gd" type="Script" id=18]
 [ext_resource path="res://games/pawn_game/main/preview_blueprints.gd" type="Script" id=19]
 [ext_resource path="res://games/pawn_game/main/menu_buttons.gd" type="Script" id=20]
+[ext_resource path="res://games/pawn_game/common/textures/basic/square.png" type="Texture" id=21]
 
 [node name="pawn_game_main" type="Node2D"]
 script = ExtResource( 5 )
@@ -117,13 +118,84 @@ pawn_game_ui_path = NodePath("..")
 map_path = NodePath("../../pawn_game_world/pawn_game_map")
 
 [node name="blueprint_ui" type="Control" parent="pawn_game_ui"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 18 )
 __meta__ = {
 "_edit_use_anchors_": false
+}
+
+[node name="blueprint_buttons" type="HBoxContainer" parent="pawn_game_ui/blueprint_ui"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = -80.0
+margin_right = -10.0
+margin_bottom = -30.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="pawn_game_ui/blueprint_ui/blueprint_buttons"]
+margin_right = 90.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 88, 50 )
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="pawn_game_ui/blueprint_ui/blueprint_buttons/Button"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 6
+custom_constants/margin_top = 3
+custom_constants/margin_left = 6
+custom_constants/margin_bottom = 2
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="pawn_game_ui/blueprint_ui/blueprint_buttons/Button/MarginContainer"]
+margin_left = 6.0
+margin_top = 3.0
+margin_right = 84.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="pawn_game_ui/blueprint_ui/blueprint_buttons/Button/MarginContainer/VBoxContainer"]
+margin_right = 78.0
+margin_bottom = 27.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 21 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pawn_game_ui/blueprint_ui/blueprint_buttons/Button/MarginContainer/VBoxContainer"]
+margin_top = 31.0
+margin_right = 78.0
+margin_bottom = 45.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Build Bridge"
+align = 1
+__meta__ = {
+"_edit_lock_": true
 }
 
 [node name="shop_ui" parent="pawn_game_ui" instance=ExtResource( 13 )]
@@ -141,6 +213,7 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -20.0
+mouse_filter = 2
 script = ExtResource( 20 )
 __meta__ = {
 "_edit_lock_": true,
@@ -160,9 +233,9 @@ text = "Pawn Shop"
 
 [node name="map_editor" type="Button" parent="pawn_game_ui/menu_buttons"]
 margin_left = 181.0
-margin_right = 290.0
+margin_right = 374.0
 margin_bottom = 20.0
-text = "Dev Map Editor"
+text = "Super Secret Dev Map Editor"
 
 [node name="interact_popup" type="PopupMenu" parent="pawn_game_ui"]
 margin_right = 20.0

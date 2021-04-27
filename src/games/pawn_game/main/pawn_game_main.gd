@@ -1,6 +1,7 @@
 extends Node2D
 
 export (String, DIR) var tile_resource_dir = "res://games/pawn_game/map_components/tiles/tile_resources/"
+export (String, DIR) var blueprint_resource_dir = "res://games/pawn_game/map_components/tiles/tile_blueprints/"
 export var release_mode_enabled: bool = true
 
 onready var world: Node2D = $pawn_game_world
@@ -9,6 +10,7 @@ onready var pawn_controller: Node2D = world.get_node("pawn_controller")
 onready var world_ui: Node2D = $world_ui
 onready var pawn_game_ui: CanvasLayer = $pawn_game_ui
 onready var editor: Control = pawn_game_ui.map_editor
+onready var blueprint_ui: Control = pawn_game_ui.blueprint_ui
 
 # storing how much of each resource we have
 var resources: Dictionary = {"Gold": 0}
@@ -16,6 +18,8 @@ var resources: Dictionary = {"Gold": 0}
 signal new_interactables(interactables)
 signal tile_placed(pos, type)
 signal preview_tiles(tile_coords, type)
+signal blueprint_placed(pos, type)
+signal preview_blueprints(tile_coords, type)
 signal tile_created(tile)
 signal interaction_selected(interaction, tile)
 signal new_order(order)
@@ -43,6 +47,10 @@ func _ready():
 # warning-ignore:return_value_discarded
 	editor.connect("preview_tiles", self, "preview_tiles")
 # warning-ignore:return_value_discarded
+	blueprint_ui.connect("blueprint_placed", self, "blueprint_placed")
+# warning-ignore:return_value_discarded
+	blueprint_ui.connect("preview_blueprints", self, "preview_blueprints")
+# warning-ignore:return_value_discarded
 	pawn_controller.connect("my_castle_created", self, "my_castle_created")
 #	map.load_default_json()
 
@@ -52,6 +60,12 @@ func tile_placed(pos, type):
 
 func preview_tiles(tile_coords, type):
 	emit_signal("preview_tiles", tile_coords, type)
+
+func blueprint_placed(pos, type):
+	emit_signal("blueprint_placed", pos, type)
+
+func preview_blueprints(tile_coords, type):
+	emit_signal("preview_blueprints", tile_coords, type)
 
 func tile_created(tile):
 	emit_signal("tile_created", tile)
@@ -84,11 +98,17 @@ func get_resource_amount(resource: String) -> int:
 	return resources[resource]
 
 func get_tile_resources():
-# warning-ignore:shadowed_variable
-	var resources: Array = Helpers.load_files_in_dir_with_exts(tile_resource_dir, [".tres"])
+	var _resources: Array = Helpers.load_files_in_dir_with_exts(tile_resource_dir, [".tres"])
 	var res_dict: Dictionary = {}
-	for res in resources:
+	for res in _resources:
 		res_dict[res.type] = res
+	return res_dict
+
+func get_blueprint_resources():
+	var _resources: Array = Helpers.load_files_in_dir_with_exts(blueprint_resource_dir, [".tres"])
+	var res_dict: Dictionary = {}
+	for res in _resources:
+		res_dict[res.blueprint_text] = res
 	return res_dict
 
 func round_pos(pos: Vector2, step: int = 20) -> Vector2:

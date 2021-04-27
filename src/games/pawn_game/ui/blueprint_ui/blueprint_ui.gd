@@ -1,6 +1,6 @@
 extends Control
 
-onready var main: Node2D = get_parent().main
+onready var main: Node2D = get_parent().get_parent()
 
 var selected: TileBlueprint
 
@@ -9,8 +9,13 @@ var mouse_down_pos: Vector2 = Vector2(0, 0)
 
 var preview_blueprint_coords: Array = []
 
+var blueprint_resources: Dictionary
+
 signal blueprint_placed(pos, blueprint)
 signal preview_blueprints(tile_coords, blueprint)
+
+func _ready():
+	blueprint_resources = main.get_blueprint_resources()
 
 func _process(_delta):
 	if selected == null:
@@ -19,12 +24,12 @@ func _process(_delta):
 	var preview_coords: Array = []
 	if not is_mouse_down:
 		preview_coords.append(round_pos(mouse_pos))
-		emit_signal("preview_tiles", preview_coords, selected)
+		emit_signal("preview_blueprints", preview_coords, selected)
 		return
 	else:
 		preview_coords = get_tile_positions(mouse_down_pos, mouse_pos)
 	if preview_coords.size() != preview_blueprint_coords.size():# preview_coords != preview_tile_coords:
-		emit_signal("preview_tiles", preview_coords, selected)
+		emit_signal("preview_blueprints", preview_coords, selected)
 		preview_blueprint_coords = preview_coords
 
 func _gui_input(event):
@@ -71,3 +76,6 @@ func get_tile_positions(start_pos: Vector2, end_pos: Vector2, step: int = 20):
 
 func round_pos(pos: Vector2, step: int = 20) -> Vector2:
 	return main.round_pos(pos, step)
+
+func is_release_mode_enabled():
+	return main.is_release_mode_enabled()

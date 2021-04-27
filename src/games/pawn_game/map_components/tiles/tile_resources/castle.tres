@@ -42,6 +42,7 @@ type = "Castle"
 desc = ""
 player_accessible = true
 walkable = false
+movement_cost = 10.0
 destructible = true
 health = 500
 damage_pawns = true

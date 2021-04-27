@@ -89,10 +89,9 @@ func resource_updated(resource, value):
 	emit_signal("resource_updated", resource, value)
 
 func my_castle_created():
-	if is_release_mode_enabled():
-		map_editor.close_editor()
-		map_editor.hide()
-	shop_ui.show()
+	pass
+#	if is_release_mode_enabled():
+#		map_editor.close_editor()
 
 func is_release_mode_enabled():
-	return main.release_mode_enabled
+	return main.is_release_mode_enabled()

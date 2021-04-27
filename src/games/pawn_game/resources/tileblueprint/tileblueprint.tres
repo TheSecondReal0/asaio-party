@@ -4,6 +4,8 @@
 
 [resource]
 script = ExtResource( 1 )
+blueprint_text = ""
+blueprint_desc = ""
 buildable_on = [ "Grass" ]
 work = 10
 resource_cost = {
