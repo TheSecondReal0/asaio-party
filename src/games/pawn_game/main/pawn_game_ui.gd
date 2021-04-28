@@ -48,7 +48,7 @@ func _ready():
 				child.hide()
 
 func ui_toggled(ui_name: String):
-	print("ui_toggled: ", ui_name, " current ui: ", open_menu)
+	#print("ui_toggled: ", ui_name, " current ui: ", open_menu)
 	if not ui_name in menus:
 		return
 	if open_menu != "":

@@ -47,7 +47,7 @@ func client(ip: String):
 		url = ip
 	else:
 		url = "" + str(ip) + ":" + str(port) # You use "ws://" at the beginning of the address for WebSocket connections
-	var error = peer.connect_to_url(url, PoolStringArray(), true)
+	var _error = peer.connect_to_url(url, PoolStringArray(), true)
 	get_tree().set_network_peer(peer)
 	#peer = NetworkedMultiplayerENet.new()
 	#peer.create_client(ip, port)
@@ -160,7 +160,7 @@ func _ready():
 # warning-ignore:return_value_discarded
 	get_tree().connect("server_disconnected", self, "_server_disconnected")
 
-func _process(delta):
+func _process(_delta):
 	if peer != null:
 		if server:
 			if peer.is_listening():
