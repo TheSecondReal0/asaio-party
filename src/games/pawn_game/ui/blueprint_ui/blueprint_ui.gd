@@ -8,6 +8,7 @@ var selected_res: TileBlueprint
 
 var is_mouse_down: bool = false
 var mouse_down_pos: Vector2 = Vector2(0, 0)
+var action_cancelled: bool = false
 
 var preview_blueprint_coords: Array = []
 
@@ -51,13 +52,21 @@ func _gui_input(event):
 		BUTTON_LEFT:
 			is_mouse_down = event.pressed
 			if is_mouse_down:
-				#mouse_down_pos = event.global_position
 				mouse_down_pos = mouse_pos
+				action_cancelled = false
 				return
-			emit_signal("preview_blueprints", [], "")
+			clear_preview()
+			if action_cancelled:
+				return
 			var tile_coords: Array = get_tile_positions(mouse_down_pos, mouse_pos)
 			for coord in tile_coords:
 				emit_signal("blueprint_placed", coord, selected)
+		BUTTON_RIGHT:
+			if event.pressed:
+				return
+			is_mouse_down = false
+			action_cancelled = true
+			clear_preview()
 
 func blueprint_toggled(blueprint_text: String):
 	if blueprint_text == selected:
@@ -88,6 +97,9 @@ func open():
 func close():
 	selected = ""
 	hide()
+
+func clear_preview():
+	emit_signal("preview_blueprints", [], "")
 
 func get_tile_positions(start_pos: Vector2, end_pos: Vector2, step: int = 20):
 	start_pos = round_pos(start_pos)

@@ -15,6 +15,7 @@ var selected: String = ""
 
 var is_mouse_down: bool = false
 var mouse_down_pos: Vector2 = Vector2(0, 0)
+var action_cancelled: bool = false
 
 var preview_tile_coords: Array = []
 
@@ -61,17 +62,21 @@ func _gui_input(event):
 		BUTTON_LEFT:
 			is_mouse_down = event.pressed
 			if is_mouse_down:
-				#mouse_down_pos = event.global_position
 				mouse_down_pos = mouse_pos
+				action_cancelled = false
 				return
-			emit_signal("preview_tiles", [], "")
+			clear_preview()
+			if action_cancelled:
+				return
 			var tile_coords: Array = get_tile_positions(mouse_down_pos, mouse_pos)
 			for coord in tile_coords:
 				emit_signal("tile_placed", coord, selected)
 		BUTTON_RIGHT:
-			pass
-		BUTTON_MIDDLE:
-			pass
+			if event.pressed:
+				return
+			is_mouse_down = false
+			action_cancelled = true
+			clear_preview()
 
 func open():
 	show()
@@ -97,6 +102,9 @@ func type_deselected(type: String):
 	emit_signal("preview_tiles", [], selected)
 	mouse_filter = MOUSE_FILTER_IGNORE
 	#grab_focus()
+
+func clear_preview():
+	emit_signal("preview_tiles", [], "")
 
 func get_tile_resources():
 	var resources: Dictionary = main.get_tile_resources()
