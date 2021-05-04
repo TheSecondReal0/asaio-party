@@ -4,6 +4,8 @@ var type_dict: Dictionary = {}
 
 var selected: String = ""
 
+var button_scene: PackedScene = load("res://games/pawn_game/ui/common/buttons/tile_button/tile_button.tscn")
+
 signal type_selected(type)
 signal type_deselected(type)
 
@@ -13,11 +15,12 @@ func create_buttons(res_dict: Dictionary):
 		create_button(type, type_dict[type])
 
 func create_button(type: String, _res: Resource):
-	var button: Button = Button.new()
-	button.text = type
+	var button: Button = button_scene.instance()
+	#button.text = type
 # warning-ignore:return_value_discarded
 	button.connect("pressed", self, "_on_button_pressed", [type])
 	add_child(button)
+	button.init_button(_res)
 
 func select_type(type):
 	print("type selected: ", type)
