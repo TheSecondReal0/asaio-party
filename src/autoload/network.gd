@@ -31,7 +31,7 @@ func host():
 	#peer.create_server(port, 100)
 	#get_tree().network_peer = peer
 # warning-ignore:return_value_discarded
-	get_tree().change_scene_to(load("res://assets/main/main.tscn"))
+	get_tree().change_scene_to(load("res://assets/main/main.tscn"))#load("res://games/cooking_combat/main/main.tscn"))
 	myID = 1
 	clients.append(1)
 	names[1] = myName
@@ -99,7 +99,7 @@ func _connected_ok():
 	myID = get_tree().get_network_unique_id()
 	if not server:
 # warning-ignore:return_value_discarded
-		get_tree().change_scene_to(load("res://assets/main/main.tscn"))
+		get_tree().change_scene_to(load("res://assets/main/main.tscn"))#load("res://games/cooking_combat/main/main.tscn"))
 		rpc("addName", myID, myName)
 		rpc("addColor", myID, myColor)
 		print("connected to server")
