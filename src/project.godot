@@ -48,6 +48,11 @@ _global_script_classes=[ {
 "class": "TileType",
 "language": "GDScript",
 "path": "res://games/pawn_game/resources/tiletype/tiletype.gd"
+}, {
+"base": "Resource",
+"class": "TripleSlitLevel",
+"language": "GDScript",
+"path": "res://games/triple_slit/triple_slit_level/tripleslitlevel.gd"
 } ]
 _global_script_class_icons={
 "CoupAction": "",
@@ -57,7 +62,8 @@ _global_script_class_icons={
 "PawnCommand": "",
 "PawnOrder": "",
 "TileBlueprint": "",
-"TileType": ""
+"TileType": "",
+"TripleSlitLevel": ""
 }
 
 [application]
