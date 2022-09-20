@@ -8,7 +8,7 @@ var death_coords: Array = []
 var trail_nodes: Array = []
 
 func _init():
-	Ticker.update_tick_rate(0.07)
+	#Ticker.update_tick_rate(0.07)
 	set_network_master(1)
 
 puppet func createPlayer(id, pos):

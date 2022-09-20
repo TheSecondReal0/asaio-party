@@ -25,6 +25,15 @@ func move():
 	var cell_size = 5 * 2
 	position = roundPos()
 	position += dir_vec * cell_size
+	#print(global_rotation_degrees)
+	if dir_vec == Vector2(1, 0):
+		global_rotation_degrees = 0
+	elif dir_vec == Vector2(-1, 0):
+		global_rotation_degrees = 180
+	elif dir_vec == Vector2(0, 1):
+		global_rotation_degrees = 90
+	elif dir_vec == Vector2(0, -1):
+		global_rotation_degrees = -90
 
 func create_trail(trail_coord: Vector2, trail_color: Color):
 	var new_trail = trail_scene.instance()

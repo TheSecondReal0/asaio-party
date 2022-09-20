@@ -11,7 +11,7 @@ func setup():
 	resetGame()
 
 func resetGame():
-	Ticker.update_tick_rate(0.07)
+	#Ticker.update_tick_rate(0.07)
 	rpc("resetGame")
 	rpc("deletePlayers")
 	deletePlayers()
