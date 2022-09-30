@@ -9,6 +9,16 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Reference",
+"class": "ConwayTile",
+"language": "GDScript",
+"path": "res://games/conways_war/classes/conwaytile.gd"
+}, {
+"base": "Node2D",
+"class": "ConwayWarMain",
+"language": "GDScript",
+"path": "res://games/conways_war/main/conways_war_main.gd"
+}, {
 "base": "Resource",
 "class": "CoupAction",
 "language": "GDScript",
@@ -55,6 +65,8 @@ _global_script_classes=[ {
 "path": "res://games/triple_slit/triple_slit_level/tripleslitlevel.gd"
 } ]
 _global_script_class_icons={
+"ConwayTile": "",
+"ConwayWarMain": "",
 "CoupAction": "",
 "CoupCard": "",
 "GameInfo": "",
@@ -69,7 +81,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Asaio Party"
-run/main_scene="res://assets/ui/main_menu/main_menu.tscn"
+run/main_scene="res://games/conways_war/main/conways_war_main.tscn"
 config/icon="res://icon.png"
 
 [autoload]
