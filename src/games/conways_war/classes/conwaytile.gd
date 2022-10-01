@@ -5,7 +5,7 @@ var position: Vector2
 var player: int = 0
 
 var type: int = TYPES.NORMAL
-enum TYPES {NORMAL, FIGHTER}
+enum TYPES {NORMAL, FIGHTER, DEFENDER}
 
 
 

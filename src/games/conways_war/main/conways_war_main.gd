@@ -14,7 +14,11 @@ var all_grid_coords: PoolVector2Array = get_all_grid_coords()
 var time_since_advance: float = 0.0
 var time_between_advances:float = 0.1
 
+# {player id: ConwayConfig}
+var configs: Dictionary = {}
+
 var  curr_tile: ConwayTile
+var curr_config: ConwayConfig
 var curr_adj_tile_coords: PoolVector2Array
 var curr_adj_tiles: Array
 var curr_adj_amount: int
@@ -32,13 +36,69 @@ func _ready() -> void:
 		place_tile(start, ConwayTile.TYPES.NORMAL, i + 1)
 		for coord in get_adjacent_tile_coords(start, false):
 			place_tile(coord, ConwayTile.TYPES.NORMAL, i + 1)
-#	for coord in [Vector2(25, 25), Vector2(35, 25), Vector2(45, 25), Vector2(25, 35)]:
-#		place_tile(coord, ConwayTile.TYPES.NORMAL, 1)
-#	for coord in [Vector2(225, 225), Vector2(235, 225), Vector2(245, 225), Vector2(225, 235)]:
-#		place_tile(coord, ConwayTile.TYPES.NORMAL, 2)
-	pass
-#	for coord in get_all_grid_coords():
-#		grid[coord] = null
+	
+#	export var reproduce_threshold: int = 3
+#export var starve_threshold: int = 1
+#export var overpop_threshold: int = 5
+#
+#export var convert_to_fighter_max: int = 0
+#export var fighter_overpop_threshold: int = 4
+	
+	var config: ConwayConfig = ConwayConfig.new()
+	config.reproduce_threshold = 2
+	config.starve_threshold = 1
+	config.overpop_threshold = 6
+	config.convert_to_fighters = true
+	config.convert_to_fighter_max = 2
+	config.fighter_overpop_threshold = 8
+	config.fighter_repro_mod_factor = 1.0
+	config.convert_to_defenders = true
+	config.convert_to_defender_normal_adj = 2
+	config.defender_max_normal_adj = 8
+	config.defender_repro_mod_factor = 1.0
+	configs[1] = config
+	
+	config = ConwayConfig.new()
+	config.reproduce_threshold = 1
+	config.starve_threshold = 1
+	config.overpop_threshold = 4
+	config.convert_to_fighters = false
+	config.convert_to_fighter_max = 8
+	config.fighter_overpop_threshold = 4
+	config.fighter_repro_mod_factor = 1.0
+	config.convert_to_defenders = true
+	config.convert_to_defender_normal_adj = 2
+	config.defender_max_normal_adj = 8
+	config.defender_repro_mod_factor = 1.0
+	configs[2] = config
+	
+	config = ConwayConfig.new()
+	config.reproduce_threshold = 3
+	config.starve_threshold = 2
+	config.overpop_threshold = 8
+	config.convert_to_fighters = true
+	config.convert_to_fighter_max = 5
+	config.fighter_overpop_threshold = 8
+	config.fighter_repro_mod_factor = 1.0
+	config.convert_to_defenders = false
+	config.convert_to_defender_normal_adj = 2
+	config.defender_max_normal_adj = 5
+	config.defender_repro_mod_factor = 1.0
+	configs[3] = config
+	
+	config = ConwayConfig.new()
+	config.reproduce_threshold = 1
+	config.starve_threshold = 0
+	config.overpop_threshold = 7
+	config.convert_to_fighters = false
+	config.convert_to_fighter_max = 0
+	config.fighter_overpop_threshold = 4
+	config.fighter_repro_mod_factor = 1.0
+	config.convert_to_defenders = false
+	config.convert_to_defender_normal_adj = 2
+	config.defender_max_normal_adj = 5
+	config.defender_repro_mod_factor = 1.0
+	configs[4] = config
 
 func _process(_delta: float) -> void:
 	time_since_advance += _delta
@@ -58,18 +118,22 @@ func _draw() -> void:
 func draw_tile(tile: ConwayTile) -> void:
 		if tile == null:
 			return
+		var color: Color = tile.get_color()
 		match tile.type:
 			ConwayTile.TYPES.NORMAL:
-				draw_square(tile.position, tile.get_color())
+				draw_square(tile.position, color)
 			ConwayTile.TYPES.FIGHTER:
-				draw_square(tile.position, tile.get_color())
-				draw_square(tile.position, Color(0, 0, 0), .5)
+				draw_square(tile.position, color)
+				draw_square(tile.position, color.inverted(), .5)
+			ConwayTile.TYPES.DEFENDER:
+				draw_square(tile.position, color)
+				draw_square(tile.position, color.inverted(), .5, false)
 	
 
-func draw_square(at: Vector2, color: Color, square_scale: float = 1.0) -> void:
+func draw_square(at: Vector2, color: Color, square_scale: float = 1.0, filled: bool = true) -> void:
 	var offset: Vector2 = Vector2(tile_width / 2, tile_width / 2) * square_scale
 	var rect: Rect2 = Rect2(at - offset, Vector2(tile_width, tile_width) * square_scale)
-	draw_rect(rect, color)
+	draw_rect(rect, color, filled)
 
 
 
@@ -101,13 +165,17 @@ func update_coord_data(coord: Vector2, include_diagonals: bool = true) -> void:
 	curr_majority_owner_amount = get_majority_adj_owner_amount(coord)
 	curr_adj_types = get_adjacent_types(coord)
 	if curr_tile == null:
+		curr_config = null
 		curr_friendly_types.clear()
 		curr_enemy_types.clear()
 	else:
+		curr_config = get_config(curr_tile.player)
 		curr_friendly_types = get_adjacent_types_owned_by(coord, curr_tile.player)
 		curr_enemy_types = get_adjacent_enemy_types(coord, curr_tile.player)
 
-
+func get_config(id: int) -> ConwayConfig:
+	#return ConwayConfig.new()
+	return configs.get(id, null)
 
 
 
@@ -135,9 +203,16 @@ func handle_dead_tile(at: Vector2) -> bool:
 	#var friendly_adjacent: int = get_adjacent_amount_owned_by(at, tile.player)
 	#var enemy_adjacent: int = total_adjacent - friendly_adjacent
 	
-	if curr_majority_owner != 0 and curr_majority_owner_amount >= 3:
-		place_tile(at, ConwayTile.TYPES.NORMAL, curr_majority_owner)
-		return true
+	if curr_majority_owner != 0:
+		var majority_config: ConwayConfig = get_config(curr_majority_owner)
+		if curr_majority_owner_amount >= majority_config.reproduce_threshold:
+			var majority_owner_types: Dictionary = get_adjacent_types_owned_by(at, curr_majority_owner)
+			var modified_total: int = majority_owner_types.get(ConwayTile.TYPES.NORMAL, 0)
+			modified_total += majority_owner_types.get(ConwayTile.TYPES.FIGHTER, 0) * majority_config.fighter_repro_mod_factor#0.5
+			modified_total += majority_owner_types.get(ConwayTile.TYPES.DEFENDER, 0) * majority_config.defender_repro_mod_factor
+			if modified_total >= majority_config.reproduce_threshold:
+				place_tile(at, ConwayTile.TYPES.NORMAL, curr_majority_owner)
+				return true
 	
 	return false
 
@@ -155,34 +230,18 @@ func handle_live_tile(at: Vector2) -> bool:
 	var friendly_adjacent: int = get_adjacent_amount_owned_by(at, curr_tile.player)
 	var enemy_adjacent: int = curr_adj_amount - friendly_adjacent
 	
+	var friendly_normal_amount: int = curr_friendly_types.get(ConwayTile.TYPES.NORMAL, 0)
+	var enemy_normal_amount: int = curr_enemy_types.get(ConwayTile.TYPES.NORMAL, 0)
+	
 	var friendly_fighter_amount: int = curr_friendly_types.get(ConwayTile.TYPES.FIGHTER, 0)
 	var enemy_fighter_amount: int = curr_enemy_types.get(ConwayTile.TYPES.FIGHTER, 0)
 	
-	var kill: bool = false
+	var friendly_defender_amount: int = curr_friendly_types.get(ConwayTile.TYPES.DEFENDER, 0)
+	var enemy_defender_amount: int = curr_enemy_types.get(ConwayTile.TYPES.DEFENDER, 0)
 	
-	if enemy_fighter_amount > 0 and curr_tile.type != ConwayTile.TYPES.FIGHTER:
+	#if enemy_fighter_amount > 0 and curr_tile.type != ConwayTile.TYPES.FIGHTER:
 		# kill all adjacent fighters
 		# 	RULE: fighters die when they kill something
-		for tile in curr_adj_tiles:
-			if tile == null:
-				#print("null adj tile")
-				continue
-			if tile.player != curr_tile.player:
-				if tile.type == ConwayTile.TYPES.FIGHTER:
-					kill(tile.position)
-		kill(at)
-		kill = true
-	
-	if enemy_adjacent > friendly_adjacent:
-		kill = true
-	if friendly_adjacent > 4:
-		kill(at)
-		return true
-	if friendly_adjacent < 2:
-		kill(at)
-		return true
-	
-	if kill:
 #		for tile in curr_adj_tiles:
 #			if tile == null:
 #				#print("null adj tile")
@@ -190,20 +249,41 @@ func handle_live_tile(at: Vector2) -> bool:
 #			if tile.player != curr_tile.player:
 #				if tile.type == ConwayTile.TYPES.FIGHTER:
 #					kill(tile.position)
+		#kill(at)
+		#return true
+	
+	if enemy_adjacent + enemy_fighter_amount > friendly_adjacent + friendly_defender_amount:
 		kill(at)
-#		return true
+		return true
+	if friendly_adjacent >= curr_config.overpop_threshold:#5:
+		kill(at)
+		return true
+	if friendly_adjacent <= curr_config.starve_threshold:#1:
+		kill(at)
+		return true
 	
 	match curr_tile.type:
 		ConwayTile.TYPES.NORMAL:
-			if not ConwayTile.TYPES.FIGHTER in curr_friendly_types or curr_friendly_types[ConwayTile.TYPES.FIGHTER] == 0:
-				place_tile(curr_tile.position, ConwayTile.TYPES.FIGHTER, curr_tile.player)
+			if curr_config.convert_to_defenders:
+				if friendly_normal_amount == curr_config.convert_to_defender_normal_adj:
+					place_tile(curr_tile.position, ConwayTile.TYPES.DEFENDER, curr_tile.player)
+					continue
+			if curr_config.convert_to_fighters:
+				if friendly_fighter_amount <= curr_config.convert_to_fighter_max:#0:
+					place_tile(curr_tile.position, ConwayTile.TYPES.FIGHTER, curr_tile.player)
+					continue
 		ConwayTile.TYPES.FIGHTER:
 			if not ConwayTile.TYPES.FIGHTER in curr_friendly_types:
 				continue
-			if curr_friendly_types[ConwayTile.TYPES.FIGHTER] > 3:
+			if curr_friendly_types[ConwayTile.TYPES.FIGHTER] >= curr_config.fighter_overpop_threshold:#4:
 				pass
-				kill(curr_tile.position)
-				#place_tile(curr_tile.position, ConwayTile.TYPES.NORMAL, curr_tile.player)
+				#kill(curr_tile.position)
+				place_tile(curr_tile.position, ConwayTile.TYPES.NORMAL, curr_tile.player)
+		ConwayTile.TYPES.DEFENDER:
+			if friendly_normal_amount >= curr_config.defender_max_normal_adj:
+				pass
+				#kill(curr_tile.position)
+				place_tile(curr_tile.position, ConwayTile.TYPES.NORMAL, curr_tile.player)
 	
 	return false
 
