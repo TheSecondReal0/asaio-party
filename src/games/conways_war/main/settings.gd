@@ -37,7 +37,7 @@ var settings: Dictionary = {
 	
 	"convert_to_fighters":		{KEYS.TYPE: SETTING_TYPES.BOOL,
 								KEYS.DEFAULT: false,
-								KEYS.DESC: "Whether or not your tiles can convert to fighters\n\nFighters count as 2 normal tiles during offense"
+								KEYS.DESC: "Whether or not your tiles can convert to fighters\n\nFighters count as 2 normal tiles during offense and discourage enemies from reproducing into adjacent tiles"
 								},
 	"convert_to_fighter_max":	{KEYS.TYPE: SETTING_TYPES.INT_RANGE, 
 								KEYS.RANGE: [0,8],
@@ -50,7 +50,7 @@ var settings: Dictionary = {
 	
 	"convert_to_defenders":		{KEYS.TYPE: SETTING_TYPES.BOOL,
 								KEYS.DEFAULT: false,
-								KEYS.DESC: "Whether or not your tiles can convert to defenders"
+								KEYS.DESC: "Whether or not your tiles can convert to defenders\n\nDefenders count as 2 normal tiles during defense"
 								},
 	"convert_to_defender_normal_adj":{KEYS.TYPE: SETTING_TYPES.INT_RANGE, 
 								KEYS.RANGE: [0,8],

@@ -17,7 +17,7 @@ func set_text(text: String) -> void:
 
 func set_tooltip(text: String) -> void:
 	label.hint_tooltip = text
-	print(label.hint_tooltip)
+	#print(label.hint_tooltip)
 
 func set_value(value: int) -> void:
 	slider.value = value
