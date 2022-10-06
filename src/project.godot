@@ -87,7 +87,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Asaio Party"
-run/main_scene="res://games/conways_war/main/conways_war_main.tscn"
+run/main_scene="res://assets/ui/main_menu/main_menu.tscn"
 config/icon="res://icon.png"
 
 [autoload]

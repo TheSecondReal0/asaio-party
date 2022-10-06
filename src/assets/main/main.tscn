@@ -9,7 +9,6 @@ resource_local_to_scene = true
 script = ExtResource( 3 )
 ui_path = "res://assets/ui/host_ui/host_ui.tscn"
 ui_data = {
-
 }
 action = 0
 free_on_close = false
@@ -21,7 +20,6 @@ resource_local_to_scene = true
 script = ExtResource( 3 )
 ui_path = "res://assets/ui/score_ui/score_ui.tscn"
 ui_data = {
-
 }
 action = 0
 free_on_close = false

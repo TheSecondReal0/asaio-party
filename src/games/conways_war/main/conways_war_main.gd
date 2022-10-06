@@ -16,6 +16,7 @@ var time_between_advances:float = 0.1
 
 # {player id: ConwayConfig}
 var configs: Dictionary = {}
+var next_configs: Dictionary = {}
 
 var  curr_tile: ConwayTile
 var curr_config: ConwayConfig
@@ -29,20 +30,19 @@ var curr_adj_types: Dictionary
 var curr_friendly_types: Dictionary
 var curr_enemy_types: Dictionary
 
+var debug_mode: bool = false#true
+
+onready var settings_node: Control = get_node("ui/MarginContainer/settings")
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if not debug_mode:
+		return
 	for i in 4:
 		var start: Vector2 = Vector2(int(stepify(rand_range(10, 480), 10)) + (tile_width / 2), int(stepify(rand_range(0, 480), 10)) + (tile_width / 2))
 		place_tile(start, ConwayTile.TYPES.NORMAL, i + 1)
 		for coord in get_adjacent_tile_coords(start, false):
 			place_tile(coord, ConwayTile.TYPES.NORMAL, i + 1)
-	
-#	export var reproduce_threshold: int = 3
-#export var starve_threshold: int = 1
-#export var overpop_threshold: int = 5
-#
-#export var convert_to_fighter_max: int = 0
-#export var fighter_overpop_threshold: int = 4
 	
 	var config: ConwayConfig = ConwayConfig.new()
 	config.reproduce_threshold = 2
@@ -101,11 +101,15 @@ func _ready() -> void:
 	configs[4] = config
 
 func _process(_delta: float) -> void:
-	time_since_advance += _delta
 	if Input.is_action_pressed("space"):
 		if time_since_advance >= time_between_advances:
 			advance()
 			time_since_advance = 0.0
+	if not Network.server:
+		return
+	if Input.is_action_just_pressed("restart"):
+		rpc("conway_start", randi())
+	time_since_advance += _delta
 
 func _draw() -> void:
 	var tile: ConwayTile
@@ -137,6 +141,44 @@ func draw_square(at: Vector2, color: Color, square_scale: float = 1.0, filled: b
 
 
 
+puppetsync func conway_start(rand: int) -> void:
+	# reset game state
+	grid.clear()
+	old_grid.clear()
+	# make sure configs all exist and are updated
+	for id in Network.get_peers():
+		if not id in configs and not id in next_configs:
+			next_configs[id] = settings_node.get_default_config()
+	for id in next_configs:
+		configs[id] = next_configs[id]
+	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+	# seed must be the same on all clients or 99.9999999% chance of desync
+	rng.set_seed(rand)
+	# place starting blobs
+	for id in configs:
+		var start: Vector2 = Vector2(int(stepify(rng.randf_range(10, 480), 10)) + (tile_width / 2), int(stepify(rng.randf_range(0, 480), 10)) + (tile_width / 2))
+		place_tile(start, ConwayTile.TYPES.NORMAL, id)
+		for coord in get_adjacent_tile_coords(start, false):
+			place_tile(coord, ConwayTile.TYPES.NORMAL, id)
+	update()
+	
+
+func settings_changed(new_settings: Dictionary) -> void:
+	#print("main settings changed")
+	rpc("receive_new_settings", new_settings, Network.get_my_id())
+
+remotesync func receive_new_settings(new_settings: Dictionary, player: int) -> void:
+	#print("new settings received")
+	next_configs[player] = create_config_from_settings(new_settings)
+
+func create_config_from_settings(settings: Dictionary) -> ConwayConfig:
+	var config: ConwayConfig = ConwayConfig.new()
+	for setting in settings:
+		config.set(setting, settings[setting])
+	return config
+
+
+
 func advance() -> void:
 	advancing = true
 	old_grid = grid.duplicate()
@@ -165,9 +207,12 @@ func update_coord_data(coord: Vector2, include_diagonals: bool = true) -> void:
 	curr_majority_owner_amount = get_majority_adj_owner_amount(coord)
 	curr_adj_types = get_adjacent_types(coord)
 	if curr_tile == null:
-		curr_config = null
-		curr_friendly_types.clear()
-		curr_enemy_types.clear()
+		curr_config = get_config(curr_majority_owner)
+		curr_friendly_types = get_adjacent_types_owned_by(coord, curr_majority_owner)
+		curr_enemy_types = get_adjacent_enemy_types(coord, curr_majority_owner)
+#		curr_config = get_config(curr_tile.player)
+#		curr_friendly_types = get_adjacent_types_owned_by(coord, curr_tile.player)
+#		curr_enemy_types = get_adjacent_enemy_types(coord, curr_tile.player)
 	else:
 		curr_config = get_config(curr_tile.player)
 		curr_friendly_types = get_adjacent_types_owned_by(coord, curr_tile.player)
@@ -206,10 +251,12 @@ func handle_dead_tile(at: Vector2) -> bool:
 	if curr_majority_owner != 0:
 		var majority_config: ConwayConfig = get_config(curr_majority_owner)
 		if curr_majority_owner_amount >= majority_config.reproduce_threshold:
-			var majority_owner_types: Dictionary = get_adjacent_types_owned_by(at, curr_majority_owner)
-			var modified_total: int = majority_owner_types.get(ConwayTile.TYPES.NORMAL, 0)
-			modified_total += majority_owner_types.get(ConwayTile.TYPES.FIGHTER, 0) * majority_config.fighter_repro_mod_factor#0.5
-			modified_total += majority_owner_types.get(ConwayTile.TYPES.DEFENDER, 0) * majority_config.defender_repro_mod_factor
+			var modified_total: int = curr_friendly_types.get(ConwayTile.TYPES.NORMAL, 0)
+			modified_total += curr_friendly_types.get(ConwayTile.TYPES.FIGHTER, 0) * majority_config.fighter_repro_mod_factor#0.5
+			modified_total += curr_friendly_types.get(ConwayTile.TYPES.DEFENDER, 0) * majority_config.defender_repro_mod_factor
+			
+			modified_total-= curr_enemy_types.get(ConwayTile.TYPES.FIGHTER, 0) * 0.75
+			
 			if modified_total >= majority_config.reproduce_threshold:
 				place_tile(at, ConwayTile.TYPES.NORMAL, curr_majority_owner)
 				return true
