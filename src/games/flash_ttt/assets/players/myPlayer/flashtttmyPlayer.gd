@@ -136,11 +136,11 @@ func _on_Last_ready():
 		z_index = 1
 		$Lighting/onlyLOS.show()
 		$Lighting/LineOfSight.show()
-#	if gameManager.teamsInfo.traitors.has(networkManager.myID):
+#	if gameManager.teamsInfo.traitors.has(Network.myID):
 #		if team == "traitor":
 #			credits = 2
 #			$Sprite.modulate = Color(1, 0, 0)
 #	if team == "detective":
-#		if get_parent().get_parent().getTeam(str(networkManager.myID)) == "detective":
+#		if get_parent().get_parent().getTeam(str(Network.myID)) == "detective":
 #			credits = 2
 #		$Sprite.modulate = Color(0, 0, 1)

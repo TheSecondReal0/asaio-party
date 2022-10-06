@@ -19,9 +19,9 @@ func resetGame():
 	rpc("clear_trail")
 	var player_array = get_tree().get_network_connected_peers()
 	player_array.append(1)
-	for i in player_array:#networkManager.clients:
+	for i in player_array:#Network.clients:
 		createPlayer(i)
-	#for i in networkManager.clients:
+	#for i in Network.clients:
 		#rpc("createPlayer", i)
 
 func createPlayer(id):
@@ -30,7 +30,7 @@ func createPlayer(id):
 	newPlayer.set_network_master(id)
 	newPlayer.name = str(id)
 	newPlayer.get_node("Polygon2D").color = Network.colors[id]
-	#newPlayer.get_node("name").text = networkManager.names[str(id)]
+	#newPlayer.get_node("name").text = Network.names[str(id)]
 	$players.add_child(newPlayer)
 	var new_pos = Vector2(rand_range(124, 900), rand_range(100, 500))
 	newPlayer.global_position = new_pos

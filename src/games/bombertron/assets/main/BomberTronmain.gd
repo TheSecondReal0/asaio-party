@@ -16,7 +16,7 @@ puppet func createPlayer(id, pos):
 	newPlayer.set_network_master(id)
 	newPlayer.name = str(id)
 	newPlayer.get_node("Polygon2D").color = Network.colors[id]
-	#newPlayer.get_node("name").text = networkManager.names[str(id)]
+	#newPlayer.get_node("name").text = Network.names[str(id)]
 	$players.add_child(newPlayer)
 	newPlayer.global_position = pos
 	playerNodes.append(newPlayer)
