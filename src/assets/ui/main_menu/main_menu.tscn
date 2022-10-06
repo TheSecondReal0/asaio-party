@@ -74,14 +74,11 @@ anchor_left = 0.67
 anchor_top = 0.1
 anchor_right = 0.97
 anchor_bottom = 0.9
-margin_left = 12.0
-margin_top = 12.0
-margin_right = 12.0
-margin_bottom = 12.0
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
+[connection signal="text_entered" from="ip" to="." method="_on_ip_text_entered"]
 [connection signal="pressed" from="joinButton" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="hostButton" to="." method="_on_hostButton_pressed"]

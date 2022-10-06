@@ -19,3 +19,6 @@ func _on_hostButton_pressed():
 		Network.myName = $name.text
 		Network.myColor = color_picker.color
 		Network.host()
+
+func _on_ip_text_entered(new_text: String) -> void:
+	_on_Button_pressed()
