@@ -3,10 +3,13 @@ extends RigidBody2D
 var velocity = Vector2()
 const acceleration = .5
 const braking = .3
+const turnSpeed: float = 25.0
+const driftTurnSpeed: float = 35.0
 const resistances = 2 # ground and air friction, constant for simplicity.
 # deaceleration force of wheels when not in the same 
 const wheelDriftResistance = 5 #direction as to velocity.
-const maxSpeed = 50
+const maxSpeed = 1500
+const maxDriftSpeed = 100
 const rotationSpeed = 5
 # minimal percentage of angle difference. If lower - velocity direction
 const minWDrResStr = 0.05 # changed to car direction. 1 = PI/2, should be less then rotationSpeed
@@ -23,31 +26,65 @@ var scalar = 980
 func _physics_process(_delta):
 	if delete:
 		queue_free()
+	#print(linear_velocity.length())
 	if is_network_master():
+		var dir_vec: Vector2 = Vector2(cos(rotation), sin(rotation))
+		var forward_vel: float = linear_velocity.dot(dir_vec)
+		#print(forward_vel)
+		if Input.is_action_pressed("space"):
+			linear_damp = 1.5
+			angular_damp = 2.5
+			var capped_vel: Vector2 = linear_velocity.linear_interpolate(Vector2.ZERO, _delta / 10) #linear_velocity.normalized() * maxDriftSpeed
+			#if linear_velocity.length() > capped_vel.length():
+			#linear_velocity = capped_vel
+		else:
+			linear_damp = 1.5
+			angular_damp = 7.5
+			var perp_dir_vec: Vector2 = dir_vec.rotated(-PI/2)
+			var perp_vel: float = linear_velocity.dot(perp_dir_vec)
+			var perp_vel_vec: Vector2 = perp_dir_vec * perp_vel
+			#print("canceling perp vel: ", perp_vel_vec)
+			#print("start: ", linear_velocity)
+			#linear_velocity -= perp_vel_vec * _delta * 3
+			#print("after: ", linear_velocity)
+			if linear_velocity.length() < 350:
+				apply_impulse(Vector2(0, 0), -perp_vel_vec * _delta * 5)
 		if Input.is_action_pressed('left') or Input.is_action_pressed('right'):
+			var currTurnSpeed = turnSpeed
+			# also handles swapping turn directions when going backwards
+			var steeringPercent: float = min(1.0, forward_vel / 200.0)
+			if Input.is_action_pressed("space"):
+				currTurnSpeed = driftTurnSpeed
+				steeringPercent = 1.0
+			#var directionSign: int = 1
+			if Input.is_action_pressed("down"):
+				pass
+				#directionSign = -1
+			var new_angular: float
 			if Input.is_action_pressed('left'):
-				angular_velocity -= rotationSpeed * _delta
+				new_angular = -rotationSpeed * _delta * currTurnSpeed# * directionSign
+				#angular_velocity = min(angular_velocity, -rotationSpeed * _delta * currTurnSpeed * directionSign)
 			if Input.is_action_pressed('right'):
-				angular_velocity += rotationSpeed * _delta
+				new_angular = rotationSpeed * _delta * currTurnSpeed# * directionSign
+				#angular_velocity = max(angular_velocity, rotationSpeed * _delta * currTurnSpeed * directionSign)
+			new_angular *= steeringPercent
+			if new_angular > 0:
+				angular_velocity = max(angular_velocity, new_angular)
+			else:
+				angular_velocity = min(angular_velocity, new_angular)
 		if Input.is_action_pressed("up"):
-		#	if (linear_velocity + Vector2(cos(rotation), sin(rotation)) * acceleration * _delta).length() < maxSpeed:
+			var currMaxSpeed: int = maxSpeed
+			if Input.is_action_pressed("space"):
+				pass
+				#currMaxSpeed = maxDriftSpeed
+			if (linear_velocity + Vector2(cos(rotation), sin(rotation)) * acceleration * _delta).dot(dir_vec) < currMaxSpeed:
 				apply_impulse(Vector2(0, 0), Vector2(cos(rotation), sin(rotation)) * acceleration * _delta * scalar)
 		if Input.is_action_pressed("down"):
 			if linear_velocity.length() > 0:
 				apply_impulse(Vector2(0, 0), Vector2(cos(rotation), sin(rotation)) * -braking * _delta * scalar)
 			else:
 				apply_impulse(Vector2(0, 0), Vector2(cos(rotation), sin(rotation)) * -acceleration * _delta * scalar)
-		if Input.is_action_pressed("space"):
-			linear_damp = 3
-			angular_damp = 1.25
-		else:
-			linear_damp = 1
-			angular_damp = .75
-			var dir_vec: Vector2 = Vector2(cos(global_rotation), sin(global_rotation))
-			var perp_dir_vec: Vector2 = dir_vec.rotated(-PI/2)
-			var perp_vel: float = velocity.dot(perp_dir_vec)
-			var perp_vel_vec: Vector2 = perp_dir_vec * perp_vel
-			apply_impulse(Vector2(0, 0), perp_vel_vec * _delta)
+
 		rset_unreliable("slaveLinear", linear_velocity)
 		rset_unreliable("slaveAngular", angular_velocity)
 		rset_unreliable("slavePos", position)

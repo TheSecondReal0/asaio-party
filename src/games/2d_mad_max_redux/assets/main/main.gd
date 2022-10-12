@@ -1,6 +1,6 @@
 extends Node2D
 
-var player = preload("res://assets/players/myPlayer/myPlayer.tscn")
+var player = load("res://games/2d_mad_max_redux/assets/players/myPlayer/myPlayer.tscn")
 
 var playerNodes = []
 
