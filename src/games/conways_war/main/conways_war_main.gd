@@ -105,11 +105,11 @@ func _process(_delta: float) -> void:
 		if time_since_advance >= time_between_advances:
 			advance()
 			time_since_advance = 0.0
+	time_since_advance += _delta
 	if not Network.server:
 		return
 	if Input.is_action_just_pressed("restart"):
 		rpc("conway_start", randi())
-	time_since_advance += _delta
 
 func _draw() -> void:
 	var tile: ConwayTile
