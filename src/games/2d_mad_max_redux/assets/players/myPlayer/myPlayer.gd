@@ -43,19 +43,25 @@ func _physics_process(_delta):
 			var perp_dir_vec: Vector2 = dir_vec.rotated(-PI/2)
 			var perp_vel: float = linear_velocity.dot(perp_dir_vec)
 			var perp_vel_vec: Vector2 = perp_dir_vec * perp_vel
+			#print(perp_vel)
 			#print("canceling perp vel: ", perp_vel_vec)
 			#print("start: ", linear_velocity)
 			#linear_velocity -= perp_vel_vec * _delta * 3
 			#print("after: ", linear_velocity)
-			if linear_velocity.length() < 350:
-				apply_impulse(Vector2(0, 0), -perp_vel_vec * _delta * 5)
+			var damp_perp_vel_percent: float = 1.0 - ((perp_vel - 75) / 25)
+			
+			damp_perp_vel_percent = clamp(damp_perp_vel_percent, 0.4, 1.0)
+			#var perp_vel_threshold: int = 150
+			#if abs(perp_vel) > perp_vel_threshold:
+			#	damp_perp_vel_percent = (abs(perp_vel) - perp_vel_threshold) / abs(perp_vel)
+			apply_impulse(Vector2(0, 0), -perp_vel_vec * _delta * 5 * damp_perp_vel_percent)
 		if Input.is_action_pressed('left') or Input.is_action_pressed('right'):
 			var currTurnSpeed = turnSpeed
 			# also handles swapping turn directions when going backwards
 			var steeringPercent: float = min(1.0, forward_vel / 200.0)
 			if Input.is_action_pressed("space"):
 				currTurnSpeed = driftTurnSpeed
-				steeringPercent = 1.0
+				steeringPercent = min(1.0, linear_velocity.length() / 200.0)#1.0
 			#var directionSign: int = 1
 			if Input.is_action_pressed("down"):
 				pass
