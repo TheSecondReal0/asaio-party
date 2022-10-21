@@ -19,6 +19,7 @@ var color: Color = Color(1.0, 0.0, 0.0)
 func _ready():
 # warning-ignore:return_value_discarded
 	Ticker.connect("tick", self, "_on_tronManager_move")
+	$Polygon2D.color = color
 
 func move():
 	#print("moving in dir ", dir)
