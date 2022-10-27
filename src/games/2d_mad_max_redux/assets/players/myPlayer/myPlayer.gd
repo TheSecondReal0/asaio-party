@@ -66,12 +66,12 @@ func _physics_process(_delta):
 			if Input.is_action_pressed("down"):
 				pass
 				#directionSign = -1
-			var new_angular: float
+			var new_angular: float = 0.0
 			if Input.is_action_pressed('left'):
-				new_angular = -rotationSpeed * _delta * currTurnSpeed# * directionSign
+				new_angular += -rotationSpeed * _delta * currTurnSpeed# * directionSign
 				#angular_velocity = min(angular_velocity, -rotationSpeed * _delta * currTurnSpeed * directionSign)
 			if Input.is_action_pressed('right'):
-				new_angular = rotationSpeed * _delta * currTurnSpeed# * directionSign
+				new_angular += rotationSpeed * _delta * currTurnSpeed# * directionSign
 				#angular_velocity = max(angular_velocity, rotationSpeed * _delta * currTurnSpeed * directionSign)
 			new_angular *= steeringPercent
 			if new_angular > 0:
