@@ -45,9 +45,9 @@ puppet func updatePosRot(pos, rot):
 func pointTowardsMouse():
 	look_at(get_global_mouse_position())
 
-var velocity = Vector2()
+var velocity: Vector2 = Vector2()
 
-func hit(damage, shooter):
+func hit(damage, shooter) -> void:
 	if get_tree().is_network_server():
 		if noSelfDamage:
 			if shooter != name:

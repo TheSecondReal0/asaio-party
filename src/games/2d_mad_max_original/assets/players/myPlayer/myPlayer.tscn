@@ -12,9 +12,7 @@ extents = Vector2( 10, 20 )
 [sub_resource type="GradientTexture" id=3]
 width = 5
 
-[node name="car" type="RigidBody2D" groups=[
-"players",
-]]
+[node name="car" type="RigidBody2D" groups=["players"]]
 position = Vector2( 512, 300 )
 physics_material_override = SubResource( 1 )
 gravity_scale = 0.0
@@ -103,4 +101,5 @@ __meta__ = {
 script = ExtResource( 2 )
 
 [node name="harpoon" parent="weapons" instance=ExtResource( 3 )]
+
 [connection signal="timeout" from="syncPosRot" to="." method="_on_syncPosRot_timeout"]

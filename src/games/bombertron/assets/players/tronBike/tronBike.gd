@@ -18,11 +18,11 @@ puppet var slave_position: Vector2 = Vector2(0, 0)
 
 var speed: int = 200
 
-var trail_scene: PackedScene = preload("res://games/bombertron/assets/weapons/trail/trail.tscn")
+var trail_scene: PackedScene = load("res://games/bombertron/assets/weapons/trail/trail.tscn")
 
-var bomb_scene: PackedScene = preload("res://games/bombertron/assets/weapons/trailSpawner/trailSpawner.tscn")
+var bomb_scene: PackedScene = load("res://games/bombertron/assets/weapons/trailSpawner/trailSpawner.tscn")
 
-var destroyer_scene: PackedScene = preload("res://games/bombertron/assets/weapons/trailDestroyer/trailDestroyer.tscn")
+var destroyer_scene: PackedScene = load("res://games/bombertron/assets/weapons/trailDestroyer/trailDestroyer.tscn")
 
 var trail_delta: float
 

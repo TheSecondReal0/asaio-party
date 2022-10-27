@@ -30,7 +30,7 @@ var settings: Dictionary = {
 								KEYS.RANGE: [1,8],
 								KEYS.DEFAULT: 1,
 								KEYS.DESC: "If one of your tiles is adjacent to this many or less of your tiles, it will die"},
-	"operpop_threshold":		{KEYS.TYPE: SETTING_TYPES.INT_RANGE, 
+	"overpop_threshold":		{KEYS.TYPE: SETTING_TYPES.INT_RANGE, 
 								KEYS.RANGE: [1,8],
 								KEYS.DEFAULT: 5,
 								KEYS.DESC: "If one of your tiles is adjacent to this many or more of your tiles, it will die"},
