@@ -32,13 +32,15 @@ var destroyer_ammo: int = 10
 
 onready var tronManager: Node = get_parent().get_parent()
 
+signal died
+
 func _ready():
 # warning-ignore:return_value_discarded
 	Ticker.connect("tick", self, "_on_tronManager_move")
 
 func _process(_delta):
 	if global_position.x < 1 or global_position.x > 1019 or global_position.y < 1 or global_position.y > 599:
-		queue_free()
+		die()
 	
 	if is_network_master():
 		movement_input()
@@ -148,10 +150,13 @@ func die():
 	print("dying")
 	if not is_network_master():
 		return
+	emit_signal("died", int(name))
 	rpc("receiveDeath")
 	queue_free()
 
 puppet func receiveDeath():
+	print("received death")
+	emit_signal("died", int(name))
 	queue_free()
 
 func _on_tronManager_move():

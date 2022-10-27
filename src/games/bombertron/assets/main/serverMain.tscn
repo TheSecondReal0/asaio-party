@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://games/bombertron/assets/main/BomberTronserverMain.gd" type="Script" id=1]
 [ext_resource path="res://games/bombertron/assets/maps/walls/walls.tscn" type="PackedScene" id=2]
 [ext_resource path="res://games/bombertron/assets/main/glowEnvironment.tres" type="Environment" id=3]
 [ext_resource path="res://games/bombertron/assets/weapons/trail/trail.tscn" type="PackedScene" id=4]
 [ext_resource path="res://games/bombertron/assets/weapons/trail/square.png" type="Texture" id=5]
+[ext_resource path="res://games/bombertron/assets/ui/win_screen/win_screen.tscn" type="PackedScene" id=6]
 
 [node name="main" type="Node2D"]
 script = ExtResource( 1 )
@@ -36,3 +37,7 @@ visible = false
 modulate = Color( 1, 0, 0, 1 )
 position = Vector2( 79.5325, 79.69 )
 texture = ExtResource( 5 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="win_screen" parent="CanvasLayer" instance=ExtResource( 6 )]

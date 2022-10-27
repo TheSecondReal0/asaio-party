@@ -59,10 +59,11 @@ func explode():
 	trails = trails_to_destroy
 	destroying_trails = true
 	for i in trails_to_destroy:
+		pass
 		#print("destroying ", i)
 		#i.destroy()
-		var trail_color: Color = i.get_node("Sprite").modulate
-		i.get_node("Sprite").modulate = trail_color.inverted()
+	#	var trail_color: Color = i.get_node("Sprite").modulate
+	#	i.get_node("Sprite").modulate = trail_color.inverted()
 #	queue_free()
 
 func alternate_color():

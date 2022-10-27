@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://games/bombertron/assets/main/BomberTronmain.gd" type="Script" id=1]
 [ext_resource path="res://games/bombertron/assets/maps/walls/walls.tscn" type="PackedScene" id=2]
 [ext_resource path="res://games/bombertron/assets/main/glowEnvironment.tres" type="Environment" id=3]
+[ext_resource path="res://games/bombertron/assets/ui/win_screen/win_screen.tscn" type="PackedScene" id=4]
 
 [node name="main" type="Node2D"]
 script = ExtResource( 1 )
@@ -23,3 +24,8 @@ color = Color( 0.12549, 0.12549, 0.12549, 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 512, 300 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="win_screen" parent="CanvasLayer" instance=ExtResource( 4 )]
+visible = false
